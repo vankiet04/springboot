@@ -4,7 +4,6 @@ import jakarta.validation.Valid;
 import net.enjoy.springboot.registrationlogin.dto.UserDto;
 import net.enjoy.springboot.registrationlogin.entity.User;
 import net.enjoy.springboot.registrationlogin.service.UserService;
-import net.enjoy.springboot.registrationlogin.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,6 +29,28 @@ public class AuthController {
         return "index";
     }
 
+    @GetMapping("/shop")
+    public String shop() {
+        return "shop";
+    }
+    @GetMapping("/blog")
+    public String blog() {
+        return "blog";
+    }
+    @GetMapping("/about")
+    public String about() {
+        return "about";
+    }
+    @GetMapping("/contact")
+    public String contact() {
+        return "contact";
+    }
+    // để chuyển hướng đến trang chủ, lấy từ index.html thành map ur
+    @GetMapping("/cart")
+    public String cart() {
+        return "cart";
+    }
+
     // handler method to handle user registration form request
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
@@ -48,7 +69,7 @@ public class AuthController {
 
         if (existingUser != null && existingUser.getEmail() != null && !existingUser.getEmail().isEmpty()) {
             result.rejectValue("email", null,
-                    "Email bị trùng với người dùng khác");
+                    "There is already an account registered with the same email");
         }
 
         if (result.hasErrors()) {
