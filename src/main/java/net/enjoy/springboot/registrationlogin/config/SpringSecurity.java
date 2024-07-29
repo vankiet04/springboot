@@ -29,13 +29,18 @@ public class SpringSecurity {
                 .authorizeHttpRequests((authorize) ->
                         authorize.requestMatchers("/register/**").permitAll()
                                 .requestMatchers("/index").permitAll()
+                                .requestMatchers("/contact").authenticated()
+                                .requestMatchers("/shop").authenticated()
+                                .requestMatchers("/blog").authenticated()
+                                .requestMatchers("/about").authenticated()
+                                .requestMatchers("/cart").authenticated()
                                 .requestMatchers("/users").hasRole("ADMIN")
                         .requestMatchers("/css/**", "/js/**", "/img/**").permitAll()
                 ).formLogin(
                         form -> form
                                 .loginPage("/login")
                                 .loginProcessingUrl("/login")
-                                .defaultSuccessUrl("/users")
+                                .defaultSuccessUrl("/index")
                                 .permitAll()
                 ).logout(
                         logout -> logout
