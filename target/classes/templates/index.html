@@ -76,11 +76,11 @@
     <h2>Feartures Products</h2>
     <p>Summer Collection Mew Modern Design</p>
     <div class="pro-container">
-        <div class="pro">
-            <img th:src="@{/img/products/f1.jpg}" alt="" />
+        <div class="pro" th:each="product : ${products}">
+            <img th:src="@{${product.img}}" alt="" />
             <div class="des">
                 <span>adidas</span>
-                <h5>Cartoon Antronaut T-Shirts</h5>
+                <h5 th:text="${product.name}"></h5>
                 <div class="star">
                     <i class="fas fa-star"></i>
                     <i class="fas fa-star"></i>
@@ -88,130 +88,12 @@
                     <i class="fas fa-star"></i>
                     <i class="fas fa-star"></i>
                 </div>
-                <h4>₹ 1200</h4>
             </div>
             <a href="#"><i class="fa-solid fa-cart-shopping cart"></i></a>
         </div>
 
-        <div class="pro">
-            <img th:src="@{/img/products/f2.jpg}" alt="" />
-            <div class="des">
-                <span>adidas</span>
-                <h5>Cartoon Antronaut T-Shirts</h5>
-                <div class="star">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                </div>
-                <h4>₹ 1200</h4>
-            </div>
-            <a href="#"><i class="fa-solid fa-cart-shopping cart"></i></a>
-        </div>
-
-        <div class="pro">
-            <img th:src="@{/img/products/f3.jpg}" alt="" />
-            <div class="des">
-                <span>adidas</span>
-                <h5>Cartoon Antronaut T-Shirts</h5>
-                <div class="star">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                </div>
-                <h4>₹ 1200</h4>
-            </div>
-            <a href="#"><i class="fa-solid fa-cart-shopping cart"></i></a>
-        </div>
-
-        <div class="pro">
-            <img th:src="@{/img/products/f4.jpg}" alt="" />
-            <div class="des">
-                <span>adidas</span>
-                <h5>Cartoon Antronaut T-Shirts</h5>
-                <div class="star">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                </div>
-                <h4>₹ 1200</h4>
-            </div>
-            <a href="#"><i class="fa-solid fa-cart-shopping cart"></i></a>
-        </div>
-
-        <div class="pro">
-            <img th:src="@{/img/products/f5.jpg}" alt="" />
-            <div class="des">
-                <span>adidas</span>
-                <h5>Cartoon Antronaut T-Shirts</h5>
-                <div class="star">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                </div>
-                <h4>₹ 1200</h4>
-            </div>
-            <a href="#"><i class="fa-solid fa-bag-shopping cart"></i></a>
-        </div>
-
-        <div class="pro">
-            <img th:src="@{/img/products/f6.jpg}" alt="" />
-            <div class="des">
-                <span>adidas</span>
-                <h5>Cartoon Antronaut T-Shirts</h5>
-                <div class="star">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                </div>
-                <h4>₹ 1200</h4>
-            </div>
-            <a href="#"><i class="fa-solid fa-cart-shopping cart"></i></a>
-        </div>
-
-        <div class="pro">
-            <img th:src="@{/img/products/f7.jpg}" alt="" />
-            <div class="des">
-                <span>adidas</span>
-                <h5>Cartoon Antronaut T-Shirts</h5>
-                <div class="star">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                </div>
-                <h4>₹ 1200</h4>
-            </div>
-            <a href="#"><i class="fa-solid fa-cart-shopping cart"></i></a>
-        </div>
-
-        <div class="pro">
-            <img th:src="@{/img/products/f8.jpg}" alt="" />
-            <div class="des">
-                <span>adidas</span>
-                <h5>Cartoon Antronaut T-Shirts</h5>
-                <div class="star">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                </div>
-                <h4>₹ 1200</h4>
-            </div>
-            <a href="#"><i class="fa-solid fa-cart-shopping cart"></i></a>
-        </div>
     </div>
+
 </section>
 
 <section id="banner" class="section-m1">

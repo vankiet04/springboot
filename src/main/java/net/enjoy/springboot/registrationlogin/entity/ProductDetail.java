@@ -27,6 +27,9 @@ public class ProductDetail {
     @Column(nullable = false)
     private double price;
 
+    @Column(nullable = false)
+    private long quantity;
+
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
