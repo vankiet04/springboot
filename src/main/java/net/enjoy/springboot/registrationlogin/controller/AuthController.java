@@ -23,16 +23,7 @@ public class AuthController {
         this.userService = userService;
     }
 
-    // handler method to handle home page request
-    @GetMapping("/index")
-    public String home() {
-        return "index";
-    }
 
-    @GetMapping("/shop")
-    public String shop() {
-        return "shop";
-    }
     @GetMapping("/blog")
     public String blog() {
         return "blog";
