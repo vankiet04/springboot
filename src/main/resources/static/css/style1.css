@@ -570,6 +570,24 @@ footer .copyright {
     font-weight: 600;
 }
 
+#pagination .active {
+    text-decoration: none;
+    background-color: #088178;
+    padding: 15px 20px;
+    border-radius: 4px;
+    color: #fff;
+    font-weight: 600;
+}
+
+#pagination .inactive {
+    text-decoration: none;
+    padding: 15px 20px;
+    border-radius: 4px;
+    font-weight: 600;
+    color: black;
+    background-color: gray;!important;
+}
+
 /* Single Products */
 
 #prodetails {
