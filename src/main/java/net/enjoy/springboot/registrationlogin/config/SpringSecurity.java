@@ -29,11 +29,11 @@ public class SpringSecurity {
                 .authorizeHttpRequests((authorize) ->
                         authorize.requestMatchers("/register/**").permitAll()
                                 .requestMatchers("/index").permitAll()
-                                .requestMatchers("/contact").authenticated()
-                                .requestMatchers("/shop").authenticated()
-                                .requestMatchers("/blog").authenticated()
-                                .requestMatchers("/about").authenticated()
-                                .requestMatchers("/cart").authenticated()
+                                .requestMatchers("/contact").permitAll()
+                                .requestMatchers("/shop").permitAll()
+                                .requestMatchers("/blog").permitAll()
+                                .requestMatchers("/about").permitAll()
+                                .requestMatchers("/cart").permitAll()
                                 .requestMatchers("/users").hasRole("ADMIN")
                         .requestMatchers("/css/**", "/js/**", "/img/**").permitAll()
                 ).formLogin(
