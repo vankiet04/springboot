@@ -23,7 +23,13 @@
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password" required>
             </div>
-            <button type="submit">Login</button>
+            <div th:if="${param.error}">
+                <p style="color: red">Sai tên đăng nhập hoặc mật khẩu!</p>
+            </div>
+            <div class="input-group">
+                <a href="/register">Đăng ký</a>
+            </div>
+                <button type="submit">Login</button>
         </form>
     </div>
 </body>

@@ -76,11 +76,19 @@
     <h2>Feartures Products</h2>
     <p>Summer Collection Mew Modern Design</p>
     <div class="pro-container">
+<<<<<<< HEAD
         <div th:each="p : ${productPage.content}" class="pro">
             <img th:src="@{${p.image}}" alt="" />
             <div class="des">
                 <span th:text="${@productController.getCategoryNameById(p.category)}">No brand</span>
                 <h5 th:text="${p.name}">Cartoon Antronaut T-Shirts</h5>
+=======
+        <div class="pro" th:each="product : ${products}">
+            <img th:src="@{${product.img}}" alt="" />
+            <div class="des">
+                <span>adidas</span>
+                <h5 th:text="${product.name}"></h5>
+>>>>>>> d5a3181bf045e962cb7e315f5117b800a7fcc2a6
                 <div class="star">
                     <i class="fas fa-star"></i>
                     <i class="fas fa-star"></i>
@@ -88,12 +96,16 @@
                     <i class="fas fa-star"></i>
                     <i class="fas fa-star"></i>
                 </div>
+<<<<<<< HEAD
                 <h4 th:text="'$ ' + ${p.price}">₹ 1200</h4>
+=======
+>>>>>>> d5a3181bf045e962cb7e315f5117b800a7fcc2a6
             </div>
             <a href="#"><i class="fa-solid fa-cart-shopping cart"></i></a>
         </div>
 
     </div>
+<<<<<<< HEAD
     <section id="pagination" class="section-p1">
         <a th:if="${productPage.hasPrevious()}" th:href="@{/index(page=${productPage.number - 1})}">Previous</a>
         <a style="margin: 0 5px"
@@ -104,6 +116,9 @@
         <a th:if="${productPage.hasNext()}" th:href="@{/index(page=${productPage.number + 1})}">Next</a>
         <span>Page <span th:text="${productPage.number + 1}"></span> of <span th:text="${productPage.totalPages}"></span></span>
     </section>
+=======
+
+>>>>>>> d5a3181bf045e962cb7e315f5117b800a7fcc2a6
 </section>
 
 <section id="banner" class="section-m1">
