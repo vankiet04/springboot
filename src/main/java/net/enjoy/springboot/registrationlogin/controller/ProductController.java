@@ -1,5 +1,6 @@
 package net.enjoy.springboot.registrationlogin.controller;
 
+import net.enjoy.springboot.registrationlogin.dto.ProductDetailDto;
 import net.enjoy.springboot.registrationlogin.dto.ProductDto;
 import net.enjoy.springboot.registrationlogin.service.CategoryService;
 import net.enjoy.springboot.registrationlogin.service.ProductService;
@@ -50,6 +51,14 @@ public class ProductController {
         return "shop";
     }
 
+    @GetMapping("/product_detail")
+    public String productDetail(Model model, @RequestParam(value = "id", required = false) Long idProduct) {
+        ProductDto product = productService.findById(idProduct);
+        model.addAttribute("product", product);
 
+        List<ProductDetailDto> productDetails = productService.findDetailById(idProduct);
+        model.addAttribute("productDetails", productDetails);
+        return "product-detail";
+    }
 
 }
