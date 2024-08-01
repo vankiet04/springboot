@@ -1,6 +1,7 @@
 package net.enjoy.springboot.registrationlogin.controller;
 
 import net.enjoy.springboot.registrationlogin.dto.ProductDto;
+import net.enjoy.springboot.registrationlogin.service.CategoryService;
 import net.enjoy.springboot.registrationlogin.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,16 +17,19 @@ import java.util.List;
 @Controller
 public class ProductController {
     private ProductService productService;
+    private CategoryService categoryService;
 
     @Autowired
-    public void setProductService(ProductService productService) {
+    public void setProductService(ProductService productService, CategoryService categoryService) {
         this.productService = productService;
+        this.categoryService = categoryService;
     }
 
     @GetMapping("/index")
     public String home(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<ProductDto> products = productService.findAllProduct(pageable);
+        model.addAttribute("categoryService", categoryService);
         model.addAttribute("products", products);
         return "index";
     }
@@ -37,4 +41,9 @@ public class ProductController {
         model.addAttribute("products", products);
         return "shop";
     }
+
+    public String getCategoryNameById(Long categoryId) {
+        return categoryService.findCategoryNameById(categoryId);
+    }
+
 }

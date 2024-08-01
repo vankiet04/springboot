@@ -17,7 +17,6 @@ public class ProductDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     @Column(nullable = false)
     private String color;
 
@@ -29,6 +28,9 @@ public class ProductDetail {
 
     @Column(nullable = false)
     private long quantity;
+
+    @Column(nullable = false)
+    private int status;
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
