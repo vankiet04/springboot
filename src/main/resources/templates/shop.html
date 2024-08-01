@@ -62,10 +62,10 @@
 </section>
 
 <section id="pagination" class="section-p1" th:if="${products.totalPages > 0}">
-
-    <a th:each="i : ${#numbers.sequence(0, products.totalPages - 1)}" th:text="${i + 1}" th:href="@{/shop(page=${i})}"></a>
+    <a th:each="i : ${#numbers.sequence(0, products.totalPages - 1)}"
+       th:text="${i + 1}">1</a>
+    </a>
 </section>
-
 
 <section id="newsletter" class="section-p1 section-m1">
     <div class="newstext">
@@ -132,5 +132,24 @@
 </footer>
 
 <script src="./script.js"></script>
+<script>
+    setHrefforPagination();
+    function setHrefforPagination() {
+        const url = new URL(window.location.href);
+        const params = new URLSearchParams(url.search);
+
+        const paramArray = [];
+        for (const [key, value] of params.entries()) {
+            paramArray.push(`${key}=${value}`);
+        }
+
+        const pagination = document.querySelectorAll('#pagination a');
+        console.log(pagination);
+        pagination.forEach((page) => {
+            page.href = `?${paramArray.join('&')}&page=${page.innerText - 1}`;
+        });
+
+    }
+</script>
 </body>
 </html>
