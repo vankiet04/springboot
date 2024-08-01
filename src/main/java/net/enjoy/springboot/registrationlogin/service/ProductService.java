@@ -13,4 +13,6 @@ public interface ProductService {
     Product findById(Long id);
 
     void saveProduct(Product product);
+
+    public Page<ProductDto> searchProduct(Long sizeId, Long colorId, Long categoryId, long minPrice, long maxPrice, Pageable pageable, String name);
 }
