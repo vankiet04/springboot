@@ -15,6 +15,6 @@ public class ProductDetailDto {
     private String size;
     private double price;
     private long quantity;
-    private Long productId;
-    private int status;
+//    private Long productId;
+//    private int status;
 }
