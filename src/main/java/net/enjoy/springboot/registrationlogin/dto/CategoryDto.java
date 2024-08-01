@@ -9,11 +9,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductDto {
+public class CategoryDto {
     private Long id;
     private String name;
-    private String description;
-    private String img;
-    private Long categoryId;
     private int status;
 }

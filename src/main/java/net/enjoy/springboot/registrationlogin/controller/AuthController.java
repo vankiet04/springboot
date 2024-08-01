@@ -23,6 +23,8 @@ public class AuthController {
         this.userService = userService;
     }
 
+    // handler method to handle home page request
+
 
     @GetMapping("/blog")
     public String blog() {
@@ -41,6 +43,21 @@ public class AuthController {
     public String cart() {
         return "cart";
     }
+    @GetMapping("/order")
+    public String order() {
+        return "order";
+    }
+
+    @GetMapping("/order-detail")
+    public String orderDetail() {
+        return "order-detail";
+    }
+
+    @GetMapping("/product-detail")
+    public String productDetail() {
+        return "product-detail";
+    }
+
 
     // handler method to handle user registration form request
     @GetMapping("/register")
