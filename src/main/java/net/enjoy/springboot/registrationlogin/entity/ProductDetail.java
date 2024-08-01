@@ -17,12 +17,17 @@ public class ProductDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @OneToOne
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
 
-    @Column(nullable = false)
-    private String color;
+    @ManyToOne
+    @JoinColumn(name = "color_id", nullable = false)
+    private Color color;
 
-    @Column(nullable = false)
-    private String size;
+    @ManyToOne
+    @JoinColumn(name = "size_id", nullable = false)
+    private Size size;
 
     @Column(nullable = false)
     private double price;
