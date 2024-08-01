@@ -50,8 +50,6 @@ public class ProductController {
         return "shop";
     }
 
-    public String getCategoryNameById(Long categoryId) {
-        return categoryService.findCategoryNameById(categoryId);
-    }
+
 
 }

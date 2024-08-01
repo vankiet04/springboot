@@ -140,15 +140,16 @@
 
         const paramArray = [];
         for (const [key, value] of params.entries()) {
-            paramArray.push(`${key}=${value}`);
+            if (key !== 'page') {
+                paramArray.push(`${key}=${value}`);
+            }
         }
 
         const pagination = document.querySelectorAll('#pagination a');
-        console.log(pagination);
         pagination.forEach((page) => {
+            page.removeAttribute('href'); // Clear href first
             page.href = `?${paramArray.join('&')}&page=${page.innerText - 1}`;
         });
-
     }
 </script>
 </body>
