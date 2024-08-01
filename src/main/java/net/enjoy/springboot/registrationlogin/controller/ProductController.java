@@ -35,9 +35,17 @@ public class ProductController {
     }
 
     @GetMapping("/shop")
-    public String shop(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size) {
+    public String shop(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size, @RequestParam(value = "sizeId", required = false) Long sizeId, @RequestParam(value = "colorId", required = false) Long colorId, @RequestParam(value = "categoryId", required = false) Long categoryId, @RequestParam(defaultValue="0") Long minPrice,@RequestParam(defaultValue="999999999")Long maxPrice, @RequestParam(value = "name", required = false) String name) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<ProductDto> products = productService.findAllProduct(pageable);
+        Page<ProductDto> products;
+        if (sizeId == null && colorId == null && categoryId == null && name == null) {
+            products = productService.findAllProduct(pageable);
+            System.out.println("products = " + products);
+        }
+        else {
+            products = productService.searchProduct(sizeId, colorId, categoryId, minPrice, maxPrice, pageable, name);
+            System.out.println("products1 = " + products);
+        }
         model.addAttribute("products", products);
         return "shop";
     }
