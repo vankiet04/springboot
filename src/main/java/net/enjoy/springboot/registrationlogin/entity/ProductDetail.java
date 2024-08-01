@@ -17,9 +17,6 @@ public class ProductDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "category_id", nullable = false)
-    private Category category;
 
     @ManyToOne
     @JoinColumn(name = "color_id", nullable = false)

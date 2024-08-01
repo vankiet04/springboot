@@ -6,6 +6,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 public interface CategoryService {
-    List<CategoryDto> findAllCategory();
-    String findCategoryNameById(Long categoryId);
+//    List<CategoryDto> findAllCategory();
+//    String findCategoryNameById(Long categoryId);
 }
