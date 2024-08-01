@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Stackover</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css"/>
     <link rel="stylesheet" th:href="@{/css/home.css}">
 </head>
 <body>
 <section id="header">
-    <a id="main-logo"   th:href="@{/index}" href="#"><img  th:src="@{/img/logo.png}" alt="" class="logo" /></a>
+    <a id="main-logo" th:href="@{/index}" href="#"><img th:src="@{/img/logo.png}" alt="" class="logo"/></a>
     <div>
         <ul id="navbar">
             <li><a class="active" th:href="@{/index}">Home</a></li>
@@ -18,8 +18,138 @@
             <li><a th:href="@{/blog}">Blog</a></li>
             <li><a th:href="@{/about}">About</a></li>
             <li><a th:href="@{/contact}">Contact</a></li>
+            <li><a th:href="@{/order}">Your Order</a></li>
             <li id="lg-bag">
                 <a th:href="@{/cart}"><i class="fa-solid fa-bag-shopping"></i></a>
+            </li>
+
+            <li class="iscart"><a href="#">
+
+                <div class="icon-large" style="display: flex">
+                    <div class="fly-item"><span class="item-number" style="
+    position: absolute;
+        top: -22px;
+    left: 28px;
+    color: green;
+">5</span></div>
+                    <i class="fa-solid fa-shopping-cart"></i>
+
+                </div>
+
+            </a>
+                <div class="mini-cart">
+                    <div class="content">
+                        <div class="cart-head">
+                            5 items in cart
+                        </div>
+                        <div class="cart-body">
+                            <ul class="products mini">
+                                <li class="item">
+                                    <div class="thumbnail object-cover">
+                                        <a href="#"><img th:src="@{/img/products/n1.jpg}" alt=""></a>
+                                    </div>
+                                    <div class="item-content">
+                                        <p><a href="#" style="font-size: 14px">Dimmable Ceiling Light Modern</a></p>
+                                        <span class="price">
+                                                            <span>$279.99 - XL - Xanh</span>
+                                                            <button class="fly-item"><span>X</span></button>
+
+                                                        </span>
+                                        <div class="qty-control flexitem">
+                                            <button class="minus">-</button>
+                                            <input type="text" value="2" min="1">
+                                            <button class="plus">+</button>
+                                        </div>
+                                    </div>
+                                    <a href="" class="item-remove"><i class="ri-close-line"></i></a>
+                                </li>
+                                <li class="item">
+                                    <div class="thumbnail object-cover">
+                                        <a href="#"><img th:src="@{/img/products/n1.jpg}" alt=""></a>
+                                    </div>
+                                    <div class="item-content">
+                                        <p><a href="#" style="font-size: 14px">Modern Storage Cabinet with Door & 3
+                                            Drawers</a></p>
+                                        <span class="price">
+                                                            <span>$129.99 - L - Vàng</span>
+                                                            <button class="fly-item"><span>X</span></button>
+                                                        </span>
+                                        <div class="qty-control flexitem">
+                                            <button class="minus">-</button>
+                                            <input type="text" value="2" min="1">
+                                            <button class="plus">+</button>
+                                        </div>
+                                    </div>
+                                    <a href="" class="item-remove"><i class="ri-close-line"></i></a>
+                                </li>
+                                <li class="item">
+                                    <div class="thumbnail object-cover">
+                                        <a href="#"><img th:src="@{/img/products/n1.jpg}" alt=""></a>
+                                    </div>
+                                    <div class="item-content">
+                                        <p><a href="#" style="font-size: 14px">Vonanda Velvet Sofa Couch</a></p>
+                                        <span class="price">
+                                                            <span>$352.99 - M - Trắng</span>
+                                                            <button class="fly-item"><span>X</span></button>
+                                                        </span>
+                                        <div class="qty-control flexitem">
+                                            <button class="minus">-</button>
+                                            <input type="text" value="2" min="1">
+                                            <button class="plus">+</button>
+                                        </div>
+                                    </div>
+                                    <a href="" class="item-remove"><i class="ri-close-line"></i></a>
+                                </li>
+                                <li class="item">
+                                    <div class="thumbnail object-cover">
+                                        <a href="#"><img th:src="@{/img/products/n1.jpg}" alt=""></a>
+                                    </div>
+                                    <div class="item-content">
+                                        <p><a href="#" style="font-size: 14px">Awesome Bed for a Couple</a></p>
+                                        <span class="price">
+                                                            <span>$579.99</span>
+                                                            <button class="fly-item"><span>X</span></button>
+                                                        </span>
+                                        <div class="qty-control flexitem">
+                                            <button class="minus">-</button>
+                                            <input type="text" value="2" min="1">
+                                            <button class="plus">+</button>
+                                        </div>
+                                    </div>
+                                    <a href="" class="item-remove"><i class="ri-close-line"></i></a>
+                                </li>
+                                <li class="item">
+                                    <div class="thumbnail object-cover">
+                                        <a href="#"><img th:src="@{/img/products/n1.jpg}" alt=""></a>
+                                    </div>
+                                    <div class="item-content">
+                                        <p><a href="#" style="font-size: 14px">Dimmable Ceiling Light Modern</a></p>
+                                        <span class="price">
+                                                            <span>$279.99</span>
+                                                            <button class="fly-item"><span>X</span></button>
+                                                        </span>
+                                        <div class="qty-control flexitem">
+                                            <button class="minus">-</button>
+                                            <input type="text" value="2" min="1">
+                                            <button class="plus">+</button>
+                                        </div>
+                                    </div>
+                                    <a href="" class="item-remove"><i class="ri-close-line"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="cart-footer">
+                            <div class="subtotal">
+                                <p>Subtotal</p>
+                                <p><strong>$1,622.95</strong></p>
+                            </div>
+                            <div class="actions">
+                                <a th:href="@{/cart}" class="primary-button">Checkout</a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </li>
             <a href="#" id="close"> <i class="far fa-times"></i> </a>
         </ul>
@@ -42,32 +172,32 @@
 
 <section id="feature" class="section-p1">
     <div class="fe-box">
-        <img th:src="@{/img/features/f1.png}" alt="" />
+        <img th:src="@{/img/features/f1.png}" alt=""/>
         <h6>Free Shiping</h6>
     </div>
 
     <div class="fe-box">
-        <img th:src="@{/img/features/f2.png}" alt="" />
+        <img th:src="@{/img/features/f2.png}" alt=""/>
         <h6>Online Order</h6>
     </div>
 
     <div class="fe-box">
-        <img th:src="@{/img/features/f3.png}" alt="" />
+        <img th:src="@{/img/features/f3.png}" alt=""/>
         <h6>Save Money</h6>
     </div>
 
     <div class="fe-box">
-        <img th:src="@{/img/features/f4.png}" alt="" />
+        <img th:src="@{/img/features/f4.png}" alt=""/>
         <h6>Promotions</h6>
     </div>
 
     <div class="fe-box">
-        <img th:src="@{/img/features/f5.png}" alt="" />
+        <img th:src="@{/img/features/f5.png}" alt=""/>
         <h6>Happy Sell</h6>
     </div>
 
     <div class="fe-box">
-        <img th:src="@{/img/features/f6.png}" alt="" />
+        <img th:src="@{/img/features/f6.png}" alt=""/>
         <h6>24/7 Supports</h6>
     </div>
 </section>
@@ -77,9 +207,10 @@
     <p>Summer Collection Mew Modern Design</p>
     <div class="pro-container">
         <div class="pro" th:each="product : ${products}">
-            <img th:src="@{${product.img}}" alt="" />
+            <a th:href="@{/product-detail}"> <img th:src="@{${product.img}}" alt=""/></a>
+
             <div class="des">
-                <span>adidas</span>
+                <span th:text="${product.description}"></span>
                 <h5 th:text="${product.name}"></h5>
                 <div class="star">
                     <i class="fas fa-star"></i>
@@ -107,7 +238,7 @@
     <p>Summer Collection Mew Modern Design</p>
     <div class="pro-container">
         <div class="pro">
-             <img th:src="@{/img/products/n1.jpg}" alt="" />
+            <img th:src="@{/img/products/n1.jpg}" alt=""/>
             <div class="des">
                 <span>adidas</span>
                 <h5>Cartoon Antronaut T-Shirts</h5>
@@ -124,7 +255,7 @@
         </div>
 
         <div class="pro">
-             <img th:src="@{/img/products/n2.jpg}" alt="" />
+            <img th:src="@{/img/products/n2.jpg}" alt=""/>
             <div class="des">
                 <span>adidas</span>
                 <h5>Cartoon Antronaut T-Shirts</h5>
@@ -141,7 +272,7 @@
         </div>
 
         <div class="pro">
-             <img th:src="@{/img/products/n3.jpg}" alt="" />
+            <img th:src="@{/img/products/n3.jpg}" alt=""/>
             <div class="des">
                 <span>adidas</span>
                 <h5>Cartoon Antronaut T-Shirts</h5>
@@ -158,7 +289,7 @@
         </div>
 
         <div class="pro">
-             <img th:src="@{/img/products/n4.jpg}" alt="" />
+            <img th:src="@{/img/products/n4.jpg}" alt=""/>
             <div class="des">
                 <span>adidas</span>
                 <h5>Cartoon Antronaut T-Shirts</h5>
@@ -175,7 +306,7 @@
         </div>
 
         <div class="pro">
-             <img th:src="@{/img/products/n5.jpg}" alt="" />
+            <img th:src="@{/img/products/n5.jpg}" alt=""/>
             <div class="des">
                 <span>adidas</span>
                 <h5>Cartoon Antronaut T-Shirts</h5>
@@ -192,7 +323,7 @@
         </div>
 
         <div class="pro">
-             <img th:src="@{/img/products/n6.jpg}" alt="" />
+            <img th:src="@{/img/products/n6.jpg}" alt=""/>
             <div class="des">
                 <span>adidas</span>
                 <h5>Cartoon Antronaut T-Shirts</h5>
@@ -209,7 +340,7 @@
         </div>
 
         <div class="pro">
-             <img th:src="@{/img/products/n7.jpg}" alt="" />
+            <img th:src="@{/img/products/n7.jpg}" alt=""/>
             <div class="des">
                 <span>adidas</span>
                 <h5>Cartoon Antronaut T-Shirts</h5>
@@ -226,7 +357,7 @@
         </div>
 
         <div class="pro">
-            <img th:src="@{/img/products/n8.jpg}" alt="" />
+            <img th:src="@{/img/products/n8.jpg}" alt=""/>
             <div class="des">
                 <span>adidas</span>
                 <h5>Cartoon Antronaut T-Shirts</h5>
@@ -287,14 +418,14 @@
     </div>
 
     <div class="form">
-        <input type="text" placeholder="Your email adress" />
+        <input type="text" placeholder="Your email adress"/>
         <button class="normal">Sign Up</button>
     </div>
 </section>
 
 <footer class="section-p1">
     <div class="col">
-        <img class="logo"  th:src="@{/img/logo.png}" alt="" />
+        <img class="logo" th:src="@{/img/logo.png}" alt=""/>
         <h4>Contact</h4>
         <p><strong>Adress: </strong> Alpha 1, Greater Noida, Uttar Pradesh</p>
         <p><strong>Phone: </strong> +1234567810/ (+91)7263863548</p>

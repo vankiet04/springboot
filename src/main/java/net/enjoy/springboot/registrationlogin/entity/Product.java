@@ -27,6 +27,16 @@ public class Product {
     @Column(nullable = false)
     private String img;
 
+    @Column(nullable = false)
+    private int status;
+
+
+    // join many to one with category
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
+
+
     // join one to many with productDetails
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<ProductDetail> productDetails;

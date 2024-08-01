@@ -11,19 +11,20 @@
 </head>
 <body>
 <section id="header">
-    <a th:href="@{/index}" >
-        <img  th:src="@{/img/logo.png}"  class="logo" alt="logo" />
+    <a  th:href="@{/index}" >
+        <img th:src="@{/img/logo.png}"  class="logo" alt="logo" />
     </a>
 
     <div>
         <ul id="navbar">
-            <li><a  th:href="@{/index}">Home</a></li>
-            <li><a  class="active" th:href="@{/shop}">Shop</a></li>
+            <li><a th:href="@{/index}">Home</a></li>
+            <li><a th:href="@{/shop}">Shop</a></li>
             <li><a th:href="@{/blog}">Blog</a></li>
             <li><a th:href="@{/about}">About</a></li>
             <li><a th:href="@{/contact}">Contact</a></li>
+            <li><a   class="active"  th:href="@{/order}">Your Order</a></li>
             <li id="lg-bag">
-                <a th:href="@{/cart}"><i class="fa-solid fa-bag-shopping"></i></a>
+                <a  th:href="@{/cart}"><i class="fa-solid fa-bag-shopping"></i></a>
             </li>
             <a href="#" id="close"><i class="fa-solid fa-xmark"></i></a>
         </ul>
@@ -35,48 +36,75 @@
     </div>
 </section>
 
-<section id="page-header">
-    <h2>#stayhome</h2>
-    <p>Save more with coupons & up to 70% off!</p>
+<section id="page-header" class="about-header">
+    <h2>#Your_order <i class="fa-solid fa-box"></i></h2>
+    <p>Thank you very much <3</p>
 </section>
 
-<section id="product1" class="section-p1">
-    <div class="pro-container">
-        <div class="pro" th:each="product : ${products}">
-            <img th:src="@{${product.img}}" alt="" />
-            <div class="des">
-                <span>adidas</span>
-                <h5 th:text="${product.name}"></h5>
-                <div class="star">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                </div>
-<!--                <h4>$78</h4>-->
-            </div>
-            <a href="#"><i class="fa-solid fa-bag-shopping cart"></i></a>
-        </div>
-    </div>
+<section id="cart" style="overflow-x: hidden" class="section-p1">
+    <table width="100%">
+        <thead>
+        <tr>
+            <td>Order Id</td>
+            <td>Order Date</td>
+            <td>Total Price</td>
+            <td>Order Status</td>
+            <td>Show Order Detail</td>
+            <td>Cancel</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr style="border-bottom: 1px solid #e2e9e1;">
+            <td>MH1</td>
+            <td>1/8/2024 </td>
+            <td>$118.19</td>
+            <td>Pending</td>
+            <td>
+                <a th:href="@{/order-detail}">
+                    <button style="    background-color: #088178;
+    color: #fff;
+    padding: 12px 20px;" class="normal">Show >> </button>
+                </a></td>
+
+            <td><a href="#"><i class="fa-regular fa-circle-xmark"></i></a></td>
+
+        </tr>
+        <tr style="border-bottom: 1px solid #e2e9e1;">
+            <td>MH1</td>
+            <td>1/8/2024 </td>
+            <td>$118.19</td>
+            <td>Pending</td>
+            <td>
+                <a th:href="@{/order-detail}">
+                    <button style="    background-color: #088178;
+    color: #fff;
+    padding: 12px 20px;" class="normal">Show >> </button>
+                </a></td>
+
+            <td><a href="#"><i class="fa-regular fa-circle-xmark"></i></a></td>
+
+        </tr>
+        <tr style="border-bottom: 1px solid #e2e9e1;">
+            <td>MH1</td>
+            <td>1/8/2024 </td>
+            <td>$118.19</td>
+            <td>Pending</td>
+            <td>
+                <a th:href="@{/order-detail}">
+                    <button style="    background-color: #088178;
+    color: #fff;
+    padding: 12px 20px;" class="normal">Show >></button>
+                </a></td>
+
+            <td><a href="#"><i class="fa-regular fa-circle-xmark"></i></a></td>
+
+        </tr>
+
+        </tbody>
+    </table>
 </section>
 
-<section id="pagination" class="section-p1" th:if="${products.totalPages > 0}">
-    <a th:each="i : ${#numbers.sequence(0, products.totalPages - 1)}"
-       th:text="${i + 1}">1</a>
-    </a>
-</section>
 
-<section id="newsletter" class="section-p1 section-m1">
-    <div class="newstext">
-        <h4>Sign Up For Newsletters</h4>
-        <p>Get E-mail updates about our latest shop and <span>special offers.</span></p>
-    </div>
-    <div class="form">
-        <input type="text" placeholder="Your email address" />
-        <button class="normal">Sign Up</button>
-    </div>
-</section>
 
 <footer class="section-p1">
     <div class="col">
@@ -131,26 +159,6 @@
     </div>
 </footer>
 
-<script src="./script.js"></script>
-<script>
-    setHrefforPagination();
-    function setHrefforPagination() {
-        const url = new URL(window.location.href);
-        const params = new URLSearchParams(url.search);
-
-        const paramArray = [];
-        for (const [key, value] of params.entries()) {
-            if (key !== 'page') {
-                paramArray.push(`${key}=${value}`);
-            }
-        }
-
-        const pagination = document.querySelectorAll('#pagination a');
-        pagination.forEach((page) => {
-            page.removeAttribute('href'); // Clear href first
-            page.href = `?${paramArray.join('&')}&page=${page.innerText - 1}`;
-        });
-    }
-</script>
+<script src="/js/script.js"></script>
 </body>
 </html>

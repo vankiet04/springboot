@@ -14,7 +14,7 @@ public interface ProductsRepository extends PagingAndSortingRepository<Product, 
     @Query("SELECT p FROM Product p JOIN p.productDetails pd WHERE " +
             "(:sizeId IS NULL OR pd.size.id = :sizeId) AND " +
             "(:colorId IS NULL OR pd.color.id = :colorId) AND " +
-            "(:categoryId IS NULL OR pd.category.id = :categoryId) AND " +
+            "(:categoryId IS NULL OR p.category.id = :categoryId) AND " +
             "(:minPrice IS NULL OR pd.price >= :minPrice) AND " +
             "(:maxPrice IS NULL OR pd.price <= :maxPrice) AND " +
             "(:name IS NULL OR p.name LIKE CONCAT('%', :name, '%'))")
