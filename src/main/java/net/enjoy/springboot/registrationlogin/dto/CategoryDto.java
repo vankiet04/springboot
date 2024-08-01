@@ -1,28 +1,16 @@
 package net.enjoy.springboot.registrationlogin.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class CategoryDto {
-    private int id;
+    private Long id;
     private String name;
-    private boolean status;
-
-    public CategoryDto() {
-    }
-
-    public CategoryDto(int id, String name, boolean status) {
-        this.id = id;
-        this.name = name;
-        this.status = status;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public boolean isStatus() {
-        return status;
-    }
+    private int status;
 }

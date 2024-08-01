@@ -26,10 +26,6 @@ public class AuthController {
     // handler method to handle home page request
 
 
-    @GetMapping("/shop")
-    public String shop() {
-        return "shop";
-    }
     @GetMapping("/blog")
     public String blog() {
         return "blog";
@@ -47,6 +43,21 @@ public class AuthController {
     public String cart() {
         return "cart";
     }
+    @GetMapping("/order")
+    public String order() {
+        return "order";
+    }
+
+    @GetMapping("/order-detail")
+    public String orderDetail() {
+        return "order-detail";
+    }
+
+    @GetMapping("/product-detail")
+    public String productDetail() {
+        return "product-detail";
+    }
+
 
     // handler method to handle user registration form request
     @GetMapping("/register")

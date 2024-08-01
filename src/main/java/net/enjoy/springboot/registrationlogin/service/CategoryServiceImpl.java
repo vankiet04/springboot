@@ -21,18 +21,17 @@ public class CategoryServiceImpl implements CategoryService{
     public List<CategoryDto> findAllCategory() {
         List<Category> categories = categoryRepository.findAll();
         return categories.stream()
-                .map(category -> new CategoryDto(category.getId(), category.getName(), category.isStatus()))
+                .map(category -> new CategoryDto(category.getId(), category.getName(), category.getStatus()))
                 .collect(Collectors.toList());
     }
 
     private CategoryDto convertEntityToDto(CategoryDto categoryDto) {
-        return new CategoryDto(categoryDto.getId(), categoryDto.getName(), categoryDto.isStatus());
+        return new CategoryDto(categoryDto.getId(), categoryDto.getName(), categoryDto.getStatus());
     }
-
     @Override
-    public String findCategoryNameById(int categoryId) {
-        return categoryRepository.findById((long) categoryId)
+    public String findCategoryNameById(Long categoryId) {
+        return categoryRepository.findById(categoryId)
                 .map(Category::getName)
-                .orElse("No brand");
+                .orElse("No category");
     }
 }
