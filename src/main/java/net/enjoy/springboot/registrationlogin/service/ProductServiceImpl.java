@@ -54,6 +54,12 @@ public class ProductServiceImpl implements ProductService {
         return productDetails.stream().map(this::convertEntityToDto).collect(Collectors.toList());
     }
 
+    @Override
+    public ProductDto findProductByIdDetail(Long idProduct) {
+        Product products = productsRepository.findByProductDetailsId(idProduct);
+        return convertEntityToDto(products);
+    }
+
     private ProductDto convertEntityToDto(Product product) {
         ProductDto productDto = new ProductDto();
         productDto.setId(product.getId());
