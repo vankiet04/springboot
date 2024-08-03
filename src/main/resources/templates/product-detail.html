@@ -61,10 +61,10 @@
         <h6>Home / T-Shirts</h6>
         <h4 th:text="${product.name}"></h4>
         <h2 th:text="'$' + ${productDetails[0].price}"></h2>
-        <select>
-            <option th:each="producDetail : ${productDetails}" th:text="'Size: ' + ${producDetail.size} + ' - Màu: ' + ${producDetail.color}" th:value="${producDetail.price}"></option>
+        <select class="productDetailsSelected">
+            <option th:each="producDetail : ${productDetails}" th:text="'Size: ' + ${producDetail.size} + ' - Màu: ' + ${producDetail.color}" th:value="${producDetail.price} + '-' + ${producDetail.id}"></option>
         </select>
-        <input type="number" value="1">
+        <input type="number" value="1" id="quantity">
         <button class="normal">Add To Cart</button>
         <h4>Product Details</h4>
         <span th:text="${product.description}"></span>

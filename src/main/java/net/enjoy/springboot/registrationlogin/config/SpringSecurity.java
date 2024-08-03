@@ -11,6 +11,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+
+import java.util.List;
+
+import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
@@ -26,6 +31,14 @@ public class SpringSecurity {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
+                .cors(cors -> cors.configurationSource(request -> {
+                    CorsConfiguration config = new CorsConfiguration();
+                    config.setAllowedOrigins(List.of("http://localhost:8080"));
+                    config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+                    config.setAllowedHeaders(List.of("*"));
+                    config.setAllowCredentials(true);
+                    return config;
+                }))
                 .authorizeHttpRequests((authorize) ->
                         authorize.requestMatchers("/register/**").permitAll()
                                 .requestMatchers("/index").permitAll()
@@ -38,8 +51,11 @@ public class SpringSecurity {
                                 .requestMatchers("/order").permitAll()
                                 .requestMatchers("/order-detail").permitAll()
                                 .requestMatchers("/product_detail").permitAll()
+                                .requestMatchers("/cart/add").permitAll()
+                                .requestMatchers("/cart/getCart").permitAll()
+                                .requestMatchers("/cart/getProductByIdDetail").permitAll()
                                 .requestMatchers("/users").hasRole("ADMIN")
-                        .requestMatchers("/css/**", "/js/**", "/img/**").permitAll()
+                                .requestMatchers("/css/**", "/js/**", "/img/**").permitAll()
                 ).formLogin(
                         form -> form
                                 .loginPage("/login")

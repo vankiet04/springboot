@@ -484,3 +484,32 @@
         src="https://kit.fontawesome.com/25bb53796d.js"
         crossorigin="anonymous"
 ></script>
+<!--import ajax jquery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    var arrayProduct = [];
+    var arrayCartItem = [];
+    // ajax post request
+    $.ajax({
+        url: "/cart/getCart",
+        type: "POST",
+        success: function (data) {
+            arrayCartItem = data;
+            console.log(arrayCartItem);
+            ajaxPOSTProductDto();
+        },
+    });
+
+    function ajaxPOSTProductDto() {
+        $.ajax({
+            url: "/cart/getProductByIdDetail",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(arrayCartItem),
+            success: function (data) {
+                arrayProduct = data;
+                console.log(arrayProduct);
+            },
+        });
+    }
+</script>
