@@ -1000,6 +1000,45 @@ footer .copyright {
     cursor: pointer;
 }
 
+/*profile*/
+
+.mini-profile {
+    position: absolute;
+    width: 200px;
+    top: 100%;
+    right: 0;
+    background-color: var(--white-color);
+    z-index: 1000;
+    box-shadow: rgb(0 0 0 / 30%) 0 10px 50px;
+    visibility: hidden;
+    opacity: 0;
+}
+
+.mini-profile .content {
+    width: var(--percent100);
+    height: var(--percent100);
+    touch-action: auto;
+    padding: 1.5em;
+}
+
+.mini-profile .item-content p {
+    font-weight: var(--fw5);
+    margin-bottom: 1.5em;
+    line-height: 1.2;
+    color: #465b52;
+    margin: 4px 0 4px;
+    font-size: 20px;
+}
+
+.mini-profile .item-content i{
+    margin-left: 10px;
+}
+
+#profile:hover .mini-profile {
+    visibility: visible;
+    opacity:1;
+}
+
 :is(.mini-cart .products, .products.cart, .checkout .products) .thumbnail img {
     transform: none;
 }
@@ -1097,6 +1136,9 @@ img {
     margin-top: 6px;
 }
 
+#profile:hover{
+
+}
 /* ----------------------
  * -----11. End Cart------
  *--------------------- */

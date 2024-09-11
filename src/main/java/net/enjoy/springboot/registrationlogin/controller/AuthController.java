@@ -1,29 +1,34 @@
 package net.enjoy.springboot.registrationlogin.controller;
 
+import ch.qos.logback.classic.Logger;
 import jakarta.validation.Valid;
 import net.enjoy.springboot.registrationlogin.dto.UserDto;
 import net.enjoy.springboot.registrationlogin.entity.User;
 import net.enjoy.springboot.registrationlogin.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
 public class AuthController {
     private UserService userService;
+    private Logger log;
 
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
 
-    // handler method to handle home page request
+    // handler method to handle home page `reques`t
 
 
     @GetMapping("/blog")
@@ -43,6 +48,8 @@ public class AuthController {
     public String cart() {
         return "cart";
     }
+
+
     @GetMapping("/order")
     public String order() {
         return "order";
@@ -96,6 +103,57 @@ public class AuthController {
         model.addAttribute("users", users);
         return "users";
     }
+
+    @GetMapping("/profile")
+    public String profile(Model model) {
+        List<UserDto> users = userService.findAllUsers();
+        Long id = printLoggedInUserId();
+        System.out.println(id);
+        User t = new User();
+        t=userService.getUser(id);
+        System.out.println(t);
+        model.addAttribute("user", t);
+
+
+        return "profile";
+    }
+    @PostMapping("/profile/update/{id}")
+    public String updateProfile(@PathVariable Long id,@Valid @ModelAttribute("user") User user,
+                                BindingResult result,Model model, Principal principal) {
+
+
+        if (principal == null) {
+            return "redirect:/login";
+        }
+
+        if (result.hasErrors()) {
+            model.addAttribute("user", user);
+            return "profile";
+        }
+
+        User t = userService.updateUser(id, user);
+        model.addAttribute("user", t);
+        return "redirect:/profile?success";
+
+
+    }
+
+    public Long printLoggedInUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            Object principal = authentication.getPrincipal();
+            if (principal instanceof UserDetails) {
+                String username = ((UserDetails) principal).getUsername();
+                User user = userService.findUserByEmail(username);
+                if (user != null) {
+                    System.out.println("ID USER ĐÃ ĐĂNG NHẬP: " +user.getId());
+                    return user.getId();
+                }
+            }
+        }
+        return null;
+    }
+
 
     // handler method to handle login request
     @GetMapping("/login")
