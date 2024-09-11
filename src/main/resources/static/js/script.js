@@ -13,3 +13,13 @@ if (close) {
         nav.classList.remove('active');
     });
 }
+
+document.getElementById("changepassword").addEventListener("click", function(e) {
+    e.preventDefault();
+    var passwordContent = document.querySelector(".password-content");
+    if (passwordContent.style.display === "none" || passwordContent.style.display === "") {
+        passwordContent.style.display = "block"; // Hiển thị password-content
+    } else {
+        passwordContent.style.display = "none"; // Ẩn lại nếu cần
+    }
+});

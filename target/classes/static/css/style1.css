@@ -1435,3 +1435,88 @@ img {
 /* ----------------------
  * -----11. End Cart------
  *--------------------- */
+
+.container-profile{
+    width: 50%;
+    margin: 50px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+textarea {
+    resize: vertical;
+    height: 100px;
+}
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+input[type="text"], input[type="tel"], input[type="file"], textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+#changepassword{
+    display: block;
+    width: 30%;
+    padding: 15px;
+    background-color: #2ca8da;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-bottom: 20px;
+}
+
+#btnsavechange{
+    display: block;
+    width: 25%;
+    padding: 15px;
+    background-color: #d60d32;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin: 0 auto 20px auto;
+}
+
+.container-profile button {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.container-profile button:hover {
+    background-color: #45a049;
+}
+
+.container-profile button:active {
+    background-color: #3e8e41;
+}
+
+.password-content{
+    display: none;
+}
+.image-preview {
+    margin-bottom: 20px;
+    text-align: center;
+}
+.image-preview img {
+    max-width: 100%;
+    height: auto ;   /* Set the maximum height */
+    border-radius: 8px;
+}

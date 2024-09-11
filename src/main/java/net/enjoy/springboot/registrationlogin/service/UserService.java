@@ -8,6 +8,12 @@ import java.util.List;
 public interface UserService {
     void saveUser(UserDto userDto);
 
+    User getUser(Long id);
+
+    UserDto UserMapper(User user);
+
+    User updateUser(Long id, User user);
+
     User findUserByEmail(String email);
 
     List<UserDto> findAllUsers();
