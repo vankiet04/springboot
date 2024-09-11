@@ -1,5 +1,6 @@
 package net.enjoy.springboot.registrationlogin.repository;
 
+import net.enjoy.springboot.registrationlogin.dto.ProductDto;
 import net.enjoy.springboot.registrationlogin.entity.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,4 +30,8 @@ public interface ProductsRepository extends PagingAndSortingRepository<Product, 
     );
 
 
+    Product findById(Long id);
+
+    @Query("SELECT p FROM Product p JOIN p.productDetails pd WHERE pd.id = :id")
+    Product findByProductDetailsId(Long id);
 }

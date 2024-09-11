@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -39,7 +39,7 @@
 <section id="prodetails" class="section-p1">
 
     <div class="single-pro-image">
-        <img src="img/products/f1.jpg" width="100%" id="MainImg" alt="" />
+        <img th:src="@{${product.img}}" width="100%" id="MainImg" alt="" />
 
         <div class="small-img-group">
             <div class="small-img-col">
@@ -59,28 +59,16 @@
 
     <div class="single-pro-details">
         <h6>Home / T-Shirts</h6>
-        <h4>Men's Fashion T Shirts</h4>
-        <h2>$139.00</h2>
-        <select>
-            <option>Select Size</option>
-            <option>XL</option>
-            <option>XXL</option>
-            <option>Small</option>
-            <option>Large</option>
+        <h4 th:text="${product.name}"></h4>
+        <h2 th:text="'$' + ${productDetails[0].price}"></h2>
+        <select class="productDetailsSelected">
+            <option th:each="producDetail : ${productDetails}" th:text="'Size: ' + ${producDetail.size} + ' - Màu: ' + ${producDetail.color}" th:value="${producDetail.price} + '-' + ${producDetail.id}"></option>
         </select>
-        <select>
-            <option>Select Color</option>
-            <option>Green</option>
-            <option>Yellow</option>
-            <option>Red</option>
-            <option>Wthite</option>
-        </select>
-        <input type="number" value="1">
-        <button class="normal">Add To Cart</button>
+        <input type="number" value="1" id="quantity">
+        <button class="normal" onclick="addtocart()">Add To Cart</button>
         <h4>Product Details</h4>
-        <span>
-          The Gildan Ultra Cotton T-shirt is made from a substantial 6.0 oz. per sq. yd. fabric constructed from 100% cotton, this classic fit preshrunk jersey knit provides unmatched comfort with each wear. Featuring a taped neck and shoulder, and a seamless double-needle collar, and available in a range of colors, it offers it all in the ultimate head-turning package.
-        </span>
+        <span th:text="${product.description}"></span>
+
     </div>
 
 </section>
@@ -153,7 +141,10 @@
             </div>
             <a href="#"><i class="fa-solid fa-bag-shopping cart"></i></a>
         </div>
-
+<!--        if logged in then show div-->
+        <div sec:authorize="isAuthenticated()">
+            <p>Welcome back, user!</p>
+        </div>
     </div>
 </section>
 
@@ -235,6 +226,24 @@
     }
     smallimg[3].onclick = function () {
         MainImg.src = smallimg[3].src
+    }
+
+    function addtocart() {
+        var productDetailsSelected = document.querySelector('.productDetailsSelected').value;
+        var quantity = document.querySelector('#quantity').value;
+        productDetailsSelected = productDetailsSelected.split('-')[1];
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/cart/add', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify({
+            idDetail: productDetailsSelected,
+            quantity: quantity
+        }));
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                console.log(xhr.responseText);
+            }
+        }
     }
 </script>
 
