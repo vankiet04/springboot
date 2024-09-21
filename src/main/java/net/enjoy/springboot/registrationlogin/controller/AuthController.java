@@ -6,6 +6,7 @@ import net.enjoy.springboot.registrationlogin.dto.UserDto;
 import net.enjoy.springboot.registrationlogin.entity.User;
 import net.enjoy.springboot.registrationlogin.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -106,19 +107,21 @@ public class AuthController {
 
     @GetMapping("/profile")
     public String profile(Model model) {
-        List<UserDto> users = userService.findAllUsers();
         Long id = printLoggedInUserId();
+        if(id == null){
+            return "redirect:/login";
+        }
         System.out.println(id);
-        User t = new User();
-        t=userService.getUser(id);
-        System.out.println(t);
-        model.addAttribute("user", t);
-
-
+        User user = new User();
+        user=userService.getUser(id);
+        System.out.println(user);
+        model.addAttribute("user", user);
         return "profile";
     }
+
     @PostMapping("/profile/update/{id}")
     public String updateProfile(@PathVariable Long id,@Valid @ModelAttribute("user") User user,
+                                @RequestParam("isPasswordChanged") boolean isPasswordChanged,
                                 BindingResult result,Model model, Principal principal) {
 
 
@@ -131,15 +134,18 @@ public class AuthController {
             return "profile";
         }
 
-        User t = userService.updateUser(id, user);
+        User t = userService.updateUser(id, user, isPasswordChanged);
         model.addAttribute("user", t);
+        System.out.println("ID USER ĐÃ ĐĂNG NHẬP: " +t.getEmail());
         return "redirect:/profile?success";
 
 
     }
 
     public Long printLoggedInUserId() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Authentication authentication = new UsernamePasswordAuthenticationToken(auth.getPrincipal(), auth.getCredentials(), auth.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
         if (authentication != null && authentication.isAuthenticated()) {
             Object principal = authentication.getPrincipal();
             if (principal instanceof UserDetails) {
@@ -155,7 +161,7 @@ public class AuthController {
     }
 
 
-    // handler method to handle login request
+    // handler method to handle login reque
     @GetMapping("/login")
     public String login() {
         return "login";

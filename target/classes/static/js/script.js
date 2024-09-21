@@ -23,3 +23,38 @@ document.getElementById("changepassword").addEventListener("click", function(e) 
         passwordContent.style.display = "none"; // Ẩn lại nếu cần
     }
 });
+
+document.querySelector("form").addEventListener("submit", function(e) {
+    if (!validateForm()) {
+        e.preventDefault();
+    }
+});
+
+function validateForm() {
+
+    var password = document.getElementById("password").value;
+    var confirmPassword = document.getElementById("confirmpassword").value;
+    if(password==="" && confirmPassword===""){
+        return true;
+    }
+
+    if(password==="" || confirmPassword===""){
+        alert("Mật khẩu không được để trống");
+        return false;
+    }
+
+    if (password !== confirmPassword) {
+        alert("Mật khẩu không khớp");
+        return false ;
+    }
+
+    else {
+        document.getElementById("isPasswordChanged").value = "true";
+    }
+
+    // Set the value of the password field in the user object
+    const passwordInput = document.querySelector(".password-content input[name='password']");
+    passwordInput.setAttribute("th:field", "*{password}");
+    document.querySelector("input[name='password']").value = password;
+    return true;
+}
