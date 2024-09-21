@@ -10,9 +10,7 @@ public interface UserService {
 
     User getUser(Long id);
 
-    UserDto UserMapper(User user);
-
-    User updateUser(Long id, User user);
+    User updateUser(Long id, User user, boolean isPasswordChanged);
 
     User findUserByEmail(String email);
 

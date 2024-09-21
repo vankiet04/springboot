@@ -55,11 +55,11 @@
         <label for="name">Name:</label>
         <input type="text" id="name" name="name"   th:field="*{name}" required="">
 
-        <label for="email">Email*:</label>
-        <input type="text" id="email" name="email"  th:field="*{email}" required="">
+<!--        <label for="email">Email*:</label>-->
+<!--        <input type="text" id="email" name="email"  th:field="*{email}" required="">-->
 
-        <label for="email">Password:</label>
-        <input type="text" id="passwordhide" name="passwordhide"   th:field="*{password}" required="" style="display: none;">
+        <label for="password">Password:</label>
+<!--        <input type="text" id="passwordhide" name="passwordhide"   th:field="*{password}" required="" >-->
         <button id="changepassword">PassWord</button>
         <div class="password-content">
             <label for="password">Current Password*:</label>
@@ -68,10 +68,11 @@
             <label for="confirmpassword">Confirm Password*:</label>
             <input type="text" id="confirmpassword" name="confirmpassword">
 
-            <button id="btnsavechange">Save Change</button>
+            <input type="hidden" id="isPasswordChanged" name="isPasswordChanged" value="false">
+
         </div>
 
-        <button type="submit">Submit</button>
+        <button type="submit" >Submit</button>
     </form>
 </div>
 

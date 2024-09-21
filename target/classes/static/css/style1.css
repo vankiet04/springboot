@@ -1460,6 +1460,15 @@ input[type="text"], input[type="tel"], input[type="file"], textarea {
     border: 1px solid #ccc;
     border-radius: 4px;
 }
+
+.alert-info{
+    background: #f1f8ff;
+    color: #0366d6;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
 #changepassword{
     display: block;
     width: 30%;

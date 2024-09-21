@@ -46,14 +46,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(Long id, User user) {
+    public User updateUser(Long id, User user, boolean isPasswordChanged) {
         User userid =getUser(id);
         if (user.getPassword() == null) {
             throw new IllegalArgumentException("rawPassword cannot be null");
         }
         userid.setName(user.getName());
         userid.setEmail(user.getEmail());
-        userid.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        if (isPasswordChanged) {
+            userid.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+
                 Role role = roleRepository.findByName("ROLE_ADMIN");
                 if (role == null) {
                     role = checkRoleExist();
@@ -64,18 +68,6 @@ public class UserServiceImpl implements UserService {
 
          return userRepository.save(userid);
 
-    }
-
-    @Override
-    public UserDto UserMapper(User user) {
-        UserDto userDto = new UserDto();
-        String[] name = user.getName().split(" ");
-        //userDto.setId((long) user.getId());
-        userDto.setFirstName(name[0]);
-        userDto.setLastName(name[1]);
-        userDto.setEmail(user.getEmail());
-        userDto.setPassword(user.getPassword());
-        return userDto;
     }
 
     private Role checkRoleExist() {
