@@ -20,4 +20,5 @@ public interface ProductService {
     public Page<ProductDto> searchProduct(Long sizeId, Long colorId, Long categoryId, long minPrice, long maxPrice, Pageable pageable, String name);
 
     public ProductDto findProductByIdDetail(Long idProduct);
+
 }

@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,6 +40,36 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+    @Override
+    public User getUser(Long id){
+        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("asssss"));
+    }
+
+    @Override
+    public User updateUser(Long id, User user, boolean isPasswordChanged) {
+        User userid =getUser(id);
+        if (user.getPassword() == null) {
+            throw new IllegalArgumentException("rawPassword cannot be null");
+        }
+        userid.setName(user.getName());
+        userid.setEmail(user.getEmail());
+
+        if (isPasswordChanged) {
+            userid.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+
+                Role role = roleRepository.findByName("ROLE_ADMIN");
+                if (role == null) {
+                    role = checkRoleExist();
+                }
+        if (!userid.getRoles().contains(role)) {
+            userid.setRoles(List.of(role));
+        }
+
+         return userRepository.save(userid);
+
+    }
+
     private Role checkRoleExist() {
         Role role = new Role();
         role.setName("ROLE_ADMIN");
@@ -60,6 +91,7 @@ public class UserServiceImpl implements UserService {
     private UserDto convertEntityToDto(User user) {
         UserDto userDto = new UserDto();
         String[] name = user.getName().split(" ");
+        userDto.setId((long) user.getId());
         userDto.setFirstName(name[0]);
         userDto.setLastName(name[1]);
         userDto.setEmail(user.getEmail());

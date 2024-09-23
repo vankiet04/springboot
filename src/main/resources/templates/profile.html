@@ -11,19 +11,19 @@
 </head>
 <body>
 <section id="header">
-    <a th:href="@{/index}" >
-        <img  th:src="@{/img/logo.png}"  class="logo" alt="logo" />
+    <a  th:href="@{/index}" >
+        <img th:src="@{/img/logo.png}"  class="logo" alt="logo" />
     </a>
 
     <div>
         <ul id="navbar">
-            <li><a  th:href="@{/index}">Home</a></li>
-            <li><a  class="active" th:href="@{/shop}">Shop</a></li>
+            <li><a th:href="@{/index}">Home</a></li>
+            <li><a th:href="@{/shop}">Shop</a></li>
             <li><a th:href="@{/blog}">Blog</a></li>
             <li><a th:href="@{/about}">About</a></li>
             <li><a th:href="@{/contact}">Contact</a></li>
             <li id="lg-bag">
-                <a th:href="@{/cart}"><i class="fa-solid fa-bag-shopping"></i></a>
+                <a class="active"   th:href="@{/cart}"><i class="fa-solid fa-bag-shopping"></i></a>
             </li>
             <a href="#" id="close"><i class="fa-solid fa-xmark"></i></a>
         </ul>
@@ -35,53 +35,47 @@
     </div>
 </section>
 
-<section id="page-header">
-    <h2>#stayhome</h2>
-    <p>Save 2q39t82q4ptjio4go</p>
+<section id="page-header" class="about-header">
+    <h2>#Your_ProFile   <i class="fa-solid fa-user"></i>
+    </h2>
+    <p>HELLO BRO</p>
 </section>
-
-<section id="product1" class="section-p1">
-    <select name="categorySearch" id="categorySearch">
-        <option th:each="category : ${categories}"
-                th:value="${category.id}"
-                th:text="${category.name}"></option>
-    </select>
-    <div class="pro-container">
-        <div class="pro" th:each="product : ${products}">
-            <a th:href="@{'product_detail?id=' + ${product.id}}"><img th:src="@{${product.img}}" alt="" /></a>
-            <div class="des">
-                <span>adidas</span>
-                <h5 th:text="${product.name}"></h5>
-                <div class="star">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                </div>
-<!--                <h4>$78</h4>-->
-            </div>
-            <a href="#"><i class="fa-solid fa-bag-shopping cart"></i></a>
+<div class="container-profile">
+    <h2 style="text-align: center">Profile Information</h2>
+    <div th:if="${param.success}">
+        <div class="alert alert-info">
+            You have successfully updated your account!
         </div>
     </div>
-</section>
+    <form method="post"
+          role="form"
+          th:action="@{/profile/update/{id}(id=${user.id})}"
+          th:object="${user}">
 
-<section id="pagination" class="section-p1" th:if="${products.totalPages > 0}">
-    <a th:each="i : ${#numbers.sequence(0, products.totalPages - 1)}"
-       th:text="${i + 1}">1</a>
-    </a>
-</section>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name"   th:field="*{name}" required="">
 
-<section id="newsletter" class="section-p1 section-m1">
-    <div class="newstext">
-        <h4>Sign Up For Newsletters</h4>
-        <p>Get E-mail updates about our latest shop and <span>special offers.</span></p>
-    </div>
-    <div class="form">
-        <input type="text" placeholder="Your email address" />
-        <button class="normal">Sign Up</button>
-    </div>
-</section>
+       <label for="email">Email*:</label>
+       <input type="text" id="email" name="email"  th:field="*{email}" readonly>
+
+        <label for="password">Password:</label>
+<!--        <input type="text" id="passwordhide" name="passwordhide"   th:field="*{password}" required="" >-->
+        <button id="changepassword">PassWord</button>
+        <div class="password-content">
+            <label for="password">Current Password*:</label>
+            <input type="text" id="password" name="password">
+
+            <label for="confirmpassword">Confirm Password*:</label>
+            <input type="text" id="confirmpassword" name="confirmpassword">
+
+            <input type="hidden" id="isPasswordChanged" name="isPasswordChanged" value="false">
+
+        </div>
+
+        <button type="submit" >Submit</button>
+    </form>
+</div>
+
 
 <footer class="section-p1">
     <div class="col">
@@ -136,26 +130,6 @@
     </div>
 </footer>
 
-<script src="./script.js"></script>
-<script>
-    setHrefforPagination();
-    function setHrefforPagination() {
-        const url = new URL(window.location.href);
-        const params = new URLSearchParams(url.search);
-
-        const paramArray = [];
-        for (const [key, value] of params.entries()) {
-            if (key !== 'page') {
-                paramArray.push(`${key}=${value}`);
-            }
-        }
-
-        const pagination = document.querySelectorAll('#pagination a');
-        pagination.forEach((page) => {
-            page.removeAttribute('href'); // Clear href first
-            page.href = `?${paramArray.join('&')}&page=${page.innerText - 1}`;
-        });
-    }
-</script>
+<script src="/js/script.js"></script>
 </body>
 </html>

@@ -32,6 +32,9 @@ public class ProductController {
         Page<ProductDto> products = productService.findAllProduct(pageable);
         model.addAttribute("categoryService", categoryService);
         model.addAttribute("products", products);
+
+        //get all category
+        model.addAttribute("categories", categoryService.findAllCategory());
         return "index";
     }
 
