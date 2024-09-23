@@ -34,4 +34,7 @@ public interface ProductsRepository extends PagingAndSortingRepository<Product, 
 
     @Query("SELECT p FROM Product p JOIN p.productDetails pd WHERE pd.id = :id")
     Product findByProductDetailsId(Long id);
+
+    //findByCategoryId
+    Page<Product> findByCategoryId(Long categoryId, Pageable pageable);
 }

@@ -37,10 +37,15 @@
 
 <section id="page-header">
     <h2>#stayhome</h2>
-    <p>Save more with coupons & up to 70% off!</p>
+    <p>Save 2q39t82q4ptjio4go</p>
 </section>
 
 <section id="product1" class="section-p1">
+    <select name="categorySearch" id="categorySearch">
+        <option th:each="category : ${categories}"
+                th:value="${category.id}"
+                th:text="${category.name}"></option>
+    </select>
     <div class="pro-container">
         <div class="pro" th:each="product : ${products}">
             <a th:href="@{'product_detail?id=' + ${product.id}}"><img th:src="@{${product.img}}" alt="" /></a>
