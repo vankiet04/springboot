@@ -65,7 +65,7 @@
             <option th:each="producDetail : ${productDetails}" th:text="'Size: ' + ${producDetail.size} + ' - Màu: ' + ${producDetail.color}" th:value="${producDetail.price} + '-' + ${producDetail.id}"></option>
         </select>
         <input type="number" value="1" id="quantity">
-        <button class="normal" onclick="addtocart()">Add To Cart</button>
+        <button class="normal">Add To Cart</button>
         <h4>Product Details</h4>
         <span th:text="${product.description}"></span>
 
@@ -226,24 +226,6 @@
     }
     smallimg[3].onclick = function () {
         MainImg.src = smallimg[3].src
-    }
-
-    function addtocart() {
-        var productDetailsSelected = document.querySelector('.productDetailsSelected').value;
-        var quantity = document.querySelector('#quantity').value;
-        productDetailsSelected = productDetailsSelected.split('-')[1];
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', '/cart/add', true);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.send(JSON.stringify({
-            idDetail: productDetailsSelected,
-            quantity: quantity
-        }));
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                console.log(xhr.responseText);
-            }
-        }
     }
 </script>
 
