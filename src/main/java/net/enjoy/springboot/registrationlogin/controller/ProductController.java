@@ -50,6 +50,8 @@ public class ProductController {
             products = productService.searchProduct(sizeId, colorId, categoryId, minPrice, maxPrice, pageable, name);
             System.out.println("products1 = " + products);
         }
+        // get all category
+        model.addAttribute("categories", categoryService.findAllCategory());
         model.addAttribute("products", products);
         return "shop";
     }
