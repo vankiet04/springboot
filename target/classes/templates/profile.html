@@ -56,10 +56,11 @@
         <input type="text" id="name" name="name"   th:field="*{name}" required="">
 
        <label for="email">Email*:</label>
-       <input type="text" id="email" name="email"  th:field="*{email}" readonly>
+       <input type="text" id="email" name="email"  th:field="*{email}" required="" style="display: none;">
+       <input type="text" id="email" name="email"  th:field="*{email}" required="" disabled>
 
         <label for="password">Password:</label>
-<!--        <input type="text" id="passwordhide" name="passwordhide"   th:field="*{password}" required="" >-->
+        
         <button id="changepassword">PassWord</button>
         <div class="password-content">
             <label for="password">Current Password*:</label>

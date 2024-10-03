@@ -123,8 +123,7 @@ public class AuthController {
     public String updateProfile(@PathVariable Long id,@Valid @ModelAttribute("user") User user,
                                 @RequestParam("isPasswordChanged") boolean isPasswordChanged,
                                 BindingResult result,Model model, Principal principal) {
-
-
+  
         if (principal == null) {
             return "redirect:/login";
         }
@@ -135,6 +134,7 @@ public class AuthController {
         }
 
         User t = userService.updateUser(id, user, isPasswordChanged);
+      
         model.addAttribute("user", t);
         System.out.println("ID USER ĐÃ ĐĂNG NHẬP: " +t.getEmail());
         return "redirect:/profile?success";
