@@ -123,10 +123,7 @@ public class AuthController {
     public String updateProfile(@PathVariable Long id,@Valid @ModelAttribute("user") User user,
                                 @RequestParam("isPasswordChanged") boolean isPasswordChanged,
                                 BindingResult result,Model model, Principal principal) {
-
-         System.out.println("ID USER ĐÃ ĐĂNG NHẬPpppppp: " +id);  
-         System.out.println("ID USER ĐÃ ĐĂNG NHẬPpppppp: " +user);
-         System.out.println("ID USER ĐÃ ĐĂNG NHẬPpppppp: " +isPasswordChanged);              
+  
         if (principal == null) {
             return "redirect:/login";
         }
@@ -137,7 +134,7 @@ public class AuthController {
         }
 
         User t = userService.updateUser(id, user, isPasswordChanged);
-        System.out.println("Okeeeeeeee");
+      
         model.addAttribute("user", t);
         System.out.println("ID USER ĐÃ ĐĂNG NHẬP: " +t.getEmail());
         return "redirect:/profile?success";
