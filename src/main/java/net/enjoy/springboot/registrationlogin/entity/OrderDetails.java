@@ -22,10 +22,12 @@ public class OrderDetails {
     private Order order;
 
     @Column(nullable = false)
-    private double totalPrice;
-
-    @Column(nullable = false)
     private long quantity;
+
+    // product detail id map with id in productDetails table
+    @ManyToOne
+    @JoinColumn(name = "product_detail_id", nullable = false)
+    private ProductDetail productDetail;
 
 
 }
