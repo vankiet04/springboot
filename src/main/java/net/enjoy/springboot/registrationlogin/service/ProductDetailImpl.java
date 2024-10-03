@@ -22,12 +22,19 @@ public class ProductDetailImpl implements ProductDetailService {
         return productDetailDtos.stream().map(this::convertEntityToDto).collect(Collectors.toList());
     }
 
+    @Override
+    public ProductDetailDto getProductDetail(Long idDetail) {
+        ProductDetail productDetail = productDetailRespository.findById(idDetail).get();
+        return convertEntityToDto(productDetail);
+    }
+
 
     public ProductDetailDto convertEntityToDto(ProductDetail productDetail) {
         ProductDetailDto productDetailDto = new ProductDetailDto();
         productDetailDto.setId(productDetail.getId());
         productDetailDto.setColor(productDetail.getColor().getColorName());
         productDetailDto.setSize(productDetail.getSize().getSizeName());
+        productDetailDto.setPrice(productDetail.getPrice());
         productDetailDto.setQuantity(productDetail.getQuantity());
         return productDetailDto;
     }
