@@ -47,26 +47,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(Long id, User user, boolean isPasswordChanged) {
-        User userid =getUser(id);
+        User userid = getUser(id);
         if (user.getPassword() == null) {
             throw new IllegalArgumentException("rawPassword cannot be null");
         }
         userid.setName(user.getName());
         userid.setEmail(user.getEmail());
-
+        
         if (isPasswordChanged) {
             userid.setPassword(passwordEncoder.encode(user.getPassword()));
         }
-
-                Role role = roleRepository.findByName("ROLE_ADMIN");
-                if (role == null) {
-                    role = checkRoleExist();
-                }
-        if (!userid.getRoles().contains(role)) {
-            userid.setRoles(List.of(role));
-        }
-
-         return userRepository.save(userid);
+       
+         return  userRepository.save(userid);
 
     }
 
