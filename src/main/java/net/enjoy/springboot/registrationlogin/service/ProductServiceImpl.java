@@ -6,10 +6,13 @@ import net.enjoy.springboot.registrationlogin.entity.Product;
 import net.enjoy.springboot.registrationlogin.entity.ProductDetail;
 import net.enjoy.springboot.registrationlogin.repository.ProductsDetailRespository;
 import net.enjoy.springboot.registrationlogin.repository.ProductsRepository;
+import service.collector.exception.ProductNotFoundException;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -58,6 +61,12 @@ public class ProductServiceImpl implements ProductService {
     public ProductDto findProductByIdDetail(Long idProduct) {
         Product products = productsRepository.findByProductDetailsId(idProduct);
         return convertEntityToDto(products);
+    }
+
+
+
+    private ProductDetail convertEntityProductDetailToDto(ProductDetail productDetail) {
+        return productDetail;
     }
 
     private ProductDto convertEntityToDto(Product product) {
