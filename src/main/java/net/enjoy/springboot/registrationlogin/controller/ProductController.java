@@ -26,6 +26,11 @@ public class ProductController {
         this.categoryService = categoryService;
     }
 
+    @GetMapping("/admin")
+    public String checkVar() {
+        return "admin";
+    }
+    
     @GetMapping("/index")
     public String home(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size) {
         Pageable pageable = PageRequest.of(page, size);

@@ -5,7 +5,7 @@ import net.enjoy.springboot.registrationlogin.dto.ProductDto;
 import net.enjoy.springboot.registrationlogin.entity.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
+import net.enjoy.springboot.registrationlogin.entity.ProductDetail;
 import java.util.List;
 
 public interface ProductService {
@@ -20,5 +20,6 @@ public interface ProductService {
     public Page<ProductDto> searchProduct(Long sizeId, Long colorId, Long categoryId, long minPrice, long maxPrice, Pageable pageable, String name);
 
     public ProductDto findProductByIdDetail(Long idProduct);
+
 
 }

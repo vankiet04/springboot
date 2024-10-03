@@ -5,9 +5,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tech2etc Ecommerce Tutorial</title>
-  <link rel="stylesheet" href="./style.css" />
   <link rel="stylesheet" th:href="@{/css/style1.css}">
   <script src="https://kit.fontawesome.com/bea9b25826.js" crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
 <section id="header">
@@ -53,31 +53,8 @@
       <td>Subtotal</td>
     </tr>
     </thead>
-    <tbody>
-    <tr>
-      <td><a href="#"><i class="fa-regular fa-circle-xmark"></i></a></td>
-      <td><img src="./img/products/f1.jpg" alt=""></td>
-      <td>Cartoon Astronaut T-Shirts</td>
-      <td>$118.19</td>
-      <td><input type="number" value="1"></td>
-      <td>$118.19</td>
-    </tr>
-    <tr>
-      <td><a href="#"><i class="fa-regular fa-circle-xmark"></i></a></td>
-      <td><img src="./img/products/f2.jpg" alt=""></td>
-      <td>Cartoon Astronaut T-Shirts</td>
-      <td>$118.19</td>
-      <td><input type="number" value="1"></td>
-      <td>$118.19</td>
-    </tr>
-    <tr>
-      <td><a href="#"><i class="fa-regular fa-circle-xmark"></i></a></td>
-      <td><img src="./img/products/f3.jpg" alt=""></td>
-      <td>Cartoon Astronaut T-Shirts</td>
-      <td>$118.19</td>
-      <td><input type="number" value="1"></td>
-      <td>$118.19</td>
-    </tr>
+    <tbody class="cart-row">
+    
     </tbody>
   </table>
 </section>
@@ -113,11 +90,11 @@
       </tr>
       <tr>
         <td><strong>Total Price</strong></td>
-        <td>$ 1,600</td>
+        <td class="totalprice">$ 1,600</td>
       </tr>
     </table>
     <a th:href="@{/order}">
-    <button class="normal">
+    <button class="orderBtn">
       Place Order!
     </button>
     </a>
@@ -173,10 +150,77 @@
   </div>
 
   <div class="copyright">
-    <p>2021, Tech2 etc - HTML CSS Ecommerce Template</p>
+    <p>2021, Tech2 etc - HTML CSS Ecommerce Templatae</p>
   </div>
 </footer>
 
-<script src="/js/script.js"></script>
+
+<script>
+  // post mapping get carts
+  // when everything is loaded
+  $(document).ready(function () {
+    var carts = document.querySelector('.cart-row');
+  carts.innerHTML = "dc";
+  var totalPrice = 0;
+  $.ajax({
+    url: 'cart/getCart',
+    type: 'POST', 
+    dataType: 'json',
+    success: function(data) {
+      var cartRow = "";
+      // traverse cart and add to div
+      data.forEach(cart => {
+        cartRow += `
+          <tr>
+            <td><a href="#"><i class="fa-regular fa-circle-xmark"></i></a></td>
+            <td><img src="${cart.product.img}" alt=""></td>
+            <td>${cart.product.name}</td>
+            <td>${cart.productDetail.price}</td>
+            <td><input type="number" value="${cart.quantity}"></td>
+            <td>${parseInt(cart.productDetail.price) * parseInt(cart.quantity)}</td>
+          </tr>
+        `
+        totalPrice += parseInt(cart.productDetail.price) * parseInt(cart.quantity);
+      })
+      carts.innerHTML = cartRow;
+      // parsrse total price to double and show
+      document.querySelector('.totalprice').innerHTML = "$ " + totalPrice;
+      console.log(carts);
+    },
+    error: function() {
+      console.log('error')
+    }
+  })
+
+
+   // add event listener to place order button
+   //prevent default orderBtn
+    document.querySelector('.orderBtn').addEventListener('click', function(e) {
+      e.preventDefault();
+      var fullname = document.querySelector('#fullname').value;
+      var phone = document.querySelector('#phone').value;
+      var address = document.querySelector('#address').value;
+      var totalPrice = document.querySelector('.totalprice').innerHTML;
+      // remove $ sign
+      totalPrice = totalPrice.replace('$', '');
+      $.ajax({
+        url: 'order/add',
+        type: 'POST',
+        data: {
+          totalPrice: totalPrice,
+        },
+        success: function(data) {
+          console.log(data);
+          alert('Order placed successfully');
+        },
+        error: function() {
+          console.log('error')
+        }
+      })
+    });
+    
+  });
+
+</script>
 </body>
 </html>

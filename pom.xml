@@ -58,6 +58,18 @@
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
         </dependency>
+    
+      <dependency>
+        <groupId>com.gitlab.marvinh</groupId>
+        <artifactId>collector-service</artifactId>
+        <version>0.3</version>
+      </dependency>
+    
+      <dependency>
+        <groupId>org.scala-lang</groupId>
+        <artifactId>scala-library</artifactId>
+        <version>2.13.0</version>
+      </dependency>
         
 <!-- other dependencies -->
 

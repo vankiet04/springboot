@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+import java.util.Date;
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,11 +18,17 @@ public class Order {
     private Long id;
 
    // id user
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @Column(nullable = false)
     private double totalPrice;
+
+    // order time
+    @Column(nullable = false)
+    private Date orderTime;
+
+    
 
 }
