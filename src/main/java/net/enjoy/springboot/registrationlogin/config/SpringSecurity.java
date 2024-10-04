@@ -49,9 +49,9 @@ public class SpringSecurity {
                                 .requestMatchers("/order-detail").permitAll()
                                 .requestMatchers("/users").hasRole("ADMIN")
                                 .requestMatchers("/cart/**").permitAll()
-                                .requestMatchers("/index1").permitAll()
+                                .requestMatchers("/test").permitAll()
                                 .requestMatchers("/admin").permitAll()
-                                .requestMatchers("/css/**", "/js/**", "/img/**", "/assets/**", "/index1.html").permitAll()
+                                .requestMatchers("/css/**", "/js/**", "/img/**", "/assets/**", "/static/**").permitAll()
                 ).formLogin(
                         form -> form
                                 .loginPage("/login")
