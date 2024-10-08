@@ -5,6 +5,7 @@ import net.enjoy.springboot.registrationlogin.entity.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
@@ -37,4 +38,13 @@ public interface ProductsRepository extends PagingAndSortingRepository<Product, 
 
     //findByCategoryId
     Page<Product> findByCategoryId(Long categoryId, Pageable pageable);
+// getAllProducts
+    @Query("SELECT p FROM Product p")
+    List<Product> getAllProducts();
+
+    //updateProductStatus(Long id, int status)
+     @Query("UPDATE Product p SET p.status = :status WHERE p.id = :id")
+    @Modifying
+    void updateProductStatus(@Param("id") Long id, @Param("status") int status);
+
 }

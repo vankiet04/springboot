@@ -87,4 +87,15 @@ public class ProductServiceImpl implements ProductService {
         productDetailDto.setQuantity(productdetail.getQuantity());
         return productDetailDto;
     }
+
+    @Override
+    public List<ProductDto> getAllProducts() {
+        List<Product> products = productsRepository.getAllProducts();
+        return products.stream().map(this::convertEntityToDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public void updateProductStatus(Long id, int status) {
+        productsRepository.updateProductStatus(id, status);
+    }
 }

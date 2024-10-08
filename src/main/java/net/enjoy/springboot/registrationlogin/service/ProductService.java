@@ -22,4 +22,10 @@ public interface ProductService {
     public ProductDto findProductByIdDetail(Long idProduct);
 
 
+    //API_ProductController
+    public List<ProductDto> getAllProducts();
+    public void updateProductStatus(Long id, int status);
+    // end API_ProductController
+
+
 }

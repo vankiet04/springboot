@@ -50,8 +50,14 @@ public class SpringSecurity {
                                 .requestMatchers("/users").hasRole("ADMIN")
                                 .requestMatchers("/cart/**").permitAll()
                                 .requestMatchers("/test").permitAll()
-                                .requestMatchers("/admin").permitAll()
-                                .requestMatchers("/css/**", "/js/**", "/img/**", "/assets/**", "/static/**").permitAll()
+                                        .requestMatchers("/admin").permitAll()
+                                        // API_Security
+                                        .requestMatchers("/api/products").permitAll()
+                                        .requestMatchers("/api/products/update-status/**").permitAll() // Allow access to update-status endpoint
+                                        .requestMatchers("/css/**", "/js/**", "/img/**", "/assets/**", "/static/**")
+                                        
+                                        .permitAll()
+                                
                 ).formLogin(
                         form -> form
                                 .loginPage("/login")
