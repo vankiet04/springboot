@@ -11,6 +11,8 @@ import java.util.List;
 public interface ProductService {
     Page<ProductDto> findAllProduct(Pageable pageable);
 
+    List<ProductDto> findAllProduct();
+
     ProductDto findById(Long id);
 
     void saveProduct(Product product);
@@ -21,5 +23,5 @@ public interface ProductService {
 
     public ProductDto findProductByIdDetail(Long idProduct);
 
-
+    public List<ProductDto> findAllProductWithPage(int page);
 }
