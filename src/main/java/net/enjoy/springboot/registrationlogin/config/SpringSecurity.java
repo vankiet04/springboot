@@ -51,6 +51,8 @@ public class SpringSecurity {
                                 .requestMatchers("/cart/**").permitAll()
                                 .requestMatchers("/test").permitAll()
                                 .requestMatchers("/admin").permitAll()
+                                .requestMatchers("/api/products").permitAll()
+                                .requestMatchers("/api/products/**").permitAll()
                                 .requestMatchers("/css/**", "/js/**", "/img/**", "/assets/**", "/static/**").permitAll()
                 ).formLogin(
                         form -> form

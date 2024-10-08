@@ -31,6 +31,7 @@ net\enjoy\springboot\registrationlogin\entity\Color.class
 net\enjoy\springboot\registrationlogin\repository\UserRepository.class
 net\enjoy\springboot\registrationlogin\service\OrdersServiceImpl.class
 net\enjoy\springboot\registrationlogin\service\UserService.class
+net\enjoy\springboot\registrationlogin\controller\API_ProductController.class
 net\enjoy\springboot\registrationlogin\controller\ProductController.class
 net\enjoy\springboot\registrationlogin\service\UserServiceImpl.class
 net\enjoy\springboot\registrationlogin\entity\Size.class

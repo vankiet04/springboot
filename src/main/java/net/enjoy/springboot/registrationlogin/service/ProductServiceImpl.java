@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 import java.util.List;
 import java.util.stream.Collectors;
-
+import org.springframework.data.domain.PageRequest;
 @Service
 public class ProductServiceImpl implements ProductService {
 
@@ -31,6 +31,13 @@ public class ProductServiceImpl implements ProductService {
     public Page<ProductDto> findAllProduct(Pageable pageable) {
         Page<Product> products = productsRepository.findAll(pageable);
         return products.map(this::convertEntityToDto);
+    }
+
+    @Override
+    public List<ProductDto> findAllProduct() {
+        // convert
+        List<Product> products = productsRepository.findProductz();
+        return products.stream().map(this::convertEntityToDto).collect(Collectors.toList());
     }
 
     // findProduct base on size, colo
@@ -76,6 +83,7 @@ public class ProductServiceImpl implements ProductService {
         productDto.setDescription(product.getDescription());
         productDto.setImg(product.getImg());
         productDto.setStatus(product.getStatus());
+        productDto.setCategoryId(product.getCategory().getId());
         return productDto;
     }
     private ProductDetailDto convertEntityToDto(ProductDetail productdetail) {
@@ -86,5 +94,12 @@ public class ProductServiceImpl implements ProductService {
         productDetailDto.setPrice(productdetail.getPrice());
         productDetailDto.setQuantity(productdetail.getQuantity());
         return productDetailDto;
+    }
+
+    @Override
+    public List<ProductDto> findAllProductWithPage(int page) {
+        Pageable pageable = PageRequest.of(page - 1, 5);
+        Page<Product> products = productsRepository.findAll(pageable);
+        return products.map(this::convertEntityToDto).stream().collect(Collectors.toList());
     }
 }
