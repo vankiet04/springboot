@@ -1,5 +1,5 @@
-import React from 'react';
-import ProductService from './ProductService';
+import React from 'react'
+import ProductService from './ProductService'
 import {
   CCard,
   CCardBody,
@@ -13,72 +13,72 @@ import {
   CTableHead,
   CTableHeaderCell,
   CTableRow,
-} from '@coreui/react';
-import Pagination from '@mui/material/Pagination';
-import './Product.css';
+} from '@coreui/react'
+import Pagination from '@mui/material/Pagination'
+import './Product.css'
 
 class ProductTable extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       products: [],
       currentPage: 1,
       pageLimit: 0,
       perPage: 5,
-    };
+    }
   }
 
   componentDidMount() {
     // GET ALL PRODUCTS TO GET SIZE OF PRODUCTS
     ProductService.getProducts()
       .then((response) => {
-        const { data } = response;
-        const pageLimit = Math.ceil(data.length / this.state.perPage);
-        this.setState({ pageLimit });
+        const { data } = response
+        const pageLimit = Math.ceil(data.length / this.state.perPage)
+        this.setState({ pageLimit })
       })
       .catch((e) => {
-        console.error('Lỗi fetch products:', e);
-      });
+        console.error('Lỗi fetch products:', e)
+      })
 
     // GET PRODUCTS BY PAGE 1
-    this.fetchProducts(1);
+    this.fetchProducts(1)
   }
 
   componentDidUpdate(prevProps, prevState) {
-    alert(prevState.currentPage);
+    alert(prevState.currentPage)
     if (prevState.currentPage !== this.state.currentPage) {
-      this.fetchProducts(this.state.currentPage);
+      this.fetchProducts(this.state.currentPage)
     }
   }
 
   fetchProducts(page) {
     ProductService.getProductAtPage(page)
       .then((response) => {
-        const { data } = response;
-        this.setState({ products: data });
+        const { data } = response
+        this.setState({ products: data })
       })
       .catch((e) => {
-        console.error('Lỗi fetch products:', e);
-      });
+        console.error('Lỗi fetch products:', e)
+      })
   }
 
   handlePageChange = (event, value) => {
-    this.setState({ currentPage: value });
+    this.setState({ currentPage: value })
   }
 
   render() {
-    const { products, currentPage, pageLimit } = this.state;
+    const { products, currentPage, pageLimit } = this.state
     // Safeguard to ensure products is always an array
     if (!Array.isArray(products)) {
-      console.error('Products is not an array:', products);
-      return null;
+      console.error('Products is not an array:', products)
+      return null
     }
 
     return (
       <CRow>
         <CCol>
           <CCard>
-            <CCardHeader>Product Information</CCardHeader>
+            <CCardHeader>Produádct Information</CCardHeader>
             <CCardBody>
               <CTable>
                 <CTableHead>
@@ -118,8 +118,8 @@ class ProductTable extends React.Component {
           </CCard>
         </CCol>
       </CRow>
-    );
+    )
   }
 }
 
-export default ProductTable;
+export default ProductTable
