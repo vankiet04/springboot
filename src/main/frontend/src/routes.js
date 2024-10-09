@@ -22,6 +22,7 @@ const Tabs = React.lazy(() => import('./views/base/tabs/Tabs'))
 const Tables = React.lazy(() => import('./views/base/tables/Tables'))
 const Tooltips = React.lazy(() => import('./views/base/tooltips/Tooltips'))
 const Product = React.lazy(() => import('./views/base/product/product'))
+const ImportProduct = React.lazy(() => import('./views/base/product/ImportProduct'))
 
 // Buttons
 const Buttons = React.lazy(() => import('./views/buttons/buttons/Buttons'))
@@ -100,6 +101,7 @@ const routes = [
   { path: '/notifications/toasts', name: 'Toasts', element: Toasts },
   { path: '/widgets', name: 'Widgets', element: Widgets },
   { path: '/product', name: 'Product', element: Product },
+  { path: '/importproduct', name: 'ImportProduct', element: ImportProduct }
 ]
 
 export default routes
