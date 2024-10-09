@@ -7,7 +7,7 @@ import './scss/style.scss'
 
 // Containers
 const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'))
-const ProductLayout = React.lazy(() => import('./layout/ProductLayout'))
+
 
 // Pages
 const Login = React.lazy(() => import('./views/pages/login/Login'))
