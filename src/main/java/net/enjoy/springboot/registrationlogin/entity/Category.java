@@ -1,5 +1,7 @@
 package net.enjoy.springboot.registrationlogin.entity;
 
+import java.util.Set;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,5 +21,7 @@ public class Category {
 
     @Column(nullable = false)
     private String categoryName;
+    @OneToMany(mappedBy = "category")
+    private Set<Product> products;
 
 }
