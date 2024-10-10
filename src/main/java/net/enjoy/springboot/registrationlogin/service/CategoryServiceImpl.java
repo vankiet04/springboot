@@ -27,8 +27,14 @@ public class CategoryServiceImpl implements CategoryService{
         return new CategoryDto(category.getId(), category.getCategoryName());
     }
 
+    @Override
+    public Category findCategoryById(Long id) {
+        return categoryRepository.findById(id).orElse(null);
+        // TODO Auto-generated method stub
+    }
 
-//    private CategoryDto convertEntityToDto(CategoryDto categoryDto) {
+
+//    private CategoryDto convertEntityToDto(CategoryDto categoryDto) 
 //        return new CategoryDto(categoryDto.getId(), categoryDto.getName(), categoryDto.getStatus());
 //    }
 //    @Override

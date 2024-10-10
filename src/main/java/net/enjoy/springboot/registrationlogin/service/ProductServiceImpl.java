@@ -102,4 +102,12 @@ public class ProductServiceImpl implements ProductService {
         Page<Product> products = productsRepository.findAll(pageable);
         return products.map(this::convertEntityToDto).stream().collect(Collectors.toList());
     }
+
+    @Override
+    public Product addProductAPI(Product product) {
+        System.out.println("___ Toi da chay toi buoc cuoi cung " + product.getCategory().getId());
+        System.out.println("___ Toi da chay toi buoc cuoi cung " + product.getName());
+
+        return productsRepository.save(product);
+    }
 }
