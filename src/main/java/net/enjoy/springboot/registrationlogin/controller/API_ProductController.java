@@ -3,6 +3,8 @@ package net.enjoy.springboot.registrationlogin.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
 import net.enjoy.springboot.registrationlogin.dto.ProductDto;
 import net.enjoy.springboot.registrationlogin.entity.Category;
 import net.enjoy.springboot.registrationlogin.entity.Product;
@@ -20,10 +22,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 //import category
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
+import java.util.Base64;
 
 @CrossOrigin(origins = "http://localhost:8080")
 @RestController
@@ -31,7 +44,10 @@ import java.util.List;
 public class API_ProductController {
     @Autowired
     private ProductService productService;
-    private CategoryService categoryService;
+
+    @Autowired
+    CategoryService categoryService;
+
     @GetMapping("/getall") 
     public List<ProductDto> getAllProducts() {
         return productService.findAllProduct();
@@ -44,29 +60,65 @@ public class API_ProductController {
     }
 
 
-    @PostMapping("/add")
-    public ResponseEntity<HttpStatus> addNewProduct(@RequestBody Product product) {
-        System.out.println("__________TOI VAO DAY" + product.getName());
-        System.out.println("__________TOI VAO DAY" + product.getImg());
-        System.out.println("__________TOI VAO DAY" + product.getDescription());
-        System.out.println("__________TOI VAO DAY" + product.getId());
-        System.out.println("__________TOI VAO DAY" + product.getStatus());
-        System.out.println("__________TOI VAO DAY" + product.getCategory());
+   private static String UPLOAD_DIR = "C:\\Users\\KIET\\Desktop\\springboot\\src\\main\\resources\\static\\img\\products";
 
-        Category category = new Category();
-        category.setId(1L);
-        category.setCategoryName("category 1");
-        product.setCategory(category);
-        System.out.println("__________TOI VAO DAY" + product.getCategory());
-        try{
-            productService.addProductAPI(product);
-            System.out.println("__________TOI THEM THANH CONG");
-            return new ResponseEntity<>(HttpStatus.OK);
+   @PostMapping("/add")
+   public ResponseEntity<HttpStatus> addProductAPI(@RequestBody ProductDto productDTO) {
+       try {
+           // Lưu file hình ảnh
+           String fileName = saveImage(productDTO.getImg());
+
+           // Cập nhật đường dẫn hình ảnh trong productDTO
+           productDTO.setImg("/img/products/" + fileName);
+
+           // Lưu thông tin sản phẩm
+           Product product = new Product();
+           product.setName(productDTO.getName());
+           product.setDescription(productDTO.getDescription());
+           product.setImg(productDTO.getImg());
+           product.setStatus(productDTO.getStatus());
+
+           Category category = categoryService.findById(productDTO.getCategoryId());
+           if (category == null) {
+               return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+           }
+           product.setCategory(category);
+
+           productService.addProductAPI(product);
+           return new ResponseEntity<>(HttpStatus.OK);
+       } catch (Exception e) {
+           return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+       }
+   }
+
+     private String saveImage(String base64Image) throws IOException {
+        if (base64Image == null || base64Image.isEmpty()) {
+            throw new IOException("Image data is empty");
         }
-        catch (Exception e) {
-            System.out.println("_______TOI DANG LOI: "+e);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+        // Tách phần base64 ra khỏi tiền tố "data:image/jpeg;base64,"
+        String[] parts = base64Image.split(",");
+        String imageString = parts[1];
+
+        // Giải mã base64
+        byte[] imageBytes = Base64.getDecoder().decode(imageString);
+
+        // Tạo tên file duy nhất
+        String fileName = System.currentTimeMillis() + ".jpg";
+
+        // Đường dẫn file đầy đủ
+        File directory = new File(UPLOAD_DIR);
+        if (!directory.exists()) {
+            directory.mkdirs();
         }
+        File file = new File(directory, fileName);
+
+        // Lưu file vào thư mục
+        try (FileOutputStream fos = new FileOutputStream(file)) {
+            fos.write(imageBytes);
+        }
+
+        return fileName;
     }
     
 
