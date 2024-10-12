@@ -24,4 +24,6 @@ public interface ProductService {
     public ProductDto findProductByIdDetail(Long idProduct);
 
     public List<ProductDto> findAllProductWithPage(int page);
+
+    public Product addProductAPI(Product product);
 }

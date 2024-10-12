@@ -42,4 +42,7 @@ public interface ProductsRepository extends PagingAndSortingRepository<Product, 
     List<Product> findProductz();
 
     Page<Product> findAll(Pageable pageable);
+
+    Product save(Product product);
+
 }
