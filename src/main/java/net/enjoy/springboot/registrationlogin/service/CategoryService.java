@@ -6,12 +6,11 @@ import net.enjoy.springboot.registrationlogin.entity.Category;
 
 import java.util.List;
 
-
 public interface CategoryService {
 //    List<CategoryDto> findAllCategory();
 //    String findCategoryNameById(Long categoryId);
     // get all categories
     List<CategoryDto> findAllCategory();
-   Category findCategoryById(Long id);
+   Category findById(Long id);
     
 }

@@ -127,7 +127,7 @@ class ProductTable extends React.Component {
       id: newProduct.id,
       name: newProduct.name,
       description: newProduct.description,
-      img: "b1.png",
+      img: newProduct.img,
       status: 1, // Bạn có thể thay đổi giá trị này tùy theo yêu cầu của bạn
       categoryId: 1,
     }
