@@ -99,7 +99,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductDto> findAllProductWithPage(int page) {
         Pageable pageable = PageRequest.of(page - 1, 5);
-        Page<Product> products = productsRepository.findAll(pageable);
+        // chi lay san pham có status = 1
+        Page<Product> products = productsRepository.findAllByStatus(pageable);
+
+       
         return products.map(this::convertEntityToDto).stream().collect(Collectors.toList());
     }
 
@@ -110,4 +113,16 @@ public class ProductServiceImpl implements ProductService {
 
         return productsRepository.save(product);
     }
+
+    @Override
+    public Product updateProductAPI(Product product) {
+        return productsRepository.save(product);
+     
+    }
+
+    @Override
+    public Product findProductById(Long id) {
+        return productsRepository.findById(id);
+    }
+
 }

@@ -21,8 +21,12 @@ const Spinners = React.lazy(() => import('./views/base/spinners/Spinners'))
 const Tabs = React.lazy(() => import('./views/base/tabs/Tabs'))
 const Tables = React.lazy(() => import('./views/base/tables/Tables'))
 const Tooltips = React.lazy(() => import('./views/base/tooltips/Tooltips'))
+
 const Product = React.lazy(() => import('./views/base/product/product'))
-const ImportProduct = React.lazy(() => import('./views/base/product/ImportProduct'))
+const Category = React.lazy(() => import('./views/base/category/category'))
+const ImportProduct = React.lazy(() => import('./views/base/importProduct/importProduct'))
+const Employee = React.lazy(() => import('./views/base/employee/employee'))
+const Supplier = React.lazy(() => import('./views/base/supplier/supplier')) 
 
 // Buttons
 const Buttons = React.lazy(() => import('./views/buttons/buttons/Buttons'))
@@ -101,7 +105,11 @@ const routes = [
   { path: '/notifications/toasts', name: 'Toasts', element: Toasts },
   { path: '/widgets', name: 'Widgets', element: Widgets },
   { path: '/product', name: 'Product', element: Product },
-  { path: '/importproduct', name: 'ImportProduct', element: ImportProduct }
+  { path: '/category', name: 'Category', element: Category },
+  { path: '/importproduct', name: 'ImportProduct', element: ImportProduct },
+  { path: '/employee', name: 'Employee', element: Employee },
+  {path: '/supplier', name: 'Supplier', element: Supplier}
+  
 ]
 
 export default routes

@@ -38,6 +38,16 @@ const _nav = [
   },
   {
     component: CNavItem,
+    name: 'Thể loại',
+    to: '/category',
+    icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
+    badge: {
+      color: 'info',
+      text: 'NEW',
+    },
+  },
+  {
+    component: CNavItem,
     name: 'Phiếu nhập',
     to: '/importproduct',
     icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
@@ -45,6 +55,18 @@ const _nav = [
       color: 'info',
       text: 'NEW',
     },
+  },
+  {
+    component: CNavItem,
+    name: 'Nhân viên',
+    to: '/employee',
+    icon: <CIcon icon={cilStar} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Nhà cung cấp',
+    to: '/supplier',
+    icon: <CIcon icon={cilStar} customClassName="nav-icon" />,
   },
   {
     component: CNavTitle,

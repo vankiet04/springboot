@@ -23,4 +23,7 @@ public class Color {
 
     @Column(nullable = false)
     private String colorDescription;
+
+    @Column(nullable = false)
+    private int status;
 }

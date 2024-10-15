@@ -38,4 +38,17 @@ public class ProductDetailImpl implements ProductDetailService {
         productDetailDto.setQuantity(productDetail.getQuantity());
         return productDetailDto;
     }
+
+    @Override
+    public ProductDetailDto findProductDetailByProductId(Long productId) {
+        ProductDetail productDetail = productDetailRespository.findByProductDeaId(productId);
+        if (productDetail != null) {
+            return convertEntityToDto(productDetail);
+        } else {
+            return null;
+        }
+    }
+
+   
 }
+
