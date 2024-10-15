@@ -19,7 +19,9 @@ import net.enjoy.springboot.registrationlogin.service.ProductService;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.io.IOException;
@@ -90,6 +92,64 @@ public class API_ProductController {
            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
        }
    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<HttpStatus> updateProductAPI(@PathVariable Long id, @RequestBody ProductDto productDTO) {
+        try {
+            // Lưu file hình ảnh nếu có
+            if (productDTO.getImg() != null && productDTO.getImg().startsWith("data:image")) {
+                String fileName = saveImage(productDTO.getImg());
+                productDTO.setImg("/img/products/" + fileName);
+            }
+
+            // Lấy sản phẩm hiện tại từ cơ sở dữ liệu
+            Product existingProduct = productService.findProductById(id);
+            if (existingProduct == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
+            // Cập nhật thông tin sản phẩm
+            existingProduct.setName(productDTO.getName());
+            existingProduct.setDescription(productDTO.getDescription());
+            if (productDTO.getImg() != null) {
+                existingProduct.setImg(productDTO.getImg());
+            }
+            existingProduct.setStatus(productDTO.getStatus());
+            Category category = categoryService.findById(productDTO.getCategoryId());
+            if (category == null) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            existingProduct.setCategory(category);
+            System.out.println("___ Toi da chay toi buoc sua san pham " + existingProduct.getCategory().getId());
+
+            productService.updateProductAPI(existingProduct);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    //xóa sản phẩm
+    @PutMapping("/updateStatus/{id}")
+    public ResponseEntity<HttpStatus> updateProductStatus(@PathVariable Long id, @RequestBody ProductDto productDTO) {
+        try {
+            // Lấy sản phẩm hiện tại từ cơ sở dữ liệu
+            Product existingProduct = productService.findProductById(id);
+            if (existingProduct == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
+            // Cập nhật trạng thái sản phẩm
+            existingProduct.setStatus(productDTO.getStatus());
+            productService.updateProductAPI(existingProduct);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+
 
      private String saveImage(String base64Image) throws IOException {
         if (base64Image == null || base64Image.isEmpty()) {

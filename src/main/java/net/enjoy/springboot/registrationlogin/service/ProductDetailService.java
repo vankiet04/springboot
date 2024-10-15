@@ -7,5 +7,9 @@ import java.util.List;
 public interface ProductDetailService {
 
     public List<ProductDetailDto> findDetailByIdDetail(Long idProduct);
+
     public ProductDetailDto getProductDetail(Long idDetail);
+
+    //API_ProductDetailController
+    ProductDetailDto findProductDetailByProductId(Long productId);
 }

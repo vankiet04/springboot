@@ -24,4 +24,7 @@ public class Size {
 
     @Column(nullable = false)
     private String sizeDescription;
+
+    @Column(nullable = false)
+    private int status;
 }

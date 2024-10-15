@@ -11,6 +11,13 @@ public interface CategoryService {
 //    String findCategoryNameById(Long categoryId);
     // get all categories
     List<CategoryDto> findAllCategory();
-   Category findById(Long id);
+
+    Category findById(Long id);
+
     
+   
+    //API
+    CategoryDto findCategoryDtoById(Long categoryId);
+    CategoryDto saveCategoryAPI(CategoryDto categoryDto);
+    Category updateCategoryAPI(Category category);
 }

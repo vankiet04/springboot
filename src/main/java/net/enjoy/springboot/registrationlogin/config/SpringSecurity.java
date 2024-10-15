@@ -61,7 +61,18 @@
                                 .requestMatchers("/api/products/getall").permitAll()
                                                 .requestMatchers("/api/products/add").permitAll()
                                                 .requestMatchers("/api/products/add/**").permitAll()
-                                .requestMatchers("/api/products/getProductPage").permitAll()
+                                                .requestMatchers("/api/products/getProductPage").permitAll()
+                                
+                                                .requestMatchers("/api/categories").permitAll()
+                                                .requestMatchers("/api/categories/getall").permitAll()
+                                                .requestMatchers("/api/employees").permitAll()
+                                                .requestMatchers("/api/employees/getall").permitAll()
+                                                .requestMatchers("/api/suppliers").permitAll()
+                                                .requestMatchers("/api/suppliers/getall").permitAll()
+                                                .requestMatchers("/api/importproduct").permitAll()
+                                                .requestMatchers("/api/importproduct/getall").permitAll()
+
+                                                
                                 .requestMatchers("/css/**", "/js/**", "/img/**", "/assets/**", "/static/**").permitAll()
 
                                                 .requestMatchers("/css/**", "/js/**", "/img/**", "/assets/**",
