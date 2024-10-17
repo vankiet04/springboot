@@ -28,7 +28,7 @@ public class ProductController {
 
     @GetMapping("/test")
     public String t() {
-        return "index";
+        return "home";
     }
 
     @GetMapping("/admin")
@@ -36,7 +36,7 @@ public class ProductController {
         return "admin";
     }
     
-    @GetMapping("/index")
+    @GetMapping("/home")
     public String home(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<ProductDto> products = productService.findAllProduct(pageable);
@@ -45,7 +45,7 @@ public class ProductController {
 
         //get all category
         model.addAttribute("categories", categoryService.findAllCategory());
-        return "index";
+        return "home";
     }
 
     @GetMapping("/shop")
