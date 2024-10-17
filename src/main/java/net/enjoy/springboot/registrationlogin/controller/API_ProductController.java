@@ -50,7 +50,7 @@ public class API_ProductController {
     @Autowired
     CategoryService categoryService;
 
-    @GetMapping("/getall") 
+    @GetMapping("/getall")
     public List<ProductDto> getAllProducts() {
         return productService.findAllProduct();
     }
@@ -61,37 +61,36 @@ public class API_ProductController {
         return productService.findAllProductWithPage(page);
     }
 
+    private static String UPLOAD_DIR = "./src/main/resources/static/img/products";
 
-   private static String UPLOAD_DIR = "C:\\Users\\KIET\\Desktop\\springboot\\src\\main\\resources\\static\\img\\products";
+    @PostMapping("/add")
+    public ResponseEntity<HttpStatus> addProductAPI(@RequestBody ProductDto productDTO) {
+        try {
+            // Lưu file hình ảnh
+            String fileName = saveImage(productDTO.getImg());
 
-   @PostMapping("/add")
-   public ResponseEntity<HttpStatus> addProductAPI(@RequestBody ProductDto productDTO) {
-       try {
-           // Lưu file hình ảnh
-           String fileName = saveImage(productDTO.getImg());
+            // Cập nhật đường dẫn hình ảnh trong productDTO
+            productDTO.setImg("/img/products/" + fileName);
 
-           // Cập nhật đường dẫn hình ảnh trong productDTO
-           productDTO.setImg("/img/products/" + fileName);
+            // Lưu thông tin sản phẩm
+            Product product = new Product();
+            product.setName(productDTO.getName());
+            product.setDescription(productDTO.getDescription());
+            product.setImg(productDTO.getImg());
+            product.setStatus(productDTO.getStatus());
 
-           // Lưu thông tin sản phẩm
-           Product product = new Product();
-           product.setName(productDTO.getName());
-           product.setDescription(productDTO.getDescription());
-           product.setImg(productDTO.getImg());
-           product.setStatus(productDTO.getStatus());
+            Category category = categoryService.findById(productDTO.getCategoryId());
+            if (category == null) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            product.setCategory(category);
 
-           Category category = categoryService.findById(productDTO.getCategoryId());
-           if (category == null) {
-               return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-           }
-           product.setCategory(category);
-
-           productService.addProductAPI(product);
-           return new ResponseEntity<>(HttpStatus.OK);
-       } catch (Exception e) {
-           return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-       }
-   }
+            productService.addProductAPI(product);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<HttpStatus> updateProductAPI(@PathVariable Long id, @RequestBody ProductDto productDTO) {
@@ -129,7 +128,7 @@ public class API_ProductController {
         }
     }
 
-    //xóa sản phẩm
+    // xóa sản phẩm
     @PutMapping("/updateStatus/{id}")
     public ResponseEntity<HttpStatus> updateProductStatus(@PathVariable Long id, @RequestBody ProductDto productDTO) {
         try {
@@ -148,10 +147,7 @@ public class API_ProductController {
         }
     }
 
-
-
-
-     private String saveImage(String base64Image) throws IOException {
+    private String saveImage(String base64Image) throws IOException {
         if (base64Image == null || base64Image.isEmpty()) {
             throw new IOException("Image data is empty");
         }
@@ -180,6 +176,5 @@ public class API_ProductController {
 
         return fileName;
     }
-    
 
 }
