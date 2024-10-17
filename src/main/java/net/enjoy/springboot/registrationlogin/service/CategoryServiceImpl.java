@@ -24,11 +24,13 @@ public class CategoryServiceImpl implements CategoryService {
     @Override   
     public List<CategoryDto> findAllCategory() {
         List<Category> categories = categoryRepository.findAll();
+        // chi co category co status = 1 moi duoc hien thi
+        categories = categories.stream().filter(category -> category.getStatus() == 1).collect(Collectors.toList());
         return categories.stream().map(this::convertEntityToDto).collect(Collectors.toList());
     }
 
     private CategoryDto convertEntityToDto(Category category) {
-        return new CategoryDto(category.getId(), category.getCategoryName());
+        return new CategoryDto(category.getId(), category.getCategoryName(), category.getStatus());
     }
 
     @Override
@@ -39,4 +41,23 @@ public class CategoryServiceImpl implements CategoryService {
         // TODO Auto-generated method stub
     }
 
+    @Override
+    public CategoryDto saveCategoryAPI(CategoryDto categoryDto) {
+        Category category = new Category();
+        category.setCategoryName(categoryDto.getName());
+        category.setStatus(categoryDto.getStatus());
+        categoryRepository.save(category);
+        return categoryDto;
+    }
+    @Override
+    public CategoryDto findCategoryDtoById(Long categoryId) {
+        Category category = categoryRepository.findById(categoryId).orElse(null);
+        return new CategoryDto(category.getId(), category.getCategoryName(), category.getStatus());
+    }
+
+    @Override
+    public Category updateCategoryAPI(Category category) {
+        categoryRepository.save(category);
+        return category;
+    }
 }

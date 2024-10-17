@@ -12,4 +12,5 @@ import lombok.Setter;
 public class CartItemDto {
     private long idDetail;
     private long quantity;
+    
 }

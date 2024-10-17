@@ -1,7 +1,7 @@
 /* make the first th in table widt =20 */
 
 thead th {
-  text-align: center;
+  text-align: left!important;
 }
 
 th:first-child {
