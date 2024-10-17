@@ -14,7 +14,7 @@ public interface ProductService {
     List<ProductDto> findAllProduct();
 
     ProductDto findById(Long id);
-
+   Product findProductById(Long id);
     void saveProduct(Product product);
 
     List<ProductDetailDto> findDetailById(Long idProduct);
@@ -26,4 +26,8 @@ public interface ProductService {
     public List<ProductDto> findAllProductWithPage(int page);
 
     public Product addProductAPI(Product product);
+
+    public Product updateProductAPI(Product product);
+
+
 }

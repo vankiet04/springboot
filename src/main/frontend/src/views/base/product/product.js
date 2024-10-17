@@ -32,6 +32,7 @@ class ProductTable extends React.Component {
     super(props)
     this.state = {
       products: [],
+      categories: [], 
       currentPage: 1,
       pageLimit: 0,
       perPage: 5,
@@ -61,6 +62,8 @@ class ProductTable extends React.Component {
 
     // GET PRODUCTS BY PAGE 1
     this.fetchProducts(1)
+      // GET ALL CATEGORIES
+      this.fetchCategories()
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -78,6 +81,20 @@ class ProductTable extends React.Component {
       .catch((e) => {
         console.error('Lỗi fetch products:', e)
       })
+  }
+  fetchCategories() {
+    const API_URL = 'http://localhost:8080/api/categories/getall';
+    fetch(API_URL)
+      .then((response) => response.json())
+      .then((data) => {
+        this.setState({ categories: data });
+        alert('data categories' + JSON.stringify(data))
+        console.log('data categories'+ JSON.stringify(data))
+      })
+      .catch((error) => {
+        console.error('Lỗi fetch categories:', error);
+        alert('Lỗi fetch categories:', error)
+      });
   }
 
   handlePageChange = (event, value) => {
@@ -124,19 +141,71 @@ class ProductTable extends React.Component {
   handleSave = () => {
     const { newProduct, editProduct } = this.state
     const productData = {
-      id: newProduct.id,
+      id: 9999,
       name: newProduct.name,
       description: newProduct.description,
       img: newProduct.img,
       status: 1, // Bạn có thể thay đổi giá trị này tùy theo yêu cầu của bạn
-      categoryId: 1,
+      categoryId:  newProduct.categoryId,
+    }
+
+    //neu ten san pham = '' thi bao loi
+    if (newProduct.name === '') {
+      alert('Vui lòng nhập tên sản phẩm')
+      return
+    }
+    //neu mo ta = '' thi bao loi
+    if (newProduct.description === '') {
+      alert('Vui lòng nhập mô tả sản phẩm')
+      return
+    }
+    //neu categoryid = '' thi bao loi
+    if (newProduct.categoryId === '') {
+      alert('Vui lòng chọn thể loại')
+      return
     }
   
     if (editProduct) {
-      // Update product logic here
+      // Sửa sản phẩm theo ID
+      alert('Sửa sản phẩm' + JSON.stringify(productData))
+      console.log('Sửa sản phẩm', productData)
+
+      const API_URL_SUA = 'http://localhost:8080/api/products';
+      fetch(`${API_URL_SUA}/update/${editProduct.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(productData),
+      })
+        .then((response) => {
+          console.log('data trả về nè', response)
+          if (response.ok) {
+            alert('Sửa sản phẩm thành công rồi nè')
+            this.toggleModal()
+            this.fetchProducts(this.state.currentPage)
+          } else {
+            alert('Có lỗi xảy ra khi sửa sản phẩm ở trong')
+            console.error('Lỗi sửa sản phẩm:', response)
+          }
+        })
+        .catch((error) => {
+          alert('Có lỗi xảy ra khi sửa sản phẩm')
+          console.error('Lỗi sửa sản phẩm:', error
+          )
+        }
+      )
+
+      
     } else {
+      //neu san pham khong co hinh anh thi bao loi
+      if (!newProduct.img) {
+        alert('Vui lòng chọn hình ảnh')
+        return
+      }
       alert('Thêm sản phẩm' + JSON.stringify(productData))
       console.log('Thêm sản phẩm', productData)
+
       const API_URL = 'http://localhost:8080/api/products';
       fetch(`${API_URL}/add`, {
         method: 'POST',
@@ -162,6 +231,29 @@ class ProductTable extends React.Component {
         })
     }
   }
+  handleDelete = (productId) => {
+    const API_URL = 'http://localhost:8080/api/products';
+    fetch(`${API_URL}/updateStatus/${productId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ status: 0 }),
+    })
+      .then((response) => {
+        if (response.ok) {
+          alert('Xóa sản phẩm thành công rồi nè');
+          this.fetchProducts(this.state.currentPage);
+        } else {
+          alert('Có lỗi xảy ra khi xóa sản phẩm');
+          console.error('Lỗi xóa sản phẩm:', response);
+        }
+      })
+      .catch((error) => {
+        alert('Có lỗi xảy ra khi xóa sản phẩm');
+        console.error('Lỗi xóa sản phẩm:', error);
+      });
+  };
 
   render() {
     const { products, currentPage, pageLimit, showModal, newProduct } = this.state
@@ -202,10 +294,19 @@ class ProductTable extends React.Component {
                       <CTableDataCell>{product.id || 'N/A'}</CTableDataCell>
                       <CTableDataCell>{product.name || 'N/A'}</CTableDataCell>
                       <CTableDataCell>{product.description || 'N/A'}</CTableDataCell>
-                      <CTableDataCell>{product.categoryId || 'N/A'}</CTableDataCell>
+
+                      {/* hien thi ten categories */}
+                      <CTableDataCell>
+                        {this.state.categories.map((category) => {
+                          if (category.id === product.categoryId) {
+                            return category.name;
+                          }
+                          return null;
+                        })}
+                      </CTableDataCell>
                       <CTableDataCell>
                         <CButton color="warning" onClick={() => this.toggleModal(product)}>Sửa</CButton>
-                        <CButton color="danger">Xóa</CButton>
+                        <CButton color="danger" onClick={() => this.handleDelete(product.id)}>Xóa</CButton>
                       </CTableDataCell>
                     </CTableRow>
                   ))}
@@ -232,10 +333,10 @@ class ProductTable extends React.Component {
                 <CFormLabel htmlFor="productImage">Hình ảnh</CFormLabel>
                 <CFormInput type="file" id="productImage" name="img" onChange={this.handleInputChange} />
               </div>
-              <div className="mb-3">
+              {/* <div className="mb-3">
                 <CFormLabel htmlFor="productId">ID</CFormLabel>
                 <CFormInput type="text" id="productId" name="id" value={newProduct.id} onChange={this.handleInputChange} />
-              </div>
+              </div> */}
               <div className="mb-3">
                 <CFormLabel htmlFor="productName">Tên sản phẩm</CFormLabel>
                 <CFormInput type="text" id="productName" name="name" value={newProduct.name} onChange={this.handleInputChange} />
@@ -246,18 +347,24 @@ class ProductTable extends React.Component {
               </div>
               <div className="mb-3">
                 <CFormLabel htmlFor="categoryId">Thể loại</CFormLabel>
-                <CFormSelect id="categoryId" name="categoryId" value={newProduct.categoryId} onChange={this.handleInputChange}>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                </CFormSelect>
+                {/* kiem tra categorirs khac rong */}
+                {this.state.categories.length > 0 && (
+                  <CFormSelect id="categoryId" name="categoryId" value={newProduct.categoryId} onChange={this.handleInputChange}>
+                    <option value="">Chọn thể loại</option>
+                    {this.state.categories.map((category) => (
+                      <option key={category.id} value={category.id}>
+                        {category.name}
+                      </option>
+                    ))}
+                  </CFormSelect>
+                )}
               </div>
             </CForm>
           </CModalBody>
           <CModalFooter>
-            <CButton color="secondary" onClick={() => this.toggleModal()}>
+            {/* <CButton color="secondary" onClick={() => this.toggleModal()}>
               Đóng
-            </CButton>
+            </CButton> */}
             <CButton color="primary" onClick={this.handleSave}>{this.state.editProduct ? 'Cập nhật' : 'Lưu'}</CButton>
           </CModalFooter>
         </CModal>

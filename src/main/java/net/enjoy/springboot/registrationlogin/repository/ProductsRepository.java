@@ -41,8 +41,9 @@ public interface ProductsRepository extends PagingAndSortingRepository<Product, 
     @Query("SELECT p FROM Product p")
     List<Product> findProductz();
 
-    Page<Product> findAll(Pageable pageable);
-
+    @Query("SELECT p FROM Product p WHERE p.status = 1")
+    Page<Product> findAllByStatus(Pageable pageable);
+    
     Product save(Product product);
 
 }
