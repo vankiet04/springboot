@@ -34,7 +34,7 @@ const App = () => {
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <HashRouter>
+    <HashRouter >
       <Suspense
         fallback={
           <div className="pt-3 text-center">
