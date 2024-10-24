@@ -14,7 +14,6 @@ import {
   CTableRow,
 } from '@coreui/react'
 import Pagination from '@mui/material/Pagination'
-import employeeService from './employeeService'
 
 class EmployeeTable extends React.Component {
   constructor(props) {
@@ -28,16 +27,6 @@ class EmployeeTable extends React.Component {
   }
 
   componentDidMount() {
-    employeeService.getEmployee()
-    .then((response) => {
-      this.setState({ employees: response.data })
-    }
-    )
-    .catch((error) => {
-      console.error('Lỗi fetch employees:', error)
-    }
-    )
-    
     this.fetchEmployees(1)
   }
 
