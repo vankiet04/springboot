@@ -13,10 +13,10 @@ import java.util.List;
 
 public interface ProductsRepository extends PagingAndSortingRepository<Product, Long> {
     @Query("SELECT p FROM Product p JOIN p.productDetails pd WHERE " +
-            "(:sizeId IS NULL OR pd.size.id = :sizeId) AND " +
-            "(:colorId IS NULL OR pd.color.id = :colorId) AND " +
-            "(:categoryId IS NULL OR p.category.id = :categoryId) AND " +
-            "(:minPrice IS NULL OR pd.price >= :minPrice) AND " +
+            "(:sizeId IS NULL OR :sizeId = 0 OR pd.size.id = :sizeId) AND " +
+            "(:colorId IS NULL OR :colorId = 0 OR pd.color.id = :colorId) AND " +
+            "(:categoryId IS NULL OR :categoryId = 0 OR p.category.id = :categoryId) AND " +
+            "(:minPrice IS NULL  OR pd.price >= :minPrice) AND " +
             "(:maxPrice IS NULL OR pd.price <= :maxPrice) AND " +
             "(:name IS NULL OR p.name LIKE CONCAT('%', :name, '%'))")
     Page<Product> findbyFilter(
@@ -45,5 +45,39 @@ public interface ProductsRepository extends PagingAndSortingRepository<Product, 
     Page<Product> findAllByStatus(Pageable pageable);
     
     Product save(Product product);
+    //sort price low to high
+        @Query("SELECT p FROM Product p JOIN p.productDetails pd WHERE " +
+                "(:sizeId IS NULL OR :sizeId = 0 OR pd.size.id = :sizeId) AND " +
+                "(:colorId IS NULL OR :colorId = 0 OR pd.color.id = :colorId) AND " +
+                "(:categoryId IS NULL OR :categoryId = 0 OR p.category.id = :categoryId) AND " +
+                "(:minPrice IS NULL  OR pd.price >= :minPrice) AND " +
+                "(:maxPrice IS NULL OR pd.price <= :maxPrice) AND " +
+                "(:name IS NULL OR p.name LIKE CONCAT('%', :name, '%')) ORDER BY pd.price ASC")
+        Page<Product> findbyFilterPriceAsc(
+                @Param("sizeId") Long sizeId,
+                @Param("colorId") Long colorId,
+                @Param("categoryId") Long categoryId,
+                @Param("minPrice") Long minPrice,
+                @Param("maxPrice") Long maxPrice,
+                Pageable pageable,
+                @Param("name") String name
+        );
 
+        //sort price high to low
+        @Query("SELECT p FROM Product p JOIN p.productDetails pd WHERE " +
+                "(:sizeId IS NULL OR :sizeId = 0 OR pd.size.id = :sizeId) AND " +
+                "(:colorId IS NULL OR :colorId = 0 OR pd.color.id = :colorId) AND " +
+                "(:categoryId IS NULL OR :categoryId = 0 OR p.category.id = :categoryId) AND " +
+                "(:minPrice IS NULL  OR pd.price >= :minPrice) AND " +
+                "(:maxPrice IS NULL OR pd.price <= :maxPrice) AND " +
+                "(:name IS NULL OR p.name LIKE CONCAT('%', :name, '%')) ORDER BY pd.price DESC")
+        Page<Product> findbyFilterPriceDesc(
+                @Param("sizeId") Long sizeId,
+                @Param("colorId") Long colorId,
+                @Param("categoryId") Long categoryId,
+                @Param("minPrice") Long minPrice,
+                @Param("maxPrice") Long maxPrice,
+                Pageable pageable,
+                @Param("name") String name
+        );
 }

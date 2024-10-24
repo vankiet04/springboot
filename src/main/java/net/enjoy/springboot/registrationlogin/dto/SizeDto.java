@@ -9,8 +9,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategoryDto {
+public class SizeDto {
     private Long id;
-    private String categoryName;
+    private String sizeName;
     private int status;
 }
