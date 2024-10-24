@@ -37,8 +37,8 @@ public class SpringSecurity {
                                 // co phep tat ca
 
                                 authorize.requestMatchers("/register/**").permitAll()
-                                                .requestMatchers("/index").permitAll()
-                                                .requestMatchers("/index#").permitAll()
+                                                .requestMatchers("/index/**").permitAll()
+                                                .requestMatchers("/index#/**").permitAll()
                                                 .requestMatchers("/index#/product").permitAll()
                                                 .requestMatchers("/home").permitAll()
                                                 .requestMatchers("/admin/**").permitAll()

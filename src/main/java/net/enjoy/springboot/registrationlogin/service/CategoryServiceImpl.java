@@ -1,9 +1,7 @@
 package net.enjoy.springboot.registrationlogin.service;
 
 import net.enjoy.springboot.registrationlogin.dto.CategoryDto;
-import net.enjoy.springboot.registrationlogin.dto.UserDto;
 import net.enjoy.springboot.registrationlogin.entity.Category;
-import net.enjoy.springboot.registrationlogin.entity.User;
 import net.enjoy.springboot.registrationlogin.repository.CategoryRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +42,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryDto saveCategoryAPI(CategoryDto categoryDto) {
         Category category = new Category();
-        category.setCategoryName(categoryDto.getName());
+        category.setCategoryName(categoryDto.getCategoryName());
         category.setStatus(categoryDto.getStatus());
         categoryRepository.save(category);
         return categoryDto;
