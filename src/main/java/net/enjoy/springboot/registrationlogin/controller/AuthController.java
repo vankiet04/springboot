@@ -31,6 +31,10 @@ public class AuthController {
 
     // handler method to handle home page `reques`t
 
+    @GetMapping("/index")
+    public String index() {
+        return "index";
+    }
 
     @GetMapping("/blog")
     public String blog() {

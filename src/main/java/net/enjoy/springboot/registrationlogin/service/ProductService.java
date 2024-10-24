@@ -19,7 +19,11 @@ public interface ProductService {
 
     List<ProductDetailDto> findDetailById(Long idProduct);
 
-    public Page<ProductDto> searchProduct(Long sizeId, Long colorId, Long categoryId, long minPrice, long maxPrice, Pageable pageable, String name);
+    public Page<ProductDto> searchProduct(Long sizeId, Long colorId, Long categoryId, Long minPrice, Long maxPrice, Pageable pageable, String name);
+
+    public Page<ProductDto> searchProductPriceAsc(Long sizeId, Long colorId, Long categoryId, Long minPrice, Long maxPrice, Pageable pageable, String name);
+
+    public Page<ProductDto> searchProductPriceDesc(Long sizeId, Long colorId, Long categoryId, Long minPrice, Long maxPrice, Pageable pageable, String name);
 
     public ProductDto findProductByIdDetail(Long idProduct);
 
