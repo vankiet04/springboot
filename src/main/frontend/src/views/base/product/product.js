@@ -83,7 +83,7 @@ class ProductTable extends React.Component {
       })
   }
   fetchCategories() {
-    const API_URL = 'http://localhost:8080/api/categories/getall';
+    const API_URL = ' ';
     fetch(API_URL)
       .then((response) => response.json())
       .then((data) => {
@@ -102,12 +102,13 @@ class ProductTable extends React.Component {
   }
 
   toggleModal = (product = null) => {
+    const newProductId = this.getMaxProductId() + 1;
     this.setState((prevState) => ({
       showModal: !prevState.showModal,
       editProduct: product,
       newProduct: product || {
         img: null,
-        id: '',
+        id: newProductId,
         name: '',
         description: '',
         categoryId: '',
@@ -137,39 +138,43 @@ class ProductTable extends React.Component {
       }))
     }
   }
+  getMaxProductId = () => {
+    const { products } = this.state;
+    if (products.length === 0) return 0;
+    return Math.max(...products.map(product => product.id));
+  }
+
 
   handleSave = () => {
-    const { newProduct, editProduct } = this.state
+    const { newProduct, editProduct } = this.state;
     const productData = {
-      id: 9999,
+      id: newProduct.id,
       name: newProduct.name,
       description: newProduct.description,
       img: newProduct.img,
       status: 1, // Bạn có thể thay đổi giá trị này tùy theo yêu cầu của bạn
-      categoryId:  newProduct.categoryId,
-    }
-
-    //neu ten san pham = '' thi bao loi
+      categoryId: newProduct.categoryId,
+    };
+  
+    // Kiểm tra các trường bắt buộc
     if (newProduct.name === '') {
-      alert('Vui lòng nhập tên sản phẩm')
-      return
+      alert('Vui lòng nhập tên sản phẩm');
+      return;
     }
-    //neu mo ta = '' thi bao loi
     if (newProduct.description === '') {
-      alert('Vui lòng nhập mô tả sản phẩm')
-      return
+      alert('Vui lòng nhập mô tả sản phẩm');
+      return;
     }
-    //neu categoryid = '' thi bao loi
     if (newProduct.categoryId === '') {
-      alert('Vui lòng chọn thể loại')
-      return
+      alert('Vui lòng chọn thể loại');
+      return;
     }
   
     if (editProduct) {
       // Sửa sản phẩm theo ID
-      alert('Sửa sản phẩm' + JSON.stringify(productData))
-      console.log('Sửa sản phẩm', productData)
-
+      alert('Sửa sản phẩm' + JSON.stringify(productData));
+      console.log('Sửa sản phẩm', productData);
+  
       const API_URL_SUA = 'http://localhost:8080/api/products';
       fetch(`${API_URL_SUA}/update/${editProduct.id}`, {
         method: 'PUT',
@@ -179,33 +184,29 @@ class ProductTable extends React.Component {
         body: JSON.stringify(productData),
       })
         .then((response) => {
-          console.log('data trả về nè', response)
+          console.log('data trả về nè', response);
           if (response.ok) {
-            alert('Sửa sản phẩm thành công rồi nè')
-            this.toggleModal()
-            this.fetchProducts(this.state.currentPage)
+            alert('Sửa sản phẩm thành công rồi nè');
+            this.toggleModal();
+            this.fetchProducts(this.state.currentPage);
           } else {
-            alert('Có lỗi xảy ra khi sửa sản phẩm ở trong')
-            console.error('Lỗi sửa sản phẩm:', response)
+            alert('Có lỗi xảy ra khi sửa sản phẩm ở trong');
+            console.error('Lỗi sửa sản phẩm:', response);
           }
         })
         .catch((error) => {
-          alert('Có lỗi xảy ra khi sửa sản phẩm')
-          console.error('Lỗi sửa sản phẩm:', error
-          )
-        }
-      )
-
-      
+          alert('Có lỗi xảy ra khi sửa sản phẩm');
+          console.error('Lỗi sửa sản phẩm:', error);
+        });
     } else {
-      //neu san pham khong co hinh anh thi bao loi
+      // Thêm sản phẩm mới
       if (!newProduct.img) {
-        alert('Vui lòng chọn hình ảnh')
-        return
+        alert('Vui lòng chọn hình ảnh');
+        return;
       }
-      alert('Thêm sản phẩm' + JSON.stringify(productData))
-      console.log('Thêm sản phẩm', productData)
-
+      alert('Thêm sản phẩm' + JSON.stringify(productData));
+      console.log('Thêm sản phẩm', productData);
+  
       const API_URL = 'http://localhost:8080/api/products';
       fetch(`${API_URL}/add`, {
         method: 'POST',
@@ -215,20 +216,20 @@ class ProductTable extends React.Component {
         body: JSON.stringify(productData),
       })
         .then((response) => {
-          console.log('data trả về nè', response)
+          console.log('data trả về nè', response);
           if (response.ok) {
-            alert('Thêm sản phẩm thành công rồi nè')
-            this.toggleModal()
-            this.fetchProducts(this.state.currentPage)
+            alert('Thêm sản phẩm thành công rồi nè');
+            this.toggleModal();
+            this.fetchProducts(this.state.currentPage);
           } else {
-            alert('Có lỗi xảy ra khi thêm sản phẩm ở trong')
-            console.error('Lỗi thêm sản phẩm:', response)
+            alert('Có lỗi xảy ra khi thêm sản phẩm ở trong');
+            console.error('Lỗi thêm sản phẩm:', response);
           }
         })
         .catch((error) => {
-          alert('Có lỗi xảy ra khi thêm sản phẩm')
-          console.error('Lỗi thêm sản phẩm:', error)
-        })
+          alert('Có lỗi xảy ra khi thêm sản phẩm');
+          console.error('Lỗi thêm sản phẩm:', error);
+        });
     }
   }
   handleDelete = (productId) => {
