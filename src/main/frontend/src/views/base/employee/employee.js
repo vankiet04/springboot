@@ -69,7 +69,7 @@ class EmployeeTable extends React.Component {
       .then((data) => {
         const pageLimit = Math.ceil(data.length / this.state.perPage)
           this.setState({ employees: data, pageLimit })
-          alert("Danh sach nhan vien: " + data)
+          alert("Danh sach nhan vien: " + JSON.stringify(data))
           console.log("Danh sach nhan vien: " + data)
       })
       .catch((error) => {
