@@ -35,7 +35,7 @@ class CategoryTable extends React.Component {
       editCategory: null,
       newCategory: {
         id: '',
-        name: '',
+        categoryName: '',
       },
     }
   }
@@ -71,7 +71,7 @@ class CategoryTable extends React.Component {
       editCategory: category,
       newCategory: category || {
         id: '',
-        name: '',
+        categoryName: '',
       },
     }))
   }
@@ -90,11 +90,11 @@ class CategoryTable extends React.Component {
     const { newCategory, editCategory } = this.state;
     const categoryData = {
       id: newCategory.id,
-        name: newCategory.name,
+      categoryName: newCategory.categoryName,
       
     };
 
-    if (newCategory.name === '') {
+    if (newCategory.categoryName === '') {
       alert('Vui lòng nhập tên thể loại')
       return
     }
@@ -195,10 +195,7 @@ class CategoryTable extends React.Component {
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                {categories.length === 0 ? (
-        alert('Rỗng')
-      ) : (
-        categories.map((category, index) => (
+                {categories.map((category, index) => (
           <CTableRow key={index}>
             <CTableDataCell>{category.id}</CTableDataCell>
             <CTableDataCell>{category.categoryName}</CTableDataCell>
@@ -207,8 +204,7 @@ class CategoryTable extends React.Component {
               <CButton color="danger" onClick={() => this.handleDelete(category.id)}>Xóa</CButton>
             </CTableDataCell>
           </CTableRow>
-        ))
-      )}
+        ))}
                 </CTableBody>
               </CTable>
               <Pagination
@@ -233,8 +229,8 @@ class CategoryTable extends React.Component {
                 <CFormInput
                   type="text"
                   id="categoryName"
-                  name="name"
-                  value={newCategory.name}
+                  name="categoryName"
+                  value={newCategory.categoryName}
                   onChange={this.handleInputChange}
                 />
               </div>
