@@ -197,15 +197,16 @@ class EmployeeTable extends React.Component {
     }
   }
   handleDelete = (employeeId) => {
-    const API_URL = 'http://localhost:8080/api/emloyees';
+    const API_URL = 'http://localhost:8080/api/employees';
     fetch(`${API_URL}/updateStatus/${employeeId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ status: 0 }),
+      body: JSON.stringify({ status: 0 }), // Đảm bảo gửi đúng dữ liệu
     })
       .then((response) => {
+        console.log('Response:', response); // Thêm log để kiểm tra phản hồi
         if (response.ok) {
           alert('Xóa thông tin nhân viên thành công rồi nè');
           this.fetchEmployees(this.state.currentPage);
@@ -218,7 +219,7 @@ class EmployeeTable extends React.Component {
         alert('Có lỗi xảy ra khi xóa thông tin nhân viên');
         console.error('Lỗi xóa thông tin nhân viên:', error);
       });
-  };
+  }
 
   render() {
     const { employees, currentPage, pageLimit, showModal, newEmployee } = this.state
@@ -290,7 +291,7 @@ class EmployeeTable extends React.Component {
               </div> */}
               <div className="mb-3">
                 <CFormLabel htmlFor="employeeName">Tên nhân viên</CFormLabel>
-                <CFormInput type="text" id="employeeName" name="name" value={newEmployee.fullName} onChange={this.handleInputChange} />
+                <CFormInput type="text" id="employeeName" name="fullName" value={newEmployee.fullName} onChange={this.handleInputChange} />
               </div>
               <div className="mb-3">
                 <CFormLabel htmlFor="employeebirthDate">Ngày sinh</CFormLabel>
