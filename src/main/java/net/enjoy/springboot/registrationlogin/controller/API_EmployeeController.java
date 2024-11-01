@@ -1,5 +1,6 @@
 package net.enjoy.springboot.registrationlogin.controller;
 
+import net.enjoy.springboot.registrationlogin.dto.CustomerDto;
 import net.enjoy.springboot.registrationlogin.dto.EmployeeDto;
 import net.enjoy.springboot.registrationlogin.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +19,13 @@ public class API_EmployeeController {
     private EmployeeService employeeService;
 
     @GetMapping("/getall")
-    public ResponseEntity<List<EmployeeDto>> getAllEmployees() {
-        List<EmployeeDto> employees = employeeService.findAllEmployees();
-        return new ResponseEntity<>(employees, HttpStatus.OK);
+    public List<EmployeeDto> getAllEmployees() {
+        return employeeService.findAllEmployees();
+    }
+
+     @GetMapping("/getEmployeePage")
+    public List<EmployeeDto> getEmployeeWithPage(@RequestParam(defaultValue = "1") int page) {
+        return employeeService.findAllEmployeeWithPage(page);
     }
 
     @GetMapping("/{id}")

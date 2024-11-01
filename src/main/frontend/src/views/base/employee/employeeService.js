@@ -8,7 +8,7 @@ class employeeService {
   }
 
   getEmployeeAtPage(page) {
-    return axios.get(`${API_URL}/getemployeePage?page=${page}`)
+    return axios.get(`${API_URL}/getEmployeePage?page=${page}`)
   }
 
 }
