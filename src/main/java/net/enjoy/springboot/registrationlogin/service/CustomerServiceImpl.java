@@ -1,5 +1,9 @@
 package net.enjoy.springboot.registrationlogin.service;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import net.enjoy.springboot.registrationlogin.dto.CustomerDto;
@@ -15,18 +19,20 @@ public class CustomerServiceImpl implements CustomerService {
     @Autowired
     private CustomerRepository customerRepository;
 
+    public CustomerServiceImpl(CustomerRepository customerRepository) {
+        this.customerRepository = customerRepository;
+    }
+
     @Override
     public List<CustomerDto> findAllCustomers() {
-        return customerRepository.findAll().stream()
-                .map(this::convertEntityToDto)
-                .collect(Collectors.toList());
+        List<Customer> customers =customerRepository.findCustomerz();
+        return customers.stream().map(this::convertEntityToDto).collect(Collectors.toList());
     }
 
     @Override
     public CustomerDto findCustomerById(Long id) {
-        return customerRepository.findById(id)
-                .map(this::convertEntityToDto)
-                .orElse(null);
+        Customer customer = customerRepository.findById(id);
+        return convertEntityToDto(customer);
     }
 
     @Override
@@ -49,22 +55,32 @@ public class CustomerServiceImpl implements CustomerService {
                 customer.getPhoneNumber(),
                 customer.getEmail(),
                 customer.getStatus(),
-                customer.getGender()
-        );
+                customer.getGender());
     }
 
     private Customer convertDtoToEntity(CustomerDto customerDto) {
         return new Customer(
-            customerDto.getId(),
-            customerDto.getFullName(),
-            customerDto.getBirthDate(),
-            customerDto.getPhoneNumber(),
-            customerDto.getEmail(),
-            customerDto.getStatus(),
-            customerDto.getGender());
+                customerDto.getId(),
+                customerDto.getFullName(),
+                customerDto.getBirthDate(),
+                customerDto.getPhoneNumber(),
+                customerDto.getEmail(),
+                customerDto.getGender(),
+                customerDto.getStatus()
+                );
     }
+
     @Override
-    public Customer findById(Long id) {
-        return customerRepository.findById(id).orElse(null);
+    public CustomerDto findById(Long id) {
+        Customer customer = customerRepository.findById(id);
+        return convertEntityToDto(customer);
+    }
+
+    @Override
+    public List<CustomerDto> findAllCustomerWithPage(int page) {
+        Pageable pageable = PageRequest.of(page - 1, 5);
+        Page<Customer> customers = customerRepository.findAllByStatus(pageable);
+
+        return customers.map(this::convertEntityToDto).stream().collect(Collectors.toList());
     }
 }

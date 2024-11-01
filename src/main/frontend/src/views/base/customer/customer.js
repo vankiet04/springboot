@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import {
   CButton,
   CCard,
@@ -8,7 +8,6 @@ import {
   CForm,
   CFormInput,
   CFormLabel,
-  CFormTextarea,
   CFormSelect,
   CRow,
   CTable,
@@ -22,13 +21,13 @@ import {
   CModalTitle,
   CModalBody,
   CModalFooter,
-} from '@coreui/react'
-import Pagination from '@mui/material/Pagination'
-import customerService from './customerService'
+} from '@coreui/react';
+import Pagination from '@mui/material/Pagination';
+import customerService from './customerService';
 
 class CustomerTable extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       customers: [],
       currentPage: 1,
@@ -44,43 +43,32 @@ class CustomerTable extends React.Component {
         email: '',
         gender: '',
       },
-    }
+    };
   }
 
   componentDidMount() {
-    customerService.getCustomer()
-    .then((response) => {
-      this.setState({ customers: response.data })
-    }
-    )
-    .catch((error) => {
-      console.error('Lỗi fetch customers:', error)
-    }
-    )
-    
     this.fetchCustomers(1)
   }
 
-
   fetchCustomers(page) {
-    const API_URL = 'http://localhost:8080/api/customers/getall'
-    fetch(API_URL)
-      .then((response) => response.json())
-      .then((data) => {
-        const pageLimit = Math.ceil(data.length / this.state.perPage)
-          this.setState({ customers: data, pageLimit })
-          alert("Danh sach khach hang: " + JSON.stringify(data))
-          console.log("Danh sach khach hang: " + data)
+    customerService.getCustomerAtPage(page)
+      .then((response) => {
+        const { data } = response;
+        // Lọc các khách hàng có status = 1
+        const activeCustomers = data.filter(customer => customer.status === 1);
+        const pageLimit = Math.ceil(activeCustomers.length / this.state.perPage);
+        this.setState({ customers: activeCustomers, pageLimit });
       })
       .catch((error) => {
-        console.error('Lỗi fetch customers:', error)
-      })
+        console.error('Lỗi fetch customers:', error);
+      });
   }
 
   handlePageChange = (event, value) => {
-    this.setState({ currentPage: value })
-    this.fetchCustomers(value)
+    this.setState({ currentPage: value });
+    this.fetchCustomers(value);
   }
+
   toggleModal = (customer = null) => {
     this.setState((prevState) => ({
       showModal: !prevState.showModal,
@@ -93,20 +81,21 @@ class CustomerTable extends React.Component {
         email: '',
         gender: '',
       },
-    }))
+    }));
   }
+
   handleInputChange = (e) => {
-    const { name, value } = e.target
-      this.setState((prevState) => ({
-        newCustomer: {
-          ...prevState.newCustomer,
-          [name]: value,
-        },
-      }))
+    const { name, value } = e.target;
+    this.setState((prevState) => ({
+      newCustomer: {
+        ...prevState.newCustomer,
+        [name]: value,
+      },
+    }));
   }
 
   handleSave = () => {
-    const { newCustomer, editCustomer } = this.state
+    const { newCustomer, editCustomer } = this.state;
     const customerData = {
       id: 9999,
       fullName: newCustomer.fullName,
@@ -115,34 +104,33 @@ class CustomerTable extends React.Component {
       email: newCustomer.email,
       gender: newCustomer.gender,
       status: 1,
+    };
+    if (newCustomer.fullName === '') {
+      alert('Vui lòng nhập họ tên');
+      return;
     }
-    if(newCustomer.fullName == ''){
-      alert("Vui lòng nhập họ tên")
-      return
+    if (newCustomer.birthDate === '') {
+      alert('Vui lòng nhập ngày sinh');
+      return;
     }
-    if(newCustomer.birthDate == ''){
-      alert("Vui lòng nhập ngày sinh")
-      return
+    if (newCustomer.phoneNumber === '') {
+      alert('Vui lòng nhập số điện thoại');
+      return;
     }
-    if(newCustomer.phoneNumber == ''){
-      alert("Vui lòng nhập số điện thoại")
-      return
+    if (newCustomer.email === '') {
+      alert('Vui lòng nhập email');
+      return;
     }
-    if(newCustomer.email == ''){
-      alert("Vui lòng nhập email")
-      return
+    if (newCustomer.gender === '') {
+      alert('Vui lòng nhập giới tính');
+      return;
     }
-    if(newCustomer.gender == ''){
-      alert("Vui lòng nhập giới tính")
-      return
-    }
-    
+
     if (editCustomer) {
+      alert('Sửa thông tin khách hàng: ' + JSON.stringify(customerData));
+      console.log('Sửa thông tin khách hàng', customerData);
 
-      alert("Sửa thông tin khách hàng: " +  JSON.stringify(customerData))
-      console.log('Sửa thông tin khách hàng', customerData)
-
-     const API_URL_SUA = 'http://localhost:8080/api/customers';
+      const API_URL_SUA = 'http://localhost:8080/api/customers';
       fetch(`${API_URL_SUA}/update/${editCustomer.id}`, {
         method: 'PUT',
         headers: {
@@ -151,25 +139,23 @@ class CustomerTable extends React.Component {
         body: JSON.stringify(customerData),
       })
         .then((response) => {
-          console.log('data trả về nè', response)
+          console.log('data trả về nè', response);
           if (response.ok) {
-            alert('Sửa thông tin khách hàng thành công rồi nè')
-            this.toggleModal()
-            this.fetchcustomers(this.state.currentPage)
+            alert('Sửa thông tin khách hàng thành công rồi nè');
+            this.toggleModal();
+            this.fetchCustomers(this.state.currentPage);
           } else {
-            alert('Có lỗi xảy ra khi sửa thông tin ở trong')
-            console.error('Lỗi sửa thông tin:', response)
+            alert('Có lỗi xảy ra khi sửa thông tin ở trong');
+            console.error('Lỗi sửa thông tin:', response);
           }
         })
         .catch((error) => {
-          alert('Có lỗi xảy ra khi sửa thông tin')
-          console.error('Lỗi sửa thông tin:', error
-          )
-        }
-      )
-    }else{
-      alert('Thêm thông tin khách hàng' + JSON.stringify(customerData))
-      console.log('Thêm thông tin khách hàng', customerData)
+          alert('Có lỗi xảy ra khi sửa thông tin');
+          console.error('Lỗi sửa thông tin:', error);
+        });
+    } else {
+      alert('Thêm thông tin khách hàng' + JSON.stringify(customerData));
+      console.log('Thêm thông tin khách hàng', customerData);
 
       const API_URL = 'http://localhost:8080/api/customers';
       fetch(`${API_URL}/add`, {
@@ -180,22 +166,23 @@ class CustomerTable extends React.Component {
         body: JSON.stringify(customerData),
       })
         .then((response) => {
-          console.log('data trả về nè', response)
+          console.log('data trả về nè', response);
           if (response.ok) {
-            alert('Thêm thông tin khách hàng thành công rồi nè')
-            this.toggleModal()
-            this.fetchcustomers(this.state.currentPage)
+            alert('Thêm thông tin khách hàng thành công rồi nè');
+            this.toggleModal();
+            this.fetchCustomers(this.state.currentPage);
           } else {
-            alert('Có lỗi xảy ra khi thêm thông tin khách hàng ở trong')
-            console.error('Lỗi thêm thông tin khách hàng:', response)
+            alert('Có lỗi xảy ra khi thêm thông tin khách hàng ở trong');
+            console.error('Lỗi thêm thông tin khách hàng:', response);
           }
         })
         .catch((error) => {
-          alert('Có lỗi xảy ra khi thêm thông tin khách hàng')
-          console.error('Lỗi thêm thông tin khách hàng:', error)
-        })
+          alert('Có lỗi xảy ra khi thêm thông tin khách hàng');
+          console.error('Lỗi thêm thông tin khách hàng:', error);
+        });
     }
   }
+
   handleDelete = (customerId) => {
     const API_URL = 'http://localhost:8080/api/customers';
     fetch(`${API_URL}/updateStatus/${customerId}`, {
@@ -209,7 +196,7 @@ class CustomerTable extends React.Component {
         console.log('Response:', response); // Thêm log để kiểm tra phản hồi
         if (response.ok) {
           alert('Xóa thông tin khách hàng thành công rồi nè');
-          this.fetchcustomers(this.state.currentPage);
+          this.fetchCustomers(this.state.currentPage);
         } else {
           alert('Có lỗi xảy ra khi xóa thông tin khách hàng');
           console.error('Lỗi xóa thông tin khách hàng:', response);
@@ -222,11 +209,10 @@ class CustomerTable extends React.Component {
   }
 
   render() {
-    const { customers, currentPage, pageLimit, showModal, newCustomer } = this.state
-    // Safeguard to ensure products is always an array
+    const { customers, currentPage, pageLimit, showModal, newCustomer } = this.state;
     if (!Array.isArray(customers)) {
-      console.error('Customers is not an array:', customers)
-      return null
+      console.error('Customers is not an array:', customers);
+      return null;
     }
 
     return (
@@ -285,10 +271,6 @@ class CustomerTable extends React.Component {
           </CModalHeader>
           <CModalBody>
             <CForm>
-              {/* <div className="mb-3">
-                <CFormLabel htmlFor="productId">ID</CFormLabel>
-                <CFormInput type="text" id="productId" name="id" value={newProduct.id} onChange={this.handleInputChange} />
-              </div> */}
               <div className="mb-3">
                 <CFormLabel htmlFor="customerName">Tên khách hàng</CFormLabel>
                 <CFormInput type="text" id="customerName" name="fullName" value={newCustomer.fullName} onChange={this.handleInputChange} />
@@ -307,24 +289,21 @@ class CustomerTable extends React.Component {
               </div>
               <div className="mb-3">
                 <CFormLabel htmlFor="customerGender">Giới tính</CFormLabel>
-                <CFormSelect id="customerGender" name="gender" value={this.state.newCustomer.gender} onChange={this.handleInputChange}>
-                  <option value="Nam">Nam</option>
-                  <option value="Nữ">Nữ</option>
+                <CFormSelect id="customerGender" name="gender" value={newCustomer.gender} onChange={this.handleInputChange}>
+                  <option value="">Chọn giới tính</option>
+                  <option value="0">Nam</option>
+                  <option value="1">Nữ</option>
                 </CFormSelect>
               </div>
-
             </CForm>
           </CModalBody>
           <CModalFooter>
-            {/* <CButton color="secondary" onClick={() => this.toggleModal()}>
-              Đóng
-            </CButton> */}
             <CButton color="primary" onClick={this.handleSave}>{this.state.editCustomer ? 'Cập nhật' : 'Lưu'}</CButton>
           </CModalFooter>
         </CModal>
       </CRow>
-    )
+    );
   }
 }
 
-export default CustomerTable
+export default CustomerTable;
