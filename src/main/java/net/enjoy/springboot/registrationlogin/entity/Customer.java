@@ -35,5 +35,5 @@ public class Customer {
     private String gender; // Giới tính (gender)
 
     @Column(nullable = false)
-    private String status; // Trạng thái (trangthai)
+    private int status; // Trạng thái (trangthai)
 }

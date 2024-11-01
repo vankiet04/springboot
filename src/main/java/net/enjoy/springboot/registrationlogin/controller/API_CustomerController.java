@@ -18,9 +18,14 @@ public class API_CustomerController {
     private CustomerService customerService;
 
     @GetMapping("/getall")
-    public ResponseEntity<List<CustomerDto>> getAllCustomers() {
-        List<CustomerDto> customers = customerService.findAllCustomers();
-        return new ResponseEntity<>(customers, HttpStatus.OK);
+    public List<CustomerDto> getAllCustomers() {
+        return customerService.findAllCustomers();
+        
+    }
+
+    @GetMapping("/getCustomerPage")
+    public List<CustomerDto> getCustomerWithPage(@RequestParam(defaultValue = "1") int page) {
+        return customerService.findAllCustomerWithPage(page);
     }
 
     @GetMapping("/{id}")

@@ -8,7 +8,7 @@ class customerService {
   }
 
   getCustomerAtPage(page) {
-    return axios.get(`${API_URL}/getcustomerPage?page=${page}`)
+    return axios.get(`${API_URL}/getCustomerPage?page=${page}`)
   }
 
 }

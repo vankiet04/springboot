@@ -18,7 +18,7 @@ public class CustomerDto {
     private LocalDate birthDate; // Ngày sinh (ngaysinh)
     private String phoneNumber; // Số điện thoại (sdt)
     private String email; // Email (email)
-    private String status; // Trạng thái (trangthai)
+    private int status; // Trạng thái (trangthai)
     private String gender; // Giới tính (gender)
     
 }
