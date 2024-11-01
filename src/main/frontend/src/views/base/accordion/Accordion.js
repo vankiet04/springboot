@@ -73,7 +73,7 @@ const Accordion = () => {
           <CCardBody>
             <p className="text-body-secondary small">
               Add <code>flush</code> to remove the default <code>background-color</code>, some
-              borders, and some rounded corners to render accordions edge-to-edge with their parent
+              borders, and some importrounded corners to render accordions edge-to-edge with their parent
               container.
             </p>
             <DocsExample href="components/accordion#flush">
