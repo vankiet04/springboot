@@ -5,6 +5,9 @@ import net.enjoy.springboot.registrationlogin.entity.Employee;
 import net.enjoy.springboot.registrationlogin.repository.EmployeeRepository;
 import net.enjoy.springboot.registrationlogin.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,18 +19,20 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
+    }
+
     @Override
     public List<EmployeeDto> findAllEmployees() {
-        return employeeRepository.findAll().stream()
-                .map(this::convertEntityToDto)
-                .collect(Collectors.toList());
+        List<Employee> employees = employeeRepository.findEmployeez();
+        return employees.stream().map(this::convertEntityToDto).collect(Collectors.toList());
     }
 
     @Override
     public EmployeeDto findEmployeeById(Long id) {
-        return employeeRepository.findById(id)
-                .map(this::convertEntityToDto)
-                .orElse(null);
+       Employee employee = employeeRepository.findById(id);
+        return convertEntityToDto(employee);
     }
 
     @Override
@@ -61,11 +66,21 @@ public class EmployeeServiceImpl implements EmployeeService {
                 employeeDto.getBirthDate(),
                 employeeDto.getPhoneNumber(),
                 employeeDto.getEmail(),
-                employeeDto.getStatus(),
-                employeeDto.getGender());
+                employeeDto.getGender(),
+                employeeDto.getStatus()
+        );
     }
     @Override
-    public Employee findById(Long id) {
-        return employeeRepository.findById(id).orElse(null);
+    public EmployeeDto findById(Long id) {
+        Employee employee = employeeRepository.findById(id);
+        return convertEntityToDto(employee);
+    }
+
+    @Override
+    public List<EmployeeDto> findAllEmployeeWithPage(int page){
+        Pageable pageable = PageRequest.of(page - 1, 5);
+        Page<Employee> employees = employeeRepository.findAllByStatus(pageable);
+
+        return employees.map(this::convertEntityToDto).stream().collect(Collectors.toList());
     }
 }
