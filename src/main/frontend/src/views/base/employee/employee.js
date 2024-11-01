@@ -48,33 +48,22 @@ class EmployeeTable extends React.Component {
   }
 
   componentDidMount() {
-    employeeService.getEmployee()
-    .then((response) => {
-      this.setState({ employees: response.data })
-    }
-    )
-    .catch((error) => {
-      console.error('Lỗi fetch employees:', error)
-    }
-    )
-    
     this.fetchEmployees(1)
   }
 
 
   fetchEmployees(page) {
-    const API_URL = 'http://localhost:8080/api/employees/getall'
-    fetch(API_URL)
-      .then((response) => response.json())
-      .then((data) => {
-        const pageLimit = Math.ceil(data.length / this.state.perPage)
-          this.setState({ employees: data, pageLimit })
-          alert("Danh sach nhan vien: " + JSON.stringify(data))
-          console.log("Danh sach nhan vien: " + data)
+    employeeService.getEmployeeAtPage(page)
+      .then((response) => {
+        const { data } = response;
+        // Lọc các khách hàng có status = 1
+        const activeEmployees = data.filter(employee => employee.status === 1);
+        const pageLimit = Math.ceil(activeEmployees.length / this.state.perPage);
+        this.setState({ employees: activeEmployees, pageLimit });
       })
       .catch((error) => {
-        console.error('Lỗi fetch employees:', error)
-      })
+        console.error('Lỗi fetch customers:', error);
+      });
   }
 
   handlePageChange = (event, value) => {
@@ -308,8 +297,9 @@ class EmployeeTable extends React.Component {
               <div className="mb-3">
                 <CFormLabel htmlFor="employeeGender">Giới tính</CFormLabel>
                 <CFormSelect id="employeeGender" name="gender" value={this.state.newEmployee.gender} onChange={this.handleInputChange}>
-                  <option value="Nam">Nam</option>
-                  <option value="Nữ">Nữ</option>
+                <option value="">Chọn giới tính</option>
+                  <option value="0">Nam</option>
+                  <option value="1">Nữ</option>
                 </CFormSelect>
               </div>
 
