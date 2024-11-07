@@ -6,6 +6,7 @@ import net.enjoy.springboot.registrationlogin.entity.ImportProduct;
 import net.enjoy.springboot.registrationlogin.repository.ImportProductRepository;
 import net.enjoy.springboot.registrationlogin.service.ImportProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,24 +31,27 @@ public class ImportProductServiceImpl implements ImportProductService {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public ImportProductDto findImportProductById(Long id) {
-        return importProductRepository.findById(id)
-                .map(this::convertEntityToDto)
-                .orElse(null);
-    }
+
 
     @Override
     public ImportProductDto saveImportProduct(ImportProductDto importProductDto) {
-        ImportProduct importProduct = convertDtoToEntity(importProductDto);
-        importProduct = importProductRepository.save(importProduct);
-        return convertEntityToDto(importProduct);
+        // ImportProduct importProduct = convertDtoToEntity(importProductDto);
+        // importProduct = importProductRepository.save(importProduct);
+        // return convertEntityToDto(importProduct);
+        return null;
+    }
+
+    @Override
+    public ImportProductDto findImportProductById(Long id) {
+        return null;
     }
 
     @Override
     public ImportProduct updateImportProduct(ImportProduct importProduct) {
-        return importProductRepository.save(importProduct);
+        return null;
     }
+
+
 
     private ImportProductDto convertEntityToDto(ImportProduct importProduct) {
         return new ImportProductDto(
@@ -61,15 +65,16 @@ public class ImportProductServiceImpl implements ImportProductService {
     }
 
     private ImportProduct convertDtoToEntity(ImportProductDto importProductDto) {
-        ImportProduct importProduct = new ImportProduct();
-        importProduct.setId(importProductDto.getId());
-        importProduct.setImportDate(importProductDto.getImportDate());
-        importProduct.setTotalAmount(importProductDto.getTotalAmount());
-        importProduct.setStatus(importProductDto.getStatus());
-        // Assuming you have methods to fetch Supplier and Employee by their IDs
-        importProduct.setSupplier(supplierService.findById(importProductDto.getSupplierId()));
-        importProduct.setEmployee(employeeService.findById(importProductDto.getEmployeeId()));
-        return importProduct;
+        // ImportProduct importProduct = new ImportProduct();
+        // importProduct.setId(importProductDto.getId());
+        // importProduct.setImportDate(importProductDto.getImportDate());
+        // importProduct.setTotalAmount(importProductDto.getTotalAmount());
+        // importProduct.setStatus(importProductDto.getStatus());
+        // // Assuming you have methods to fetch Supplier and Employee by their IDs
+        // importProduct.setSupplier(supplierService.findById(importProductDto.getSupplierId()));
+        // importProduct.setEmployee(employeeService.findById(importProductDto.getEmployeeId()));
+        // return importProduct;
+        return null;
     }
 
    
