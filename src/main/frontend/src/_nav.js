@@ -75,8 +75,10 @@ const _nav = [
     icon: <CIcon icon={cilStar} customClassName="nav-icon" />,
   },
   {
-    component: CNavTitle,
-    name: 'Theme',
+    component: CNavItem,
+    name: 'Hóa đơn',
+    to: '/bills',
+    icon: <CIcon icon={cilStar} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
