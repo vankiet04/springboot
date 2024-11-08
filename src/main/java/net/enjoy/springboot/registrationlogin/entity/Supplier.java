@@ -32,5 +32,5 @@ public class Supplier {
     private String phoneNumber; // Số điện thoại (sdt)
 
     @Column(nullable = false)
-    private String status; // Trạng thái (trangthai)
+    private int status; // Trạng thái (trangthai)
 }

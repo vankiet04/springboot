@@ -64,6 +64,12 @@ const _nav = [
   },
   {
     component: CNavItem,
+    name: 'Khách hàng',
+    to: '/customer',
+    icon: <CIcon icon={cilStar} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
     name: 'Nhà cung cấp',
     to: '/supplier',
     icon: <CIcon icon={cilStar} customClassName="nav-icon" />,

@@ -42,8 +42,20 @@ public class ProductServiceImpl implements ProductService {
 
     // findProduct base on size, colo
     @Override
-    public Page<ProductDto> searchProduct(Long sizeId, Long colorId, Long categoryId, long minPrice, long maxPrice, Pageable pageable, String name) {
+    public Page<ProductDto> searchProduct(Long sizeId, Long colorId, Long categoryId, Long minPrice, Long maxPrice, Pageable pageable, String name) {
         Page<Product> products = productsRepository.findbyFilter(sizeId, colorId, categoryId, minPrice, maxPrice, pageable, name);
+        return products.map(this::convertEntityToDto);
+    }
+
+    @Override
+    public Page<ProductDto> searchProductPriceAsc(Long sizeId, Long colorId, Long categoryId, Long minPrice, Long maxPrice, Pageable pageable, String name) {
+        Page<Product> products = productsRepository.findbyFilterPriceAsc(sizeId, colorId, categoryId, minPrice, maxPrice, pageable, name);
+        return products.map(this::convertEntityToDto);
+    }
+
+    @Override
+    public Page<ProductDto> searchProductPriceDesc(Long sizeId, Long colorId, Long categoryId, Long minPrice, Long maxPrice, Pageable pageable, String name) {
+        Page<Product> products = productsRepository.findbyFilterPriceDesc(sizeId, colorId, categoryId, minPrice, maxPrice, pageable, name);
         return products.map(this::convertEntityToDto);
     }
 
@@ -102,7 +114,6 @@ public class ProductServiceImpl implements ProductService {
         // chi lay san pham có status = 1
         Page<Product> products = productsRepository.findAllByStatus(pageable);
 
-       
         return products.map(this::convertEntityToDto).stream().collect(Collectors.toList());
     }
 

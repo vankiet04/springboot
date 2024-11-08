@@ -31,7 +31,7 @@ public class API_CategoryController {
     public Category updateCategory(@PathVariable Long id, @RequestBody CategoryDto categoryDto) {
         System.out.println("ID tôi đang sửa thể loại _____: " + id);    
      Category category = categoryService.findById(id);
-        category.setCategoryName(categoryDto.getName());
+        category.setCategoryName(categoryDto.getCategoryName());
         return categoryService.updateCategoryAPI(category);
     }
 

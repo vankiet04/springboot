@@ -35,7 +35,7 @@ class CategoryTable extends React.Component {
       editCategory: null,
       newCategory: {
         id: '',
-        name: '',
+        categoryName: '',
       },
     }
   }
@@ -49,8 +49,11 @@ class CategoryTable extends React.Component {
     fetch(API_URL)
       .then((response) => response.json())
       .then((data) => {
+        // in ra categories
+        alert("Danh sách thể loại: " + JSON.stringify(data));
         const pageLimit = Math.ceil(data.length / this.state.perPage)
         this.setState({ categories: data, pageLimit })
+        console.log("Danh sach the loai: " + categories)
       })
       .catch((error) => {
         console.error('Lỗi fetch categories:', error)
@@ -68,7 +71,7 @@ class CategoryTable extends React.Component {
       editCategory: category,
       newCategory: category || {
         id: '',
-        name: '',
+        categoryName: '',
       },
     }))
   }
@@ -80,18 +83,18 @@ class CategoryTable extends React.Component {
         ...prevState.newCategory,
         [name]: value,
       },
-    }))
+    }));
   }
 
   handleSave = () => {
-    const { newCategory, editCategory } = this.state
+    const { newCategory, editCategory } = this.state;
     const categoryData = {
       id: newCategory.id,
-        name: newCategory.name,
+      categoryName: newCategory.categoryName,
       
-    }
+    };
 
-    if (newCategory.name === '') {
+    if (newCategory.categoryName === '') {
       alert('Vui lòng nhập tên thể loại')
       return
     }
@@ -162,13 +165,15 @@ class CategoryTable extends React.Component {
                 alert('Có lỗi xảy ra khi xóa thể loại')
                 console.error('Lỗi xóa thể loại:', response)
             }
-
-        }
-        )
+        })
+        .catch((error) => {
+          alert('Có lỗi xảy ra khi xóa thể loại');
+          console.error('Lỗi xóa thể loại:', error);
+        });
   }
 
   render() {
-    const { categories, currentPage, pageLimit, showModal, newCategory, editCategory } = this.state
+    const { categories, currentPage, pageLimit, showModal, newCategory, editCategory } = this.state;
 
     return (
       <CRow>
@@ -190,16 +195,16 @@ class CategoryTable extends React.Component {
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {categories.map((category, index) => (
-                    <CTableRow key={index}>
-                      <CTableDataCell>{category.id}</CTableDataCell>
-                      <CTableDataCell>{category.name}</CTableDataCell>
-                      <CTableDataCell>
-                        <CButton color="warning" onClick={() => this.toggleModal(category)}>Sửa</CButton>
-                        <CButton color="danger" onClick={() => this.handleDelete(category.id)}>Xóa</CButton>
-                      </CTableDataCell>
-                    </CTableRow>
-                  ))}
+                {categories.map((category, index) => (
+          <CTableRow key={index}>
+            <CTableDataCell>{category.id}</CTableDataCell>
+            <CTableDataCell>{category.categoryName}</CTableDataCell>
+            <CTableDataCell>
+              <CButton color="warning" onClick={() => this.toggleModal(category)}>Sửa</CButton>
+              <CButton color="danger" onClick={() => this.handleDelete(category.id)}>Xóa</CButton>
+            </CTableDataCell>
+          </CTableRow>
+        ))}
                 </CTableBody>
               </CTable>
               <Pagination
@@ -224,8 +229,8 @@ class CategoryTable extends React.Component {
                 <CFormInput
                   type="text"
                   id="categoryName"
-                  name="name"
-                  value={newCategory.name}
+                  name="categoryName"
+                  value={newCategory.categoryName}
                   onChange={this.handleInputChange}
                 />
               </div>

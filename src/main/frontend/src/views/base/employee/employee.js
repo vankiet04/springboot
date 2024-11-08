@@ -5,6 +5,11 @@ import {
   CCardBody,
   CCardHeader,
   CCol,
+  CForm,
+  CFormInput,
+  CFormLabel,
+  CFormTextarea,
+  CFormSelect,
   CRow,
   CTable,
   CTableBody,
@@ -12,8 +17,14 @@ import {
   CTableHead,
   CTableHeaderCell,
   CTableRow,
+  CModal,
+  CModalHeader,
+  CModalTitle,
+  CModalBody,
+  CModalFooter,
 } from '@coreui/react'
 import Pagination from '@mui/material/Pagination'
+import employeeService from './employeeService'
 
 class EmployeeTable extends React.Component {
   constructor(props) {
@@ -23,35 +34,199 @@ class EmployeeTable extends React.Component {
       currentPage: 1,
       pageLimit: 0,
       perPage: 5,
+      editEmployee: null,
+      showModal: false,
+      newEmployee: {
+        id: '',
+        fullName: '',
+        birthDate: '',
+        phoneNumber: '',
+        email: '',
+        gender: '',
+      },
     }
   }
 
   componentDidMount() {
+    employeeService.getEmployee()
+    .then((response) => {
+      const { data } = response;
+      const pageLimit = Math.ceil(data.length / this.state.perPage);
+      this.setState({ pageLimit });
+    })
+    .catch((error) => {
+      console.error('Lỗi fetch employees:', error);
+    });
     this.fetchEmployees(1)
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.currentPage !== this.state.currentPage) {
+      this.fetchEmployees(this.state.currentPage);
+    }
+  }
+
   fetchEmployees(page) {
-    const API_URL = 'http://localhost:8080/api/employees/getall'
-    fetch(API_URL)
-      .then((response) => response.json())
-      .then((data) => {
-        const pageLimit = Math.ceil(data.length / this.state.perPage)
-          this.setState({ employees: data, pageLimit })
-          alert("Danh sach nhan vien: " + data)
-          console.log("Danh sach nhan vien: " + data)
+    employeeService.getEmployeeAtPage(page)
+      .then((response) => {
+        const { data } = response;
+        this.setState({ employees: data });
       })
       .catch((error) => {
-        console.error('Lỗi fetch employees:', error)
-      })
+        console.error('Lỗi fetch employees:', error);
+      });
   }
 
   handlePageChange = (event, value) => {
-    this.setState({ currentPage: value })
-    this.fetchEmployees(value)
+    this.setState({ currentPage: value });
+  }
+
+  toggleModal = (employee = null) => {
+    this.setState((prevState) => ({
+      showModal: !prevState.showModal,
+      editEmployee: employee,
+      newEmployee: employee || {
+        id: '',
+        fullName: '',
+        birthDate: '',
+        phoneNumber: '',
+        email: '',
+        gender: '',
+      },
+    }))
+  }
+  handleInputChange = (e) => {
+    const { name, value } = e.target
+      this.setState((prevState) => ({
+        newEmployee: {
+          ...prevState.newEmployee,
+          [name]: value,
+        },
+      }));
+  }
+
+  handleSave = () => {
+    const { newEmployee, editEmployee } = this.state;
+    const employeeData = {
+      id: 9999,
+      fullName: newEmployee.fullName,
+      birthDate: newEmployee.birthDate,
+      phoneNumber: newEmployee.phoneNumber,
+      email: newEmployee.email,
+      gender: newEmployee.gender,
+      status: 1,
+    };
+    if(newEmployee.fullName == ''){
+      alert("Vui lòng nhập họ tên")
+      return
+    }
+    if(newEmployee.birthDate == ''){
+      alert("Vui lòng nhập ngày sinh")
+      return
+    }
+    if(newEmployee.phoneNumber == ''){
+      alert("Vui lòng nhập số điện thoại")
+      return
+    }
+    if(newEmployee.email == ''){
+      alert("Vui lòng nhập email")
+      return
+    }
+    if(newEmployee.gender == ''){
+      alert("Vui lòng nhập giới tính")
+      return
+    }
+    
+    if (editEmployee) {
+
+      alert("Sửa thông tin nhân viên: " +  JSON.stringify(employeeData))
+      console.log('Sửa thông tin nhân viên', employeeData)
+
+     const API_URL_SUA = 'http://localhost:8080/api/employees';
+      fetch(`${API_URL_SUA}/update/${editEmployee.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(employeeData),
+      })
+        .then((response) => {
+          console.log('data trả về nè', response)
+          if (response.ok) {
+            alert('Sửa thông tin nhân viên thành công rồi nè')
+            this.toggleModal()
+            this.fetchEmployees(this.state.currentPage)
+          } else {
+            alert('Có lỗi xảy ra khi sửa thông tin ở trong')
+            console.error('Lỗi sửa thông tin:', response)
+          }
+        })
+        .catch((error) => {
+          alert('Có lỗi xảy ra khi sửa thông tin')
+          console.error('Lỗi sửa thông tin:', error
+          )
+        }
+      )
+    }else{
+      alert('Thêm thông tin nhân viên' + JSON.stringify(employeeData))
+      console.log('Thêm thông tin nhân viên', employeeData)
+
+      const API_URL = 'http://localhost:8080/api/employees';
+      fetch(`${API_URL}/add`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(employeeData),
+      })
+        .then((response) => {
+          console.log('data trả về nè', response)
+          if (response.ok) {
+            alert('Thêm thông tin nhân viên thành công rồi nè')
+            this.toggleModal()
+            this.fetchEmployees(this.state.currentPage)
+          } else {
+            alert('Có lỗi xảy ra khi thêm thông tin nhân viên ở trong')
+            console.error('Lỗi thêm thông tin nhân viên:', response)
+          }
+        })
+        .catch((error) => {
+          alert('Có lỗi xảy ra khi thêm thông tin nhân viên')
+          console.error('Lỗi thêm thông tin nhân viên:', error)
+        })
+    }
+  }
+  handleDelete = (employeeId) => {
+    const API_URL = 'http://localhost:8080/api/employees';
+    fetch(`${API_URL}/updateStatus/${employeeId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ status: 0 }), // Đảm bảo gửi đúng dữ liệu
+    })
+      .then((response) => {
+        console.log('Response:', response); // Thêm log để kiểm tra phản hồi
+        if (response.ok) {
+          alert('Xóa thông tin nhân viên thành công rồi nè');
+          this.fetchEmployees(this.state.currentPage);
+        } else {
+          alert('Có lỗi xảy ra khi xóa thông tin nhân viên');
+          console.error('Lỗi xóa thông tin nhân viên:', response);
+        }
+      })
+      .catch((error) => {
+        alert('Có lỗi xảy ra khi xóa thông tin nhân viên');
+        console.error('Lỗi xóa thông tin nhân viên:', error);
+      });
   }
 
   render() {
-    const { employees, currentPage, pageLimit } = this.state
+    const { employees, currentPage, pageLimit, showModal, newEmployee } = this.state;
+    if (!Array.isArray(employees)) {
+      console.error('Employees is not an array:', employees)
+      return null
+    }
 
     return (
       <CRow>
@@ -59,6 +234,9 @@ class EmployeeTable extends React.Component {
           <CCard>
             <CCardHeader>
               Employee Information
+              <CButton color="primary" className="float-end" onClick={() => this.toggleModal()}>
+                Thêm nhân viên
+              </CButton>
             </CCardHeader>
             <CCardBody>
               <CTable>
@@ -83,8 +261,8 @@ class EmployeeTable extends React.Component {
                       <CTableDataCell>{employee.phoneNumber}</CTableDataCell>
                       <CTableDataCell>{employee.email}</CTableDataCell>
                       <CTableDataCell>
-                        <CButton color="warning">Sửa</CButton>
-                        <CButton color="danger">Xóa</CButton>
+                        <CButton color="warning" onClick={() => this.toggleModal(employee)}>Sửa</CButton>
+                        <CButton color="danger" onClick={() => this.handleDelete(employee.id)}>Xóa</CButton>
                       </CTableDataCell>
                     </CTableRow>
                   ))}
@@ -100,9 +278,53 @@ class EmployeeTable extends React.Component {
             </CCardBody>
           </CCard>
         </CCol>
+        <CModal visible={showModal} onClose={() => this.toggleModal()}>
+          <CModalHeader>
+            <CModalTitle>{this.state.editEmployee ? 'Chỉnh sửa thông tin nhân viên' : 'Thêm thông tin nhân viên'}</CModalTitle>
+          </CModalHeader>
+          <CModalBody>
+            <CForm>
+              {/* <div className="mb-3">
+                <CFormLabel htmlFor="productId">ID</CFormLabel>
+                <CFormInput type="text" id="productId" name="id" value={newProduct.id} onChange={this.handleInputChange} />
+              </div> */}
+              <div className="mb-3">
+                <CFormLabel htmlFor="employeeName">Tên nhân viên</CFormLabel>
+                <CFormInput type="text" id="employeeName" name="fullName" value={newEmployee.fullName} onChange={this.handleInputChange} />
+              </div>
+              <div className="mb-3">
+                <CFormLabel htmlFor="employeebirthDate">Ngày sinh</CFormLabel>
+                <CFormInput type="text" id="employeebirthDate" name="birthDate" value={newEmployee.birthDate} onChange={this.handleInputChange} />
+              </div>
+              <div className="mb-3">
+                <CFormLabel htmlFor="employeePhoneNumber">Số điện thoại</CFormLabel>
+                <CFormInput type="text" id="employeePhoneNumber" name="phoneNumber" value={newEmployee.phoneNumber} onChange={this.handleInputChange} />
+              </div>
+              <div className="mb-3">
+                <CFormLabel htmlFor="employeeEmail">Email</CFormLabel>
+                <CFormInput type="text" id="employeeEmail" name="email" value={newEmployee.email} onChange={this.handleInputChange} />
+              </div>
+              <div className="mb-3">
+                <CFormLabel htmlFor="employeeGender">Giới tính</CFormLabel>
+                <CFormSelect id="employeeGender" name="gender" value={this.state.newEmployee.gender} onChange={this.handleInputChange}>
+                <option value="">Chọn giới tính</option>
+                  <option value="0">Nam</option>
+                  <option value="1">Nữ</option>
+                </CFormSelect>
+              </div>
+
+            </CForm>
+          </CModalBody>
+          <CModalFooter>
+            {/* <CButton color="secondary" onClick={() => this.toggleModal()}>
+              Đóng
+            </CButton> */}
+            <CButton color="primary" onClick={this.handleSave}>{this.state.editEmployee ? 'Cập nhật' : 'Lưu'}</CButton>
+          </CModalFooter>
+        </CModal>
       </CRow>
     )
   }
 }
 
-export default EmployeeTable
+export default EmployeeTable;
