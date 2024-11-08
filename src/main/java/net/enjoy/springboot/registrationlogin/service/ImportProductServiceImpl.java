@@ -56,8 +56,7 @@ public class ImportProductServiceImpl implements ImportProductService {
                 importProduct.getSupplier().getId(),
                 importProduct.getEmployee().getId(),
                 importProduct.getTotalAmount(),
-                importProduct.getStatus()
-        );
+                importProduct.getStatus());
     }
 
     private ImportProduct convertDtoToEntity(ImportProductDto importProductDto) {
@@ -72,6 +71,4 @@ public class ImportProductServiceImpl implements ImportProductService {
         return importProduct;
     }
 
-   
- 
 }

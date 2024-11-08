@@ -13,12 +13,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface EmployeeRepository extends PagingAndSortingRepository<Employee, Long> {
     @Query("SELECT e FROM Employee e WHERE e.status = 1")
-     Page<Employee> findAllByStatus(Pageable pageable);
+    Page<Employee> findAllByStatus(Pageable pageable);
 
-     @Query("SELECT e FROM Employee e")
+    @Query("SELECT e FROM Employee e")
     List<Employee> findEmployeez();
 
-    Employee findById(Long id);
-
     Employee save(Employee employee);
+
+    Employee findById(Long id);
 }
