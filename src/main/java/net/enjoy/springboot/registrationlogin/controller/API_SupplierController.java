@@ -1,5 +1,4 @@
 package net.enjoy.springboot.registrationlogin.controller;
-
 import net.enjoy.springboot.registrationlogin.dto.SupplierDto;
 import net.enjoy.springboot.registrationlogin.service.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +17,14 @@ public class API_SupplierController {
     private SupplierService supplierService;
 
     @GetMapping("/getall")
-    public ResponseEntity<List<SupplierDto>> getAllSuppliers() {
-        List<SupplierDto> suppliers = supplierService.findAllSuppliers();
-        return new ResponseEntity<>(suppliers, HttpStatus.OK);
+    public List<SupplierDto> getAllSuppliers() {
+        return supplierService.findAllSuppliers();
+        
+    }
+
+    @GetMapping("/getSupplierPage")
+    public List<SupplierDto> getSupplierWithPage(@RequestParam(defaultValue = "1") int page) {
+        return supplierService.findAllSupplierWithPage(page);
     }
 
     @GetMapping("/{id}")

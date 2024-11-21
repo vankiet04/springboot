@@ -48,28 +48,39 @@ class EmployeeTable extends React.Component {
   }
 
   componentDidMount() {
+    employeeService.getEmployee()
+    .then((response) => {
+      const { data } = response;
+      const pageLimit = Math.ceil(data.length / this.state.perPage);
+      this.setState({ pageLimit });
+    })
+    .catch((error) => {
+      console.error('Lỗi fetch employees:', error);
+    });
     this.fetchEmployees(1)
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.currentPage !== this.state.currentPage) {
+      this.fetchEmployees(this.state.currentPage);
+    }
+  }
 
   fetchEmployees(page) {
     employeeService.getEmployeeAtPage(page)
       .then((response) => {
         const { data } = response;
-        // Lọc các khách hàng có status = 1
-        const activeEmployees = data.filter(employee => employee.status === 1);
-        const pageLimit = Math.ceil(activeEmployees.length / this.state.perPage);
-        this.setState({ employees: activeEmployees, pageLimit });
+        this.setState({ employees: data });
       })
       .catch((error) => {
-        console.error('Lỗi fetch customers:', error);
+        console.error('Lỗi fetch employees:', error);
       });
   }
 
   handlePageChange = (event, value) => {
-    this.setState({ currentPage: value })
-    this.fetchEmployees(value)
+    this.setState({ currentPage: value });
   }
+
   toggleModal = (employee = null) => {
     this.setState((prevState) => ({
       showModal: !prevState.showModal,
@@ -91,11 +102,11 @@ class EmployeeTable extends React.Component {
           ...prevState.newEmployee,
           [name]: value,
         },
-      }))
+      }));
   }
 
   handleSave = () => {
-    const { newEmployee, editEmployee } = this.state
+    const { newEmployee, editEmployee } = this.state;
     const employeeData = {
       id: 9999,
       fullName: newEmployee.fullName,
@@ -104,7 +115,7 @@ class EmployeeTable extends React.Component {
       email: newEmployee.email,
       gender: newEmployee.gender,
       status: 1,
-    }
+    };
     if(newEmployee.fullName == ''){
       alert("Vui lòng nhập họ tên")
       return
@@ -211,8 +222,7 @@ class EmployeeTable extends React.Component {
   }
 
   render() {
-    const { employees, currentPage, pageLimit, showModal, newEmployee } = this.state
-    // Safeguard to ensure products is always an array
+    const { employees, currentPage, pageLimit, showModal, newEmployee } = this.state;
     if (!Array.isArray(employees)) {
       console.error('Employees is not an array:', employees)
       return null
@@ -317,4 +327,4 @@ class EmployeeTable extends React.Component {
   }
 }
 
-export default EmployeeTable
+export default EmployeeTable;

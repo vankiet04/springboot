@@ -15,5 +15,5 @@ public class SupplierDto {
     private String address; // Địa chỉ (diachi)
     private String email; // Email (email)
     private String phoneNumber; // Số điện thoại (sdt)
-    private String status; // Trạng thái (trangthai)
+    private int status; // Trạng thái (trangthai)
 }
