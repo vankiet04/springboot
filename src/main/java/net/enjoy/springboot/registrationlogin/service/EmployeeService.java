@@ -11,4 +11,5 @@ public interface EmployeeService {
     EmployeeDto findEmployeeById(Long id);
     EmployeeDto saveEmployee(EmployeeDto employeeDto);
     Employee updateEmployee(Employee employee);
+    public List<EmployeeDto> findAllEmployeeWithPage(int page);
 }

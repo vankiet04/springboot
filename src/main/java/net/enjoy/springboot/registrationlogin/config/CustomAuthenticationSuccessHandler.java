@@ -14,15 +14,14 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-			Authentication authentication)
+            Authentication authentication)
             throws IOException, jakarta.servlet.ServletException {
         Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
 
         if (roles.contains("ROLE_ADMIN")) {
-            response.sendRedirect("/admin");
-            System.out.println("ROLE_ADMIN nè");
-        } else if (roles.contains("ROLE_MEMBER")) {
             response.sendRedirect("/index");
+        } else if (roles.contains("ROLE_MEMBER")) {
+            response.sendRedirect("/home");
             System.out.println("ROLE_MEMBER nè");
         } else {
             response.sendRedirect("/default");

@@ -26,7 +26,9 @@ const Product = React.lazy(() => import('./views/base/product/product'))
 const Category = React.lazy(() => import('./views/base/category/category'))
 const ImportProduct = React.lazy(() => import('./views/base/importProduct/importProduct'))
 const Employee = React.lazy(() => import('./views/base/employee/employee'))
+const Customer = React.lazy(() => import('./views/base/customer/customer'))
 const Supplier = React.lazy(() => import('./views/base/supplier/supplier')) 
+const Bills = React.lazy(() => import('./views/base/bills/bills'))
 
 // Buttons
 const Buttons = React.lazy(() => import('./views/buttons/buttons/Buttons'))
@@ -107,8 +109,10 @@ const routes = [
   { path: '/product', name: 'Product', element: Product },
   { path: '/category', name: 'Category', element: Category },
   { path: '/importproduct', name: 'ImportProduct', element: ImportProduct },
+  { path: '/customer', name: 'Customer', element: Customer },
   { path: '/employee', name: 'Employee', element: Employee },
-  {path: '/supplier', name: 'Supplier', element: Supplier}
+  { path: '/supplier', name: 'Supplier', element: Supplier},
+  { path: '/bills', name: 'Bills', element: Bills},
   
 ]
 

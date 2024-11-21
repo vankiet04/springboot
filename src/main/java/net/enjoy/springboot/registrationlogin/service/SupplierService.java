@@ -9,7 +9,7 @@ public interface SupplierService {
     List<SupplierDto> findAllSuppliers();
     Supplier findById(Long id);
     SupplierDto findSupplierById(Long id);
-    
     SupplierDto saveSupplier(SupplierDto supplierDto);
     Supplier updateSupplier(Supplier supplier);
+    public List<SupplierDto> findAllSupplierWithPage(int page);
 }

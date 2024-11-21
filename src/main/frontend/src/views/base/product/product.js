@@ -299,7 +299,7 @@ class ProductTable extends React.Component {
                       <CTableDataCell>
                         {this.state.categories.map((category) => {
                           if (category.id === product.categoryId) {
-                            return category.name;
+                            return category.categoryName;
                           }
                           return null;
                         })}
@@ -353,7 +353,7 @@ class ProductTable extends React.Component {
                     <option value="">Chọn thể loại</option>
                     {this.state.categories.map((category) => (
                       <option key={category.id} value={category.id}>
-                        {category.name}
+                        {category.categoryName}
                       </option>
                     ))}
                   </CFormSelect>
