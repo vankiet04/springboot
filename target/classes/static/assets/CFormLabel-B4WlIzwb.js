@@ -1,5 +1,0 @@
-<<<<<<<< HEAD:target/classes/static/assets/CFormLabel-BVluRo9s.js
-import{r as t,_ as n,R as i,b as N,c as p,P as e}from"./index-BPND6ThA.js";var r=t.forwardRef(function(s,l){var m=s.children,c=s.className,a=s.customClassName,o=n(s,["children","className","customClassName"]);return i.createElement("label",N({className:a??p("form-label",c)},o,{ref:l}),m)});r.propTypes={children:e.node,className:e.string,customClassName:e.string};r.displayName="CFormLabel";export{r as C};
-========
-import{r as t,_ as n,R as i,b as N,c as p,P as e}from"./index-CVA_rVvw.js";var r=t.forwardRef(function(s,l){var m=s.children,c=s.className,a=s.customClassName,o=n(s,["children","className","customClassName"]);return i.createElement("label",N({className:a??p("form-label",c)},o,{ref:l}),m)});r.propTypes={children:e.node,className:e.string,customClassName:e.string};r.displayName="CFormLabel";export{r as C};
->>>>>>>> 316f64db9919abd85ccd50294bf86af40e088543:target/classes/static/assets/CFormLabel-B4WlIzwb.js
