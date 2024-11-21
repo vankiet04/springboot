@@ -32,22 +32,32 @@ class ProductTable extends React.Component {
     super(props)
     this.state = {
       products: [],
-      categories: [], 
+      categories: [],
       currentPage: 1,
       pageLimit: 0,
       perPage: 5,
       showModal: false,
+      showDetailModal: false,
       editProduct: null,
+      selectedProduct: null,
+      showAddDetailModal: false,
       newProduct: {
-        img: null, // Lưu trữ tệp hình ảnh
+        img: null,
         id: '',
         name: '',
         description: '',
         categoryId: '',
       },
+      newDetail: {
+        color: '',
+        size: '',
+        price: 0,
+        quantity: 0,
+      },
+      productDetails: [],
     }
   }
-
+  
   componentDidMount() {
     // GET ALL PRODUCTS TO GET SIZE OF PRODUCTS
     ProductService.getProducts()
@@ -82,6 +92,24 @@ class ProductTable extends React.Component {
         console.error('Lỗi fetch products:', e)
       })
   }
+
+  fetchProductDetails(productId) {
+    const API_URL = `http://localhost:8080/api/products/${productId}/details`
+    fetch(API_URL)
+      .then((response) => response.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          this.setState({ productDetails: data })
+        } else {
+          console.error('Dữ liệu trả về không phải là mảng:', data)
+          this.setState({ productDetails: [] })
+        }
+      })
+      .catch((error) => {
+        console.error('Lỗi fetch product details:', error)
+        this.setState({ productDetails: [] })
+      })
+  }
   fetchCategories() {
     const API_URL = 'http://localhost:8080/api/categories/getall';
     fetch(API_URL)
@@ -114,12 +142,22 @@ class ProductTable extends React.Component {
       },
     }))
   }
+  toggleDetailModal = (product = null) => {
+    if (product) {
+      this.fetchProductDetails(product.id)
+    }
+    this.setState((prevState) => ({
+      showDetailModal: !prevState.showDetailModal,
+      selectedProduct: product,
+    }))
+  }
 
   handleInputChange = (e) => {
     const { name, value, files } = e.target
     if (name === 'img' && files.length > 0) {
       const reader = new FileReader()
       reader.onloadend = () => {
+    
         this.setState((prevState) => ({
           newProduct: {
             ...prevState.newProduct,
@@ -255,13 +293,19 @@ class ProductTable extends React.Component {
       });
   };
 
+  toggleAddDetailModal = () => {
+    this.setState((prevState) => ({
+      showAddDetailModal: !prevState.showAddDetailModal,
+      newDetail: {
+        color: '',
+        size: '',
+        price: 0,
+        quantity: 0,
+      },
+    }))
+  }
   render() {
-    const { products, currentPage, pageLimit, showModal, newProduct } = this.state
-    // Safeguard to ensure products is always an array
-    if (!Array.isArray(products)) {
-      console.error('Products is not an array:', products)
-      return null
-    }
+    const { newDetail, showAddDetailModal ,products, currentPage, pageLimit, showModal, showDetailModal, newProduct, selectedProduct, productDetails } = this.state
   
     return (
       <CRow>
@@ -277,6 +321,7 @@ class ProductTable extends React.Component {
               <CTable>
                 <CTableHead>
                   <CTableRow>
+
                     <CTableHeaderCell>Hình ảnh</CTableHeaderCell>
                     <CTableHeaderCell>ID</CTableHeaderCell>
                     <CTableHeaderCell>Tên sản phẩm</CTableHeaderCell>
@@ -294,19 +339,18 @@ class ProductTable extends React.Component {
                       <CTableDataCell>{product.id || 'N/A'}</CTableDataCell>
                       <CTableDataCell>{product.name || 'N/A'}</CTableDataCell>
                       <CTableDataCell>{product.description || 'N/A'}</CTableDataCell>
-
-                      {/* hien thi ten categories */}
                       <CTableDataCell>
                         {this.state.categories.map((category) => {
                           if (category.id === product.categoryId) {
-                            return category.name;
+                            return category.name
                           }
-                          return null;
+                          return null
                         })}
                       </CTableDataCell>
                       <CTableDataCell>
                         <CButton color="warning" onClick={() => this.toggleModal(product)}>Sửa</CButton>
                         <CButton color="danger" onClick={() => this.handleDelete(product.id)}>Xóa</CButton>
+                        <CButton color="info" onClick={() => this.toggleDetailModal(product)}>Chi tiết</CButton>
                       </CTableDataCell>
                     </CTableRow>
                   ))}
@@ -333,10 +377,6 @@ class ProductTable extends React.Component {
                 <CFormLabel htmlFor="productImage">Hình ảnh</CFormLabel>
                 <CFormInput type="file" id="productImage" name="img" onChange={this.handleInputChange} />
               </div>
-              {/* <div className="mb-3">
-                <CFormLabel htmlFor="productId">ID</CFormLabel>
-                <CFormInput type="text" id="productId" name="id" value={newProduct.id} onChange={this.handleInputChange} />
-              </div> */}
               <div className="mb-3">
                 <CFormLabel htmlFor="productName">Tên sản phẩm</CFormLabel>
                 <CFormInput type="text" id="productName" name="name" value={newProduct.name} onChange={this.handleInputChange} />
@@ -347,7 +387,6 @@ class ProductTable extends React.Component {
               </div>
               <div className="mb-3">
                 <CFormLabel htmlFor="categoryId">Thể loại</CFormLabel>
-                {/* kiem tra categorirs khac rong */}
                 {this.state.categories.length > 0 && (
                   <CFormSelect id="categoryId" name="categoryId" value={newProduct.categoryId} onChange={this.handleInputChange}>
                     <option value="">Chọn thể loại</option>
@@ -362,10 +401,94 @@ class ProductTable extends React.Component {
             </CForm>
           </CModalBody>
           <CModalFooter>
-            {/* <CButton color="secondary" onClick={() => this.toggleModal()}>
+            <CButton color="secondary" onClick={() => this.toggleModal()}>
               Đóng
-            </CButton> */}
-            <CButton color="primary" onClick={this.handleSave}>{this.state.editProduct ? 'Cập nhật' : 'Lưu'}</CButton>
+            </CButton>
+            <CButton color="primary" onClick={this.handleSave}>
+              {this.state.editProduct ? 'Cập nhật' : 'Lưu'}
+            </CButton>
+          </CModalFooter>
+        </CModal>
+  
+        <CModal visible={showDetailModal} onClose={() => this.toggleDetailModal()}>
+          <CModalHeader>
+            <CModalTitle>Chi tiết sản phẩm</CModalTitle>
+          </CModalHeader>
+          <CModalBody>
+            {selectedProduct && (
+              <>
+                <div className="mb-3">
+                  <img src={selectedProduct.img} alt={selectedProduct.name} className="product-image" />
+                </div>
+                <div className="mb-3">
+                  <CFormLabel>Tên sản phẩm</CFormLabel>
+                  <p>{selectedProduct.name}</p>
+                </div>
+                <CButton color="primary" className="mb-3" onClick={this.toggleAddDetailModal}>Thêm chi tiết sản phẩm</CButton>
+
+                <CTable>
+                  <CTableHead>
+                    <CTableRow>
+                      <CTableHeaderCell>ID</CTableHeaderCell>
+                      <CTableHeaderCell>Color</CTableHeaderCell>
+                      <CTableHeaderCell>Size</CTableHeaderCell>
+                      <CTableHeaderCell>Số lượng</CTableHeaderCell>
+                      <CTableHeaderCell>Giá bán</CTableHeaderCell>
+                    </CTableRow>
+                  </CTableHead>
+                  <CTableBody>
+                    {Array.isArray(productDetails) && productDetails.map((detail, index) => (
+                      <CTableRow key={index}>
+                        <CTableDataCell>{detail.id}</CTableDataCell>
+                        <CTableDataCell>{detail.color}</CTableDataCell>
+                        <CTableDataCell>{detail.size}</CTableDataCell>
+                        <CTableDataCell>{detail.quantity}</CTableDataCell>
+                        <CTableDataCell>{detail.price}</CTableDataCell>
+                      </CTableRow>
+                      
+                    ))}
+                  </CTableBody>
+                </CTable>
+              </>
+            )}
+          </CModalBody>
+          <CModalFooter>
+            <CButton color="secondary" onClick={() => this.toggleDetailModal()}>
+              Đóng
+            </CButton>
+          </CModalFooter>
+        </CModal>
+        <CModal visible={showAddDetailModal} onClose={this.toggleAddDetailModal}>
+          <CModalHeader>
+            <CModalTitle>Thêm chi tiết sản phẩm</CModalTitle>
+          </CModalHeader>
+          <CModalBody>
+            <CForm>
+              <div className="mb-3">
+                <CFormLabel htmlFor="detailColor">Màu</CFormLabel>
+                <CFormInput type="text" id="detailColor" name="color" value={newDetail.color} onChange={this.handleDetailInputChange} />
+              </div>
+              <div className="mb-3">
+                <CFormLabel htmlFor="detailSize">Kích cỡ</CFormLabel>
+                <CFormInput type="text" id="detailSize" name="size" value={newDetail.size} onChange={this.handleDetailInputChange} />
+              </div>
+              <div className="mb-3">
+                <CFormLabel htmlFor="detailPrice">Giá bán</CFormLabel>
+                <CFormInput type="number" id="detailPrice" name="price" value={newDetail.price} onChange={this.handleDetailInputChange} />
+              </div>
+              <div className="mb-3">
+                <CFormLabel htmlFor="detailQuantity">Số lượng</CFormLabel>
+                <CFormInput type="number" id="detailQuantity" name="quantity" value={newDetail.quantity} onChange={this.handleDetailInputChange} />
+              </div>
+            </CForm>
+          </CModalBody>
+          <CModalFooter>
+            <CButton color="secondary" onClick={this.toggleAddDetailModal}>
+              Đóng
+            </CButton>
+            <CButton color="primary" onClick={this.handleSaveDetail}>
+              Lưu
+            </CButton>
           </CModalFooter>
         </CModal>
       </CRow>

@@ -2,6 +2,10 @@ package net.enjoy.springboot.registrationlogin.controller;
 
 import net.enjoy.springboot.registrationlogin.dto.ProductDetailDto;
 import net.enjoy.springboot.registrationlogin.service.ProductDetailService;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +21,8 @@ public class API_ProductDetailController {
 
     @GetMapping("/{productId}/details")
     public ResponseEntity<ProductDetailDto> getProductDetails(@PathVariable Long productId) {
-        ProductDetailDto productDetail = productDetailService.findProductDetailByProductId(productId);
-        if (productDetail != null) {
-            return new ResponseEntity<>(productDetail, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+       ArrayList<ProductDetailDto> productDetailDtos = productDetailService.findListProductDetailByProductId(productId);
+         return new ResponseEntity(productDetailDtos, HttpStatus.OK);
+
     }
 }

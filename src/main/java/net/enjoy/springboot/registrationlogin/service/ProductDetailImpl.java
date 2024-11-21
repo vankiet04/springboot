@@ -5,6 +5,7 @@ import net.enjoy.springboot.registrationlogin.entity.ProductDetail;
 import net.enjoy.springboot.registrationlogin.repository.ProductsDetailRespository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,6 +49,18 @@ public class ProductDetailImpl implements ProductDetailService {
             return null;
         }
     }
+
+    @Override
+    public ArrayList<ProductDetailDto> findListProductDetailByProductId(Long productId) {
+        List<ProductDetail> productDetailList = productDetailRespository.findByProductId(productId);
+        ArrayList<ProductDetailDto> productDetailDtos = new ArrayList<>();
+        for (ProductDetail productDetail : productDetailList) {
+            productDetailDtos.add(convertEntityToDto(productDetail));
+        }
+        return productDetailDtos;
+    }
+
+    
 
    
 }
