@@ -47,17 +47,29 @@ class CustomerTable extends React.Component {
   }
 
   componentDidMount() {
+    customerService.getCustomer()
+      .then((response) => {
+        const { data } = response;
+        const pageLimit = Math.ceil(data.length / this.state.perPage);
+        this.setState({ pageLimit });
+      })
+      .catch((error) => {
+        console.error('Lỗi fetch customers:', error);
+      });
     this.fetchCustomers(1)
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.currentPage !== this.state.currentPage) {
+      this.fetchCustomers(this.state.currentPage);
+    }
   }
 
   fetchCustomers(page) {
     customerService.getCustomerAtPage(page)
       .then((response) => {
         const { data } = response;
-        // Lọc các khách hàng có status = 1
-        const activeCustomers = data.filter(customer => customer.status === 1);
-        const pageLimit = Math.ceil(activeCustomers.length / this.state.perPage);
-        this.setState({ customers: activeCustomers, pageLimit });
+        this.setState({ customers: data });
       })
       .catch((error) => {
         console.error('Lỗi fetch customers:', error);
@@ -66,7 +78,6 @@ class CustomerTable extends React.Component {
 
   handlePageChange = (event, value) => {
     this.setState({ currentPage: value });
-    this.fetchCustomers(value);
   }
 
   toggleModal = (customer = null) => {
@@ -214,7 +225,7 @@ class CustomerTable extends React.Component {
       console.error('Customers is not an array:', customers);
       return null;
     }
-
+  
     return (
       <CRow>
         <CCol>
@@ -304,6 +315,6 @@ class CustomerTable extends React.Component {
       </CRow>
     );
   }
-}
-
-export default CustomerTable;
+  }
+  
+  export default CustomerTable;

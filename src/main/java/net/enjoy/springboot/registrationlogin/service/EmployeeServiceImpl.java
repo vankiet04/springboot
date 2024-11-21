@@ -3,7 +3,6 @@ package net.enjoy.springboot.registrationlogin.service;
 import net.enjoy.springboot.registrationlogin.dto.EmployeeDto;
 import net.enjoy.springboot.registrationlogin.entity.Employee;
 import net.enjoy.springboot.registrationlogin.repository.EmployeeRepository;
-import net.enjoy.springboot.registrationlogin.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -31,7 +30,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeDto findEmployeeById(Long id) {
-       Employee employee = employeeRepository.findById(id);
+        Employee employee = employeeRepository.findById(id);
         return convertEntityToDto(employee);
     }
 
@@ -55,8 +54,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 employee.getPhoneNumber(),
                 employee.getEmail(),
                 employee.getStatus(),
-                employee.getGender()
-        );
+                employee.getGender());
     }
 
     private Employee convertDtoToEntity(EmployeeDto employeeDto) {
@@ -67,17 +65,16 @@ public class EmployeeServiceImpl implements EmployeeService {
                 employeeDto.getPhoneNumber(),
                 employeeDto.getEmail(),
                 employeeDto.getGender(),
-                employeeDto.getStatus()
-        );
-    }
-    @Override
-    public EmployeeDto findById(Long id) {
-        Employee employee = employeeRepository.findById(id);
-        return convertEntityToDto(employee);
+                employeeDto.getStatus());
     }
 
     @Override
-    public List<EmployeeDto> findAllEmployeeWithPage(int page){
+    public Employee findById(Long id) {
+        return employeeRepository.findById(id);
+    }
+
+    @Override
+    public List<EmployeeDto> findAllEmployeeWithPage(int page) {
         Pageable pageable = PageRequest.of(page - 1, 5);
         Page<Employee> employees = employeeRepository.findAllByStatus(pageable);
 

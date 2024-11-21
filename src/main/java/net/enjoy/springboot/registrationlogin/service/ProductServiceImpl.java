@@ -114,7 +114,6 @@ public class ProductServiceImpl implements ProductService {
         // chi lay san pham có status = 1
         Page<Product> products = productsRepository.findAllByStatus(pageable);
 
-       
         return products.map(this::convertEntityToDto).stream().collect(Collectors.toList());
     }
 
