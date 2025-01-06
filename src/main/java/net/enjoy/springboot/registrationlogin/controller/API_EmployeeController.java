@@ -6,10 +6,14 @@ import net.enjoy.springboot.registrationlogin.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-
+import org.springframework.security.core.Authentication;
+import net.enjoy.springboot.registrationlogin.entity.User;
+import net.enjoy.springboot.registrationlogin.service.UserService;
 @CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("/api/employees")
@@ -17,6 +21,9 @@ public class API_EmployeeController {
 
     @Autowired
     private EmployeeService employeeService;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/getall")
     public List<EmployeeDto> getAllEmployees() {
@@ -66,5 +73,24 @@ public class API_EmployeeController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/current")
+    public ResponseEntity<User> getCurrentEmployee() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Authentication authentication = new UsernamePasswordAuthenticationToken(auth.getPrincipal(), auth.getCredentials(), auth.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+    
+        if (authentication != null && authentication.isAuthenticated()) {
+            Object principal = authentication.getPrincipal();
+            if (principal instanceof UserDetails) {
+                String username = ((UserDetails) principal).getUsername();
+                User user = userService.findUserByEmail(username);
+                if (user != null) {
+                    return new ResponseEntity<>(user, HttpStatus.OK);
+                }
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

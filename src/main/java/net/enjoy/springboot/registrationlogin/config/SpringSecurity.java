@@ -61,7 +61,7 @@ public class SpringSecurity {
                                                 .requestMatchers("/api/products/add").permitAll()
                                                 .requestMatchers("/api/products/add/**").permitAll()
                                                 .requestMatchers("/api/products/getProductPage").permitAll()
-
+                                                .requestMatchers("/api/employees/**").permitAll()
                                                 .requestMatchers("/api/categories").permitAll()
                                                 .requestMatchers("/api/categories/getall").permitAll()
                                                 .requestMatchers("/api/employees").permitAll()
@@ -70,7 +70,8 @@ public class SpringSecurity {
                                                 .requestMatchers("/api/suppliers/getall").permitAll()
                                                 .requestMatchers("/api/importproduct").permitAll()
                                                 .requestMatchers("/api/importproduct/getall").permitAll()
-
+                                                .requestMatchers("/api/importproduct/*").permitAll()
+                                                .requestMatchers("/manifest.json").permitAll()
                                                 .requestMatchers("/css/**", "/js/**", "/img/**", "/assets/**",
                                                                 "/static/**")
                                                 .permitAll()

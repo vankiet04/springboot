@@ -8,12 +8,15 @@ import net.enjoy.springboot.registrationlogin.repository.ProductsDetailResposito
 import net.enjoy.springboot.registrationlogin.repository.ProductsRepository;
 import service.collector.exception.ProductNotFoundException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.PageRequest;
 @Service
@@ -21,6 +24,10 @@ public class ProductServiceImpl implements ProductService {
 
     ProductsRepository productsRepository;
     ProductsDetailRespository productsDetailRespository;
+
+    @Autowired  
+    ProductDetailService productDetailService;
+
 
     public ProductServiceImpl(ProductsRepository productsRepository, ProductsDetailRespository productsDetailRespository) {
         this.productsRepository = productsRepository;
@@ -136,4 +143,26 @@ public class ProductServiceImpl implements ProductService {
         return productsRepository.findById(id);
     }
 
+    @Override
+    public List<Map<String, Object>> getAllProductWithAllDetails() {
+        List<ProductDto> products = findAllProduct();
+        List<ProductDetailDto> productDetailDtos = productDetailService.getAllProductDetail();
+ 
+        HashMap<Long, List<ProductDetailDto>> productDetailsMap = new HashMap<>();
+        for (ProductDetailDto productDetailDto : productDetailDtos) {
+            if (productDetailsMap.containsKey(productDetailDto.getId())) {
+                productDetailsMap.get(productDetailDto.getId()).add(productDetailDto);
+            } else {
+                productDetailsMap.put(productDetailDto.getId(), List.of(productDetailDto));
+            }
+        }
+        List<Map<String, Object>> result = new java.util.ArrayList<>();
+        for (ProductDto product : products) {
+            Map<String, Object> productWithDetails = new HashMap<>();
+            productWithDetails.put("product", product);
+            productWithDetails.put("details", productDetailsMap.get(product.getId()));
+            result.add(productWithDetails);
+        }
+        return result;
+    }
 }

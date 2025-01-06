@@ -1,12 +1,13 @@
 package net.enjoy.springboot.registrationlogin.controller;
 
 import net.enjoy.springboot.registrationlogin.dto.ImportProductDto;
+import net.enjoy.springboot.registrationlogin.entity.ImportDetail;
 import net.enjoy.springboot.registrationlogin.service.ImportProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import net.enjoy.springboot.registrationlogin.dto.ImportDetailDto;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:8080")
@@ -33,10 +34,18 @@ public class API_ImportProductController {
         }
     }
 
+    @PostMapping("/importdetailandupdateproductdetail")
+    public ResponseEntity<?> ImportDetail(@RequestBody List<ImportDetailDto> importDetailDtos) {
+        for (ImportDetailDto importDetailDto : importDetailDtos) {
+            importProductService.saveImportDetail(importDetailDto);
+        }
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
     @PostMapping("/add")
-    public ResponseEntity<ImportProductDto> addImportProduct(@RequestBody ImportProductDto importProductDto) {
+    public ResponseEntity<Long> addImportProduct(@RequestBody ImportProductDto importProductDto) {
         ImportProductDto newImportProduct = importProductService.saveImportProduct(importProductDto);
-        return new ResponseEntity<>(newImportProduct, HttpStatus.CREATED);
+        return new ResponseEntity<>(newImportProduct.getId(), HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{id}")
@@ -62,4 +71,6 @@ public class API_ImportProductController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+ 
 }

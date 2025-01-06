@@ -1,7 +1,7 @@
 package net.enjoy.springboot.registrationlogin.service;
 
 import net.enjoy.springboot.registrationlogin.dto.ProductDetailDto;
-
+import net.enjoy.springboot.registrationlogin.entity.ProductDetail;
 import java.util.List;
 
 public interface ProductDetailService {
@@ -10,6 +10,9 @@ public interface ProductDetailService {
 
     public ProductDetailDto getProductDetail(Long idDetail);
 
+    public ProductDetail getProductDetailEntity(long idDetail);
     //API_ProductDetailController
     ProductDetailDto findProductDetailByProductId(Long productId);
+
+    List<ProductDetailDto> getAllProductDetail();
 }
