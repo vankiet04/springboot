@@ -16,4 +16,6 @@ public class ImportDetailDto {
     private Long importId; 
     private Long productDetailId; 
     private int quantity; 
+    private double importPrice;
+    private double exportPrice;
 }

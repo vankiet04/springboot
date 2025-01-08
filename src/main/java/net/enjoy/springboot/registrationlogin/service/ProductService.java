@@ -35,4 +35,5 @@ public interface ProductService {
     public Product updateProductAPI(Product product);
 
     public List<Map<String, Object>> getAllProductWithAllDetails();
+
 }

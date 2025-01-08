@@ -9,7 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import net.enjoy.springboot.registrationlogin.dto.ImportDetailDto;
 import java.util.List;
-
+import org.springframework.data.domain.Page;
+import net.enjoy.springboot.registrationlogin.dto.ImportDetailDtos;
 @CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("/api/importproduct")
@@ -38,6 +39,14 @@ public class API_ImportProductController {
     public ResponseEntity<?> ImportDetail(@RequestBody List<ImportDetailDto> importDetailDtos) {
         for (ImportDetailDto importDetailDto : importDetailDtos) {
             importProductService.saveImportDetail(importDetailDto);
+        }
+        // update so luong
+        for (ImportDetailDto importDetailDto : importDetailDtos) {
+            importProductService.updateSoLuong(importDetailDto);
+        }
+        // update gia = max export cuar cac gia xuat
+        for (ImportDetailDto importDetailDto : importDetailDtos) {
+            importProductService.updateGia(importDetailDto);
         }
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -72,5 +81,22 @@ public class API_ImportProductController {
         }
     }
 
- 
+    @GetMapping("/getAllImport")
+    public ResponseEntity<Page<ImportProductDto>> getAllImportProducts(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size) {
+        Page<ImportProductDto> importProducts = importProductService.findAllImportWithPage(page, size);
+        return new ResponseEntity<>(importProducts, HttpStatus.OK);
+    }
+
+    @GetMapping("/detail/{id}")
+    public ResponseEntity<List<ImportDetailDto>> getImportDetails(@PathVariable Long id) {
+        List<ImportDetailDtos> details = importProductService.findImportDetailsByImportId(id);
+        // for detail system out
+        for (ImportDetailDtos detail : details) {
+            System.out.println(detail.getTensanpham());
+        }
+        return new ResponseEntity(details, HttpStatus.OK);
+    }
+
 }

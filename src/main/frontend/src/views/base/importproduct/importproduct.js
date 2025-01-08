@@ -1,9 +1,11 @@
 import React from 'react'
+import moment from 'moment'
 import {
   CButton, CCard, CCardBody, CCardHeader, CCol, CRow,
   CTable, CTableBody, CTableDataCell, CTableHead, CTableHeaderCell, CTableRow,
   CModal, CModalHeader, CModalTitle, CModalBody, CModalFooter,
-  CForm, CFormSelect, CFormInput
+  CForm, CFormSelect, CFormInput,
+  CPagination, CPaginationItem
 } from '@coreui/react'
 
 class ImportProductTable extends React.Component {
@@ -13,6 +15,7 @@ class ImportProductTable extends React.Component {
       showAddModal: false,
       showViewModal: false,
       selectedImport: null,
+      importDetails: [],
       products: [],
       formData: {
         supplierId: '',
@@ -21,14 +24,55 @@ class ImportProductTable extends React.Component {
         importPrice: 0,
         exportPrice: 0,
         quantity: 1,
-        selectedProducts: []
-      }
+        selectedProducts: [],
+        importDetails: []
+      },
+      imports: [],
+      currentPage: 1,
+      totalPages: 1,
+      pageSize: 10
     }
   }
 
   componentDidMount() {
     this.fetchEmployees()
     this.fetchProducts()
+    this.fetchImports()
+  }
+
+  fetchImports = () => {
+    const { currentPage, pageSize } = this.state
+    fetch(`http://localhost:8080/api/importproduct/getAllImport?page=${currentPage-1}&size=${pageSize}`)
+      .then(res => res.json())
+      .then(data => {
+        this.setState({
+          imports: data.content,
+          totalPages: data.totalPages
+        })
+      })
+      .catch(error => {
+        console.error('Error fetching imports:', error)
+      })
+  }
+
+  fetchImportDetails = (importId) => {
+    fetch(`http://localhost:8080/api/importproduct/detail/${importId}`)
+      .then(res => res.json())
+      .then(data => {
+        this.setState({ 
+          importDetails: Array.isArray(data) ? data : [] 
+        });
+      })
+      .catch(error => {
+        console.error('Error fetching details:', error); 
+        this.setState({ importDetails: [] });
+      });
+  }
+
+  handlePageChange = (page) => {
+    this.setState({ currentPage: page }, () => {
+      this.fetchImports()
+    })
   }
 
   fetchProducts = () => {
@@ -73,11 +117,16 @@ class ImportProductTable extends React.Component {
     }))
   }
 
-  toggleViewModal = (importProduct = null) => {
-    this.setState(prev => ({
-      showViewModal: !prev.showViewModal,
-      selectedImport: importProduct
-    }))
+  toggleViewModal = (importItem = null) => {
+    this.setState({
+      showViewModal: !this.state.showViewModal, 
+      selectedImport: importItem,
+      importDetails: []
+    });
+    
+    if (importItem) {
+      this.fetchImportDetails(importItem.id);
+    }
   }
 
   handleAddProduct = () => {
@@ -153,26 +202,28 @@ class ImportProductTable extends React.Component {
         })
           .then((res) => res.json())
           .then((data) => {
-            console.log('Update success:', data)
+            console.log('Update thanh cong:', data)
+            alert('Thêm phiếu nhập thành công')
             this.toggleAddModal()
           })
           .catch((error) => console.error('Error updating detail:', error))
       }
     })
-    .catch((error) => console.error('Error adding import:', error))
+    .catch((error) => console.error('Loi add import:', error))
   }
 
   render() {
-    const { showAddModal, showViewModal, selectedImport, products } = this.state
-    const importProducts = [
-      {
-        id: 1,
-        importDate: '2024-01-01',
-        supplierId: 'SUP001',
-        employeeId: 'EMP001',
-        totalAmount: 1000000
-      }
-    ]
+    const { 
+      showAddModal, 
+      showViewModal, 
+      selectedImport, 
+      products, 
+      imports, 
+      currentPage, 
+      totalPages,
+      importDetails,
+      formData 
+    } = this.state;
 
     return (
       <CRow>
@@ -197,18 +248,15 @@ class ImportProductTable extends React.Component {
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {importProducts.map((importProduct, index) => (
+                  {imports.map((importItem, index) => (
                     <CTableRow key={index}>
-                      <CTableDataCell>{importProduct.id}</CTableDataCell>
-                      <CTableDataCell>{importProduct.importDate}</CTableDataCell>
-                      <CTableDataCell>{importProduct.supplierId}</CTableDataCell>
-                      <CTableDataCell>{importProduct.employeeId}</CTableDataCell>
-                      <CTableDataCell>{importProduct.totalAmount}</CTableDataCell>
+                      <CTableDataCell>{importItem.id}</CTableDataCell>
+                      <CTableDataCell>{moment(importItem.importDate).format('DD/MM/YYYY HH:mm')}</CTableDataCell>
+                      <CTableDataCell>{importItem.supplierId}</CTableDataCell>
+                      <CTableDataCell>{importItem.employeeId}</CTableDataCell>
+                      <CTableDataCell>{importItem.totalAmount.toLocaleString('vi-VN')} VNĐ</CTableDataCell>
                       <CTableDataCell>
-                        <CButton
-                          color="info"
-                          onClick={() => this.toggleViewModal(importProduct)}
-                        >
+                        <CButton color="info" onClick={() => this.toggleViewModal(importItem)}>
                           Xem phiếu
                         </CButton>
                         <CButton color="danger" className="ms-2">
@@ -219,6 +267,18 @@ class ImportProductTable extends React.Component {
                   ))}
                 </CTableBody>
               </CTable>
+
+              <CPagination className="mt-3 justify-content-center">
+                {[...Array(totalPages)].map((_, index) => (
+                  <CPaginationItem
+                    key={index + 1}
+                    active={currentPage === index + 1}
+                    onClick={() => this.handlePageChange(index + 1)}
+                  >
+                    {index + 1}
+                  </CPaginationItem>
+                ))}
+              </CPagination>
             </CCardBody>
           </CCard>
         </CCol>
@@ -233,12 +293,10 @@ class ImportProductTable extends React.Component {
               <CFormSelect
                 className="mb-3"
                 label="Nhà cung cấp"
-                value={this.state.formData.supplierId}
-                onChange={(e) =>
-                  this.setState({
-                    formData: { ...this.state.formData, supplierId: e.target.value },
-                  })
-                }
+                value={formData.supplierId}
+                onChange={(e) => this.setState({
+                  formData: { ...formData, supplierId: e.target.value }
+                })}
               >
                 <option value="">Chọn nhà cung cấp</option>
                 <option value="1">Nhà cung cấp 1</option>
@@ -247,11 +305,11 @@ class ImportProductTable extends React.Component {
               <CFormSelect
                 className="mb-3"
                 label="Nhân viên"
-                value={this.state.formData.employeeId || ''}
+                value={formData.employeeId || ''}
                 disabled
               >
-                <option value={this.state.formData.employeeId || ''}>
-                  {this.state.formData.employeeName || 'No Employee Found'}
+                <option value={formData.employeeId || ''}>
+                  {formData.employeeName || 'No Employee Found'}
                 </option>
               </CFormSelect>
 
@@ -259,60 +317,45 @@ class ImportProductTable extends React.Component {
                 <div className="col-3">
                   <CFormSelect name="product">
                     <option value="">Chọn sản phẩm</option>
-                    {products &&
-                      products.map((item) => (
-                        <option key={item.product.id} value={item.product.id}>
-                          {`${item.product.name} - Màu: ${item.details[0].color} - Size: ${item.details[0].size}`}
-                        </option>
-                      ))}
+                    {products.map((item) => (
+                      <option key={item.product.id} value={item.product.id}>
+                        {`${item.product.name} - Màu: ${item.details[0].color} - Size: ${item.details[0].size}`}
+                      </option>
+                    ))}
                   </CFormSelect>
                 </div>
                 <div className="col-3">
                   <CFormInput
                     type="number"
                     label="Giá nhập"
-                    value={this.state.formData.importPrice}
-                    onChange={(e) =>
-                      this.setState({
-                        formData: {
-                          ...this.state.formData,
-                          importPrice: parseFloat(e.target.value),
-                        },
-                      })
-                    }
+                    value={formData.importPrice}
+                    onChange={(e) => this.setState({
+                      formData: { ...formData, importPrice: parseFloat(e.target.value) }
+                    })}
                   />
                 </div>
                 <div className="col-3">
                   <CFormInput
                     type="number"
                     label="Giá xuất"
-                    value={this.state.formData.exportPrice}
-                    onChange={(e) =>
-                      this.setState({
-                        formData: {
-                          ...this.state.formData,
-                          exportPrice: parseFloat(e.target.value),
-                        },
-                      })
-                    }
+                    value={formData.exportPrice}
+                    onChange={(e) => this.setState({
+                      formData: { ...formData, exportPrice: parseFloat(e.target.value) }
+                    })}
                   />
                 </div>
                 <div className="col-3">
                   <CFormInput
                     type="number"
                     label="Số lượng"
-                    value={this.state.formData.quantity}
-                    onChange={(e) =>
-                      this.setState({
-                        formData: {
-                          ...this.state.formData,
-                          quantity: parseInt(e.target.value) || 1,
-                        },
-                      })
-                    }
+                    value={formData.quantity}
+                    onChange={(e) => this.setState({
+                      formData: { ...formData, quantity: parseInt(e.target.value) || 1 }
+                    })}
                   />
                 </div>
               </div>
+
               <div className="mb-3 d-flex">
                 <CButton color="primary" onClick={this.handleAddProduct}>
                   Thêm
@@ -331,7 +374,7 @@ class ImportProductTable extends React.Component {
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {this.state.formData.selectedProducts.map((product, index) => (
+                  {formData.selectedProducts.map((product, index) => (
                     <CTableRow key={index}>
                       <CTableDataCell>{product.productId}</CTableDataCell>
                       <CTableDataCell>{product.productName}</CTableDataCell>
@@ -364,10 +407,31 @@ class ImportProductTable extends React.Component {
             {selectedImport && (
               <>
                 <p>Mã phiếu: {selectedImport.id}</p>
-                <p>Thời gian: {selectedImport.importDate}</p>
-                <p>Nhà cung cấp: {selectedImport.supplierId}</p>
-                <p>Nhân viên: {selectedImport.employeeId}</p>
-                <p>Tổng tiền: {selectedImport.totalAmount}</p>
+                <p>Thời gian: {moment(selectedImport.importDate).format('DD/MM/YYYY HH:mm')}</p>
+                <p>Tổng tiền: {selectedImport.totalAmount.toLocaleString('vi-VN')} VNĐ</p>
+                
+                <CTable>
+                  <CTableHead>
+                    <CTableRow>
+                      <CTableHeaderCell>Sản phẩm</CTableHeaderCell>
+                      <CTableHeaderCell>Giá nhập</CTableHeaderCell>
+                      <CTableHeaderCell>Số lượng</CTableHeaderCell>
+                      <CTableHeaderCell>Thành tiền</CTableHeaderCell>
+                    </CTableRow>
+                  </CTableHead>
+                  <CTableBody>
+                    {importDetails.map((detail, index) => (
+                      <CTableRow key={index}>
+                        <CTableDataCell>{detail.tensanpham}</CTableDataCell>
+                        <CTableDataCell>{detail.importPrice.toLocaleString('vi-VN')} VNĐ</CTableDataCell>
+                        <CTableDataCell>{detail.quantity}</CTableDataCell>
+                        <CTableDataCell>
+                          {(detail.importPrice * detail.quantity).toLocaleString('vi-VN')} VNĐ
+                        </CTableDataCell>
+                      </CTableRow>
+                    ))}
+                  </CTableBody>
+                </CTable>
               </>
             )}
           </CModalBody>
@@ -378,7 +442,7 @@ class ImportProductTable extends React.Component {
           </CModalFooter>
         </CModal>
       </CRow>
-    )
+    );
   }
 }
 

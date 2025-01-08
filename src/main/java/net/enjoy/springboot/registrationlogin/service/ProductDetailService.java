@@ -15,4 +15,9 @@ public interface ProductDetailService {
     ProductDetailDto findProductDetailByProductId(Long productId);
 
     List<ProductDetailDto> getAllProductDetail();
+
+    void updateSoLuong(ProductDetailDto productDetailDto);
+
+    // update gia
+    public void updateGia(ProductDetailDto productDetailDto);
 }
