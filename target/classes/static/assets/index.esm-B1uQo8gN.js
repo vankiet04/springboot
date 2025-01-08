@@ -1,4 +1,8 @@
+<<<<<<<< HEAD:target/classes/static/assets/index.esm-B1uQo8gN.js
 var Ga=Object.defineProperty;var Ka=(e,t,i)=>t in e?Ga(e,t,{enumerable:!0,configurable:!0,writable:!0,value:i}):e[t]=i;var M=(e,t,i)=>Ka(e,typeof t!="symbol"?t+"":t,i);import{r as st,R as bt}from"./index-Z7js2gRz.js";/*!
+========
+var Ga=Object.defineProperty;var Ka=(e,t,i)=>t in e?Ga(e,t,{enumerable:!0,configurable:!0,writable:!0,value:i}):e[t]=i;var M=(e,t,i)=>Ka(e,typeof t!="symbol"?t+"":t,i);import{r as st,R as bt}from"./index-D2eZLKsN.js";/*!
+>>>>>>>> f17d465 (aaaaa):target/classes/static/assets/index.esm-BfFRWwIb.js
  * @kurkle/color v0.3.2
  * https://github.com/kurkle/color#readme
  * (c) 2023 Jukka Kurkela

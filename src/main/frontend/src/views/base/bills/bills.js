@@ -1,44 +1,62 @@
-import React from 'react';
+import React from 'react'
+import BillService from './BillService' // Giả sử bạn có một service để lấy dữ liệu hóa đơn
 
-class Bills extends React.Component {
-    render() {
-        return (
-            <div>
-                <h1>Bills</h1>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
-                    <input type="text" placeholder="Search..." style={{ flex: '1', marginRight: '10px' }} />
-                    <button>Filter by Date</button>
-                </div>
-                <table border="1" style={{ width: '100%', textAlign: 'left' }}>
-                    <thead>
-                        <tr>
-                            <th>Bill ID</th>
-                            <th>Customer</th>
-                            <th>Date Created</th>
-                            <th>Amount</th>
-                            <th>View Details</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>001</td>
-                            <td>John Doe</td>
-                            <td>2023-10-01</td>
-                            <td>$100.00</td>
-                            <td><button>View</button></td>
-                        </tr>
-                        <tr>
-                            <td>002</td>
-                            <td>Jane Smith</td>
-                            <td>2023-10-02</td>
-                            <td>$150.00</td>
-                            <td><button>View</button></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        )
+class BillsTable extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      bills: [],
     }
+  }
+
+  componentDidMount() {
+    // GET ALL BILLS
+    BillService.getBills()
+      .then((response) => {
+        const { data } = response
+        this.setState({ bills: data })
+      })
+      .catch((error) => {
+        console.error('Error fetching bills:', error)
+      })
+  }
+
+  render() {
+    return (
+      <div>
+        <h1>Danh sách hóa đơn</h1>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Thời gian đặt hàng</th>
+              <th>Tổng giá</th>
+              <th>Tên khách hàng</th>
+              <th>Hành động</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.state.bills.map((bill) => (
+              <tr key={bill.id}>
+                <td>{bill.id}</td>
+                <td>{bill.order_time}</td>
+                <td>{bill.total_price}</td>
+                <td>{bill.customer_name}</td>
+                <td>
+                  <button onClick={() => this.viewDetails(bill.id)}>Xem chi tiết</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    )
+  }
+
+  viewDetails(id) {
+    // Xử lý logic xem chi tiết hóa đơn
+    console.log('Xem chi tiết hóa đơn:', id)
+  }
 }
 
-export default Bills;
+export default BillsTable
