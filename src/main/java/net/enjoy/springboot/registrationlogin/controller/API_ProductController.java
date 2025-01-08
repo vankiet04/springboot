@@ -68,8 +68,6 @@ public class API_ProductController {
         try {
 
             String fileName = saveImage(productDTO.getImg());
-
-
             productDTO.setImg("/img/products/" + fileName);
 
             Product product = new Product();

@@ -82,6 +82,12 @@ const _nav = [
   },
   {
     component: CNavItem,
+    name: 'Thống kê',
+    to: '/thongke',
+    icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
     name: 'Colors',
     to: '/theme/colors',
     icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,

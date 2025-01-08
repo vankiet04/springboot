@@ -71,7 +71,11 @@ public class SpringSecurity {
                                                 .requestMatchers("/api/importproduct").permitAll()
                                                 .requestMatchers("/api/importproduct/getall").permitAll()
                                                 .requestMatchers("/api/importproduct/*").permitAll()
+                                                .requestMatchers("/api/orders/**").permitAll()  // Allow all order endpoints
+                                                .requestMatchers("/api/orders").permitAll()
+                                                .requestMatchers("/api/orders/getall").permitAll()
                                                 .requestMatchers("/manifest.json").permitAll()
+                                                .requestMatchers("/api/orders/getall").permitAll()
                                                 .requestMatchers("/css/**", "/js/**", "/img/**", "/assets/**",
                                                                 "/static/**")
                                                 .permitAll()
