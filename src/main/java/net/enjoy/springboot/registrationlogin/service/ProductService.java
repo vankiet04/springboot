@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import net.enjoy.springboot.registrationlogin.entity.ProductDetail;
 import java.util.List;
+import java.util.Map;
 
 public interface ProductService {
     Page<ProductDto> findAllProduct(Pageable pageable);
@@ -33,5 +34,6 @@ public interface ProductService {
 
     public Product updateProductAPI(Product product);
 
+    public List<Map<String, Object>> getAllProductWithAllDetails();
 
 }

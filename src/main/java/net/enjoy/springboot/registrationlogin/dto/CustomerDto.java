@@ -11,7 +11,6 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class CustomerDto {
     private Long id; // Mã nhân viên (manv)
     private String fullName; // Họ tên (hoten)

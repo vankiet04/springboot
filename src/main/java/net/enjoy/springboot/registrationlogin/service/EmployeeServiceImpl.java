@@ -65,7 +65,8 @@ public class EmployeeServiceImpl implements EmployeeService {
                 employeeDto.getPhoneNumber(),
                 employeeDto.getEmail(),
                 employeeDto.getGender(),
-                employeeDto.getStatus());
+                employeeDto.getStatus(),
+                null);
     }
 
     @Override

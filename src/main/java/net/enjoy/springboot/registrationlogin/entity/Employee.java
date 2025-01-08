@@ -8,6 +8,8 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -36,5 +38,9 @@ public class Employee {
 
     @Column(nullable = false)
     private int status; // Trạng thái (trangthai)
+
+    @JsonBackReference
+    @OneToMany(mappedBy = "employee")
+    private List<ImportProduct> importProducts;
 
 }

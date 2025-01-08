@@ -37,7 +37,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
+import java.util.Map;
 import java.util.Base64;
 
 @CrossOrigin(origins = "http://localhost:8080")
@@ -55,7 +55,7 @@ public class API_ProductController {
         return productService.findAllProduct();
     }
 
-    // get product with page param, for example /api/products/getproduct?page=1
+   // /api/products/getproduct?page=1
     @GetMapping("/getProductPage")
     public List<ProductDto> getProductWithPage(@RequestParam(defaultValue = "1") int page) {
         return productService.findAllProductWithPage(page);
@@ -66,13 +66,12 @@ public class API_ProductController {
     @PostMapping("/add")
     public ResponseEntity<HttpStatus> addProductAPI(@RequestBody ProductDto productDTO) {
         try {
-            // Lưu file hình ảnh
+
             String fileName = saveImage(productDTO.getImg());
 
-            // Cập nhật đường dẫn hình ảnh trong productDTO
+
             productDTO.setImg("/img/products/" + fileName);
 
-            // Lưu thông tin sản phẩm
             Product product = new Product();
             product.setName(productDTO.getName());
             product.setDescription(productDTO.getDescription());
@@ -95,19 +94,18 @@ public class API_ProductController {
     @PutMapping("/update/{id}")
     public ResponseEntity<HttpStatus> updateProductAPI(@PathVariable Long id, @RequestBody ProductDto productDTO) {
         try {
-            // Lưu file hình ảnh nếu có
+
             if (productDTO.getImg() != null && productDTO.getImg().startsWith("data:image")) {
                 String fileName = saveImage(productDTO.getImg());
                 productDTO.setImg("/img/products/" + fileName);
             }
 
-            // Lấy sản phẩm hiện tại từ cơ sở dữ liệu
+
             Product existingProduct = productService.findProductById(id);
             if (existingProduct == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
 
-            // Cập nhật thông tin sản phẩm
             existingProduct.setName(productDTO.getName());
             existingProduct.setDescription(productDTO.getDescription());
             if (productDTO.getImg() != null) {
@@ -128,17 +126,14 @@ public class API_ProductController {
         }
     }
 
-    // xóa sản phẩm
     @PutMapping("/updateStatus/{id}")
     public ResponseEntity<HttpStatus> updateProductStatus(@PathVariable Long id, @RequestBody ProductDto productDTO) {
         try {
-            // Lấy sản phẩm hiện tại từ cơ sở dữ liệu
             Product existingProduct = productService.findProductById(id);
             if (existingProduct == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
 
-            // Cập nhật trạng thái sản phẩm
             existingProduct.setStatus(productDTO.getStatus());
             productService.updateProductAPI(existingProduct);
             return new ResponseEntity<>(HttpStatus.OK);
@@ -152,29 +147,31 @@ public class API_ProductController {
             throw new IOException("Image data is empty");
         }
 
-        // Tách phần base64 ra khỏi tiền tố "data:image/jpeg;base64,"
         String[] parts = base64Image.split(",");
         String imageString = parts[1];
 
-        // Giải mã base64
         byte[] imageBytes = Base64.getDecoder().decode(imageString);
 
-        // Tạo tên file duy nhất
         String fileName = System.currentTimeMillis() + ".jpg";
 
-        // Đường dẫn file đầy đủ
         File directory = new File(UPLOAD_DIR);
         if (!directory.exists()) {
             directory.mkdirs();
         }
         File file = new File(directory, fileName);
 
-        // Lưu file vào thư mục
+
         try (FileOutputStream fos = new FileOutputStream(file)) {
             fos.write(imageBytes);
         }
 
         return fileName;
+    }
+
+    @GetMapping("/getAllProductWithAllDetails")
+    public ResponseEntity<List<Map<String, Object>>> getAllProductWithAllDetails() {
+        List<Map<String, Object>> products = productService.getAllProductWithAllDetails();
+        return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
 }

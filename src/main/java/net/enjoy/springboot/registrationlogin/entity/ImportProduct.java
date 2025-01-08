@@ -10,6 +10,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -28,13 +33,19 @@ public class ImportProduct {
     @JoinColumn(name = "supplier_id", nullable = false)
     private Supplier supplier; // Mã nhà cung cấp (manhacungcap)
 
-    @ManyToOne
-    @JoinColumn(name = "employee_id", nullable = false)
-    private Employee employee; // Mã nhân viên (manv)
-
     @Column(nullable = false)
     private double totalAmount; // Tổng tiền (tongtien)
 
     @Column(nullable = false)
     private String status; // Trạng thái (trangthai)
+
+    @JsonIgnoreProperties({"importProducts"}) 
+    @ManyToOne
+    @JoinColumn(name = "employee_id")
+    private Employee employee;
+
+
+    @JsonIgnoreProperties({"importProduct"}) // Add this
+    @OneToMany(mappedBy = "importProduct", cascade = CascadeType.ALL)
+    private List<ImportDetail> importDetails;
 }

@@ -28,6 +28,11 @@ public class ProductDetailImpl implements ProductDetailService {
         return convertEntityToDto(productDetail);
     }
 
+    @Override
+    public ProductDetail getProductDetailEntity(long idDetail) {
+        return productDetailRespository.findById(idDetail).get();
+    }
+
 
     public ProductDetailDto convertEntityToDto(ProductDetail productDetail) {
         ProductDetailDto productDetailDto = new ProductDetailDto();
@@ -49,6 +54,24 @@ public class ProductDetailImpl implements ProductDetailService {
         }
     }
 
-   
+    @Override
+    public List<ProductDetailDto> getAllProductDetail() {
+        List<ProductDetail> productDetails = productDetailRespository.findAll();
+        return productDetails.stream().map(this::convertEntityToDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public void updateSoLuong(ProductDetailDto productDetailDto) {
+        ProductDetail productDetail = productDetailRespository.findById(productDetailDto.getId()).get();
+        productDetail.setQuantity(productDetailDto.getQuantity());
+        productDetailRespository.save(productDetail);
+    }
+
+    @Override
+    public void updateGia(ProductDetailDto productDetailDto) {
+        ProductDetail productDetail = productDetailRespository.findById(productDetailDto.getId()).get();
+        productDetail.setPrice(productDetailDto.getPrice());
+        productDetailRespository.save(productDetail);
+    }
 }
 
