@@ -1,6 +1,5 @@
 import React from 'react'
-import BillService from './BillService' // Giả sử bạn có một service để lấy dữ liệu hóa đơn
-
+import BillService from './BillService'
 class BillsTable extends React.Component {
   constructor(props) {
     super(props)
