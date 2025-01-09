@@ -13,9 +13,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ImportProductDto {
     private Long id; // Mã phiếu nhập (id)
-    private LocalDateTime importDate; // Thời gian nhập (importDate)
-    private Long supplierId; // Mã nhà cung cấp (manhacungcap)
-    private Long employeeId; // Mã nhân viên (manhanvien)
+    private LocalDateTime importDate; 
+    private Long supplierId;
+    private Long employeeId;
     private double totalAmount; // Tổng tiền (tongtien)
     private String status; // Trạng thái (trangthai)
 }
