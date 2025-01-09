@@ -13,13 +13,9 @@ import net.enjoy.springboot.registrationlogin.dto.OrderDto;
 
 public interface OrdersService {
     public void saveOrder(User user, List<DetailCartItemDto> detailCartItemDtos);
-<<<<<<< HEAD
 
     List<OrderDto> findAllOrders();
 
-=======
-    public List<OrderDto> findAllOrders();
->>>>>>> origin/main
 }
 
     
